@@ -1,31 +1,20 @@
 name: npm-publish
 
-# on 关键字的使用文档
-# https://help.github.com/en/articles/workflow-syntax-for-github-actions#onevent_nametypes
 on:
-  push:
-    branches:
-      - main
+  release:
+    types: [created]
 
 jobs:
-  npm-publish:
-    strategy:
-      matrix:
-        node-version: [10]
-        os: [macOS-latest]
-
-    runs-on: ${{ matrix.os }}
-
+  publish-npm:
+    needs: build
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@master
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
-          os: ${{ matrix.os }}
-      - run: echo "machine github.com login chenhaihong password ${{ secrets.GH_TOKEN }}" > ~/.netrc
-      # 登录npm https://www.npmjs.com/package/npm-cli-login
-      - run: npm i -g npm-cli-login
-      # secrets值的地址 https://github.com/chenhaihong/vaf/settings/secrets/actions
-      - run: NPM_USER=erye NPM_PASS=${{ matrix.NPM_PASS }} NPM_EMAIL=erye@tiiit.cn npm-cli-login
+          node-version: 16
+          registry-url: https://registry.npmjs.org/
+      - run: npm ci
       - run: npm run pub
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
