@@ -1,0 +1,83 @@
+@mixin utils-user-select($value) {
+  -moz-user-select: $value;
+  -webkit-user-select: $value;
+  -ms-user-select: $value;
+}
+
+@mixin utils-clearfix {
+  $selector: &;
+
+  @at-root {
+    #{$selector}::before,
+    #{$selector}::after {
+      display: table;
+      content: '';
+    }
+    #{$selector}::after {
+      clear: both;
+    }
+  }
+}
+
+@mixin utils-vertical-center {
+  $selector: &;
+
+  @at-root {
+    #{$selector}::after {
+      display: inline-block;
+      content: '';
+      height: 100%;
+      vertical-align: middle;
+    }
+  }
+}
+
+@mixin utils-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  // word-wrap: normal;
+}
+
+// 允许点击时的状态
+@mixin utils-allow-tap {
+  $selector: &;
+
+  @at-root {
+    // #{$selector} {
+    //   position: relative;
+    //   overflow: hidden;
+    // }
+    // #{$selector}:active {
+    //   background: #e5e5e5 !important;
+    // }
+
+    @each $theme-name, $theme-map in $colorThemes {
+      .comp-theme--#{$theme-name} &:active {
+        $theme-map: $theme-map !global;
+        background: themed(bg-color-hover) !important;
+      }
+    }
+  }
+}
+
+//----------------------------------------
+//----------------flex布局-----------------
+//----------------------------------------
+@mixin flex($direction: row, $wrap: nowrap, $mainAxisAlignment: center, $crossAxisAlignment: center) {
+  display: flex;
+
+  flex-direction: $direction;
+  flex-wrap: $wrap;
+  justify-content: $mainAxisAlignment;
+  align-items: $crossAxisAlignment;
+}
+
+@mixin inline-flex($direction: row, $wrap: nowrap, $mainAxisAlignment: center, $crossAxisAlignment: center) {
+  display: inline-flex;
+
+  flex-direction: $direction;
+  flex-wrap: $wrap;
+  justify-content: $mainAxisAlignment;
+  align-items: $crossAxisAlignment;
+}

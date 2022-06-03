@@ -1,0 +1,47 @@
+// sidebar_left  => main menu
+$mainMenuPadding: 16px;
+$mainMenuWidth: 96px; // 左侧主菜单宽度
+$mainMenuHeight: 40px; // 左侧主菜单高度
+$mainMenuBgColor: #f8f8f8;
+
+$mainMenuTextMarginLeft: 10px;
+$mainMenuTextFontSize: 14px;
+$mainMenuTextColor: #666;
+$mainMenuTextColorActive: #fd5149;
+$mainMenuTextColorHover: #f3f3f3;
+
+$mainMenuIconFontSize: 16px;
+$mainMenuIconColor: #999;
+$mainMenuIconColorActive: #fd5149;
+$mainMenuIconColorHover: #fd5149;
+
+// sidebar_right => sub  menu
+$firstNavPadding: 24px;
+$firstNavFontSize: 14px;
+$firstNavColorHover: #409eff;
+
+$subMenuPadding: 8px;
+$subMenuWidth: 128px; // 左侧副树菜单宽度
+$subMenuFontSize: 14px;
+$subMenuBgColor: white;
+
+$subMenuIconMarginRight: 6px;
+$subMenuIconPadding: 2px;
+$subMenuIconWidth: 12px;
+
+$subMenuContentMargin: 5px;
+$subMenuContentWidth: $subMenuWidth - $subMenuPadding * 2;
+$subMenuContentHeight: 30px;
+$subMenuContentColor: #666;
+$subMenuContentColorHover: #448aff;
+$subMenuContentColorActive: #666;
+$subMenuContentBgColorActive: #f3f3f3;
+
+// sidebar
+$sidebarWidth: $mainMenuWidth + $subMenuWidth; // 左侧菜单总宽度
+$sidebarZIndex: 2;
+$sideBarBorderColor: #e8e8e8;
+
+// navbar
+$navbarHeight: 56px; // 顶部导航高度
+$navbarZIndex: 1; // 顶部导航高度
