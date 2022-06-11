@@ -13,7 +13,7 @@
   },
   "main": "./dist/vaf.umd.js",
   "module": "./dist/vaf.es.js",
-  "style": "dist/style.css",
+  "style": "./dist/index.css",
   "exports": {
     ".": {
       "import": "./dist/vaf.es.js",
