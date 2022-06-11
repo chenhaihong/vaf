@@ -6,13 +6,11 @@
   "scripts": {
     "dev": "vite",
     "dev:lib": "vite --mode development:lib",
-    "build": "vite build",
+    "build": "rimraf ./dist/* && npm run build:production",
+    "build:production": "vite build && vite build --mode build:development",
     "pub": "npm publish --access public --registry https://registry.npmjs.org/",
-    "prepub": "npm run build"
+    "prepub": "npm run build:production"
   },
-  "files": [
-    "dist"
-  ],
   "main": "./dist/vaf.umd.js",
   "module": "./dist/vaf.es.js",
   "style": "dist/style.css",
@@ -43,6 +41,7 @@
     "axios": "^0.27.2",
     "element-plus": "^2.2.1",
     "nprogress": "^0.2.0",
+    "rimraf": "^3.0.2",
     "sass": "^1.52.1",
     "vite": "^2.9.9",
     "vue": "^3.2.35",
