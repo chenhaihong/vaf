@@ -5,7 +5,7 @@ import "./index.css";
 // TODO 将uniapp的条件编译使用到这里来
 let vaf, createVafApp, module;
 if (import.meta.env.MODE === "development:lib") {
-  import("../dist/style.css");
+  import("../dist/index.css");
   module = import.meta.globEager("../dist/vaf.es.js")["../dist/vaf.es.js"];
 } else {
   module = import.meta.globEager("../src/index.js")["../src/index.js"];
