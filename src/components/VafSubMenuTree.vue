@@ -6,7 +6,9 @@
         class="first-nav-name"
         :title="selectedMainmenu.title"
         @click.prevent="clickSelectedMainmenu(selectedMainmenu)"
-      >{{ selectedMainmenu.title }}</div>
+      >
+        {{ selectedMainmenu.title }}
+      </div>
     </div>
     <div class="vaf-submenu-tree">
       <el-scrollbar always>
@@ -24,7 +26,9 @@
         >
           <template #default="{ node }">
             <div class="custom-label">
-              <div class="custom-label__text" :title="node.label">{{ node.label }}</div>
+              <div class="custom-label__text" :title="node.label">
+                {{ node.label }}
+              </div>
             </div>
           </template>
         </el-tree>
@@ -51,7 +55,10 @@ export default {
   },
   watch: {
     selectedSubmenuId(next) {
-      this.$refs["subMenuTree"].setCurrentKey(next);
+      this.$nextTick(() => {
+        // console.log(this.$refs["subMenuTree"].getCurrentKey());
+        this.$refs["subMenuTree"].setCurrentKey(next);
+      });
     },
   },
   methods: {
@@ -126,7 +133,7 @@ export default {
 
 .vaf-submenu-tree .el-tree {
   & {
-    padding: $subMenuPadding;
+    padding: 2px; // $subMenuPadding;
     width: $subMenuWidth;
     font-size: $subMenuFontSize;
     box-sizing: border-box;

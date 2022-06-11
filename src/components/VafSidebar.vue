@@ -26,6 +26,8 @@ export default {
     "$route.matched": {
       immediate: true,
       handler(matched) {
+        // console.log(JSON.stringify(matched, null, 2));
+
         // console.log(matched.map(item => item.path))
         if (!matched.length) return;
 
@@ -47,6 +49,8 @@ export default {
           mathedNodes[0].id
         );
         this.$store.commit("VafLeftmenu/setSelectedSubmenuId", VafLeftmenuId);
+
+        // console.log(mathedNodes[0].id, VafLeftmenuId);
       },
     },
   },
@@ -58,14 +62,14 @@ function resolveMatchedNodes(id, nodes) {
   for (let i = 0; i < nodes.length; i++) {
     const node = nodes[i];
     if (node.id === id) {
-      const { children, ...rest } = node;
-      result.push({ ...rest });
+      const { children, ...self } = node;
+      result.push({ ...self });
     } else if (node.children) {
-      const children = resolveMatchedNodes(id, node.children);
-      if (children.length) {
-        const { children, ...rest } = node;
-        result.push({ ...rest });
-        result.push(...children);
+      const matched = resolveMatchedNodes(id, node.children);
+      if (matched.length) {
+        const { children, ...self } = node;
+        result.push({ ...self });
+        result.push(...matched);
       }
     }
   }

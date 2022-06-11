@@ -4,13 +4,19 @@
 
 ## 安装
 
-```
+```shell
 $ npm install vue-admin-framework
+
+// 安装 peerDependencies
+$ npm install axios element-plus nprogress vue vue-router vuex vuex-persistedstate
 ```
 
 ## 使用
 
 ```javascript
+import "element-plus/dist/index.css";
+import "@erye/vaf/dist/style.css";
+
 import { createVafApp } from "@/index";
 
 const app = createVafApp({
@@ -94,8 +100,8 @@ const app = createVafApp({
     // 路由守卫函数参数与VueRouter的保持一致 https://router.vuejs.org/zh/api/#aftereach
     // beforeEach() {}, // 如果设置了，会覆盖内置的beforeEach守卫
     // afterEach() {},// 如果设置了，会覆盖内置的afterEach守卫
-    beforeResolve() {},
-    onError() {},
+    // beforeResolve() {},
+    // onError() {},
   },
   storeConfig: {
     // 传递给store的配置，与vuex的约束保持一致
