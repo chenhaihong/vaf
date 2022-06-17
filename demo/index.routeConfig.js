@@ -75,5 +75,14 @@ export default {
       },
       component: () => import("./pages/SuperAdmin/ClientApi.vue"),
     },
+    {
+      path: "/super-admin/vaf-table-demo",
+      meta: {
+        VafLeftmenuId: "/super-admin/vaf-table-demo",
+        VafAuthLevel: 1,
+        title: "vaf-table使用示例",
+      },
+      component: () => import("./pages/SuperAdmin/VafTableDemo.vue"),
+    },
   ],
 };

@@ -1,9 +1,9 @@
 <template>
   <div class="vaf-submenu-tree-wrap">
-    <div class="first-nav">
+    <div class="vaf-first-nav">
       <div
         v-if="selectedMainmenu"
-        class="first-nav-name"
+        class="vaf-first-nav__name"
         :title="selectedMainmenu.title"
         @click.prevent="clickSelectedMainmenu(selectedMainmenu)"
       >
@@ -104,7 +104,7 @@ export default {
   overflow: hidden;
 }
 
-.first-nav {
+@include b(first-nav) {
   z-index: 1;
   position: relative;
   padding: 0 $firstNavPadding;
@@ -116,7 +116,8 @@ export default {
   text-overflow: ellipsis;
   box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
 
-  .first-nav-name {
+  @include e(name) {
+    padding: 0 4px;
     font-size: $firstNavFontSize;
     font-weight: 400 !important;
     overflow: hidden;
@@ -133,7 +134,7 @@ export default {
 
 .vaf-submenu-tree .el-tree {
   & {
-    padding: 2px; // $subMenuPadding;
+    padding: $subMenuPadding;
     width: $subMenuWidth;
     font-size: $subMenuFontSize;
     box-sizing: border-box;

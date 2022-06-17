@@ -5,6 +5,7 @@ import { createMakeStore } from "@/common/store";
 import { createMakeRouter } from "@/common/router";
 import { makeRequest } from "@/common/helpers/request";
 import { makeAuthService } from "@/common/api/AuthService";
+import GlobalComponents from "@/componentsGlobal/GlobalComponents";
 
 import VafApp from "./VafApp.vue";
 
@@ -15,15 +16,15 @@ export const createVafApp = (vafAppConfig = {}) => {
     leftmenuConfig = {},
     routeConfig = {},
     storeConfig = {},
-    slots = {}, // 暂不开放
+    // slots = {}, // 暂不开放
   } = vafAppConfig;
 
-  for (let name in slots) {
-    if (Object.prototype.hasOwnProperty.call(slots, name)) {
-      const component = slots[name];
-      Vue.component(name, component);
-    }
-  }
+  // for (let name in slots) {
+  //   if (Object.prototype.hasOwnProperty.call(slots, name)) {
+  //     const component = slots[name];
+  //     Vue.component(name, component);
+  //   }
+  // }
 
   const app = createApp(VafApp);
   const store = createMakeStore(vafAppId)(storeConfig, leftmenuConfig); // 先创建store
@@ -37,6 +38,7 @@ export const createVafApp = (vafAppConfig = {}) => {
   app.config.globalProperties.$vafAuthService = AuthService;
 
   app.use(ElementPlus);
+  app.use(GlobalComponents);
   app.use(store);
   app.use(router);
 

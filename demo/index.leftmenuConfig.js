@@ -7,6 +7,24 @@ export default {
       id: "/home",
       path: "/home",
       title: "首页",
+      children: [
+        {
+          type: "router-link",
+          id: "/home",
+          path: "/home",
+          title: "首页",
+        },
+        {
+          type: "http-link",
+          path: "https://staging-cn.vuejs.org/",
+          title: "外链-Vue3",
+        },
+        {
+          type: "http-link",
+          path: "https://element-plus.gitee.io/zh-CN/",
+          title: "外链-饿了么",
+        },
+      ],
     },
     {
       // 菜单组示例
@@ -14,8 +32,20 @@ export default {
       type: "router-link",
       id: "/super-admin",
       path: "/super-admin/api/admin-api",
-      title: "超管模块",
+      title: "页面路由",
       children: [
+        {
+          type: "router-link",
+          id: "/super-admin/admin",
+          path: "/super-admin/admin",
+          title: "403-管理员",
+        },
+        {
+          type: "router-link",
+          id: "/super-admin/admin-role",
+          path: "/super-admin/admin-role",
+          title: "403-角色",
+        },
         {
           type: "router-link",
           id: "/super-admin/api",
@@ -37,21 +67,15 @@ export default {
           ],
         },
         {
-          type: "router-link",
-          id: "/super-admin/admin",
-          path: "/super-admin/admin",
-          title: "管理员",
-        },
-        {
-          type: "router-link",
-          id: "/super-admin/admin-role",
-          path: "/super-admin/admin-role",
-          title: "管理员角色",
-        },
-        {
           type: "http-link",
           path: "https://staging-cn.vuejs.org/",
-          title: "Vue3文档",
+          title: "外链-Vue3",
+        },
+        {
+          type: "router-link",
+          id: "/super-admin/vaf-table-demo",
+          path: "/super-admin/vaf-table-demo",
+          title: "vaf-table",
         },
       ],
     },
@@ -60,17 +84,12 @@ export default {
       type: "router-link",
       id: "/helloworld",
       path: "/helloworld",
-      title: "你好",
+      title: "原生路由",
     },
     {
       type: "http-link",
       path: "https://staging-cn.vuejs.org/",
-      title: "Vue3",
-    },
-    {
-      type: "http-link",
-      path: "https://element-plus.gitee.io/zh-CN/",
-      title: "饿了么",
+      title: "外链Vue",
     },
   ],
 };
