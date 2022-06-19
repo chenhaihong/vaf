@@ -13,8 +13,8 @@ if (import.meta.env.MODE === "development:lib") {
 vaf = module.default;
 createVafApp = module.createVafApp;
 
-import leftmenuConfig from "./index.leftmenuConfig";
-import routeConfig from "./index.routeConfig";
+import leftmenuConfig from "./common/config/leftmenu";
+import routeConfig from "./common/routes";
 
 console.log(JSON.stringify(vaf, null, 2));
 

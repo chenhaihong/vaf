@@ -1,11 +1,11 @@
-# vue-admin-framework
+# @erye/vaf
 
 通用的管理后台框架。
 
 ## 安装
 
 ```shell
-$ npm install vue-admin-framework
+$ npm install @erye/vaf
 
 // 安装 peerDependencies
 $ npm install axios element-plus nprogress vue vue-router vuex vuex-persistedstate
@@ -15,7 +15,7 @@ $ npm install axios element-plus nprogress vue vue-router vuex vuex-persistedsta
 
 ```javascript
 import "element-plus/dist/index.css";
-import "@erye/vaf/dist/style.css";
+import "@erye/vaf/dist/index.css";
 
 import { createVafApp } from "@/index";
 

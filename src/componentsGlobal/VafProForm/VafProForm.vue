@@ -5,7 +5,7 @@ import { Search, Brush } from "@element-plus/icons-vue";
 <script lang="jsx">
 /**
  * VafProForm -- 配置式的表单组件
- * <vaf-pro-form :source="getList" :fields="fields" />
+ * <vaf-pro-form :fields="fields" @submit="submit" />
  */
 
 import { ElMessage } from "element-plus";
@@ -24,11 +24,11 @@ export default {
   },
   created() {
     // 设置默认值
-    const model = {};
+    const defaultModel = {};
     this.fields.forEach((field) => {
-      model[field.prop] = field.value;
+      defaultModel[field.prop] = field.defaultValue;
     });
-    this.model = model;
+    this.model = defaultModel;
   },
   methods: {
     submit() {
@@ -51,17 +51,46 @@ export default {
     reset() {
       this.$refs["form"].resetFields();
     },
-    renderTypeCascader(prop, typeProps = {}) {},
-    renderTypeColorPicker(prop, typeProps = {}) {
-      return <el-color-picker v-model={this.model[prop]} {...typeProps} />;
+    /**
+     * 高频表单组件
+     */
+    renderTypeCascader(prop, typeProps = {}) {
+      return (
+        <el-cascader v-model={this.model[prop]} {...typeProps}></el-cascader>
+      );
+    },
+    renderTypeCheckbox(prop, typeProps = {}) {
+      return (
+        <el-checkbox v-model={this.model[prop]} {...typeProps}></el-checkbox>
+      );
+    },
+    renderTypeCheckboxGroup(prop, typeProps = {}, options = []) {
+      return (
+        <el-checkbox-group v-model={this.model[prop]} {...typeProps}>
+          {options.map((option) => {
+            return (
+              <el-checkbox label={option.value}>{option.label}</el-checkbox>
+            );
+          })}
+        </el-checkbox-group>
+      );
     },
     renderTypeInput(prop, typeProps = {}) {
       return <el-input v-model={this.model[prop]} {...typeProps} />;
     },
-    renderTypeSwitch(prop, typeProps = {}) {
-      return <el-switch v-model={this.model[prop]} {...typeProps} />;
+    renderTypeInputNumber(prop, typeProps = {}) {
+      return <el-input-number v-model={this.model[prop]} {...typeProps} />;
     },
-    renderTypeSelect(prop, options = [], typeProps = {}) {
+    renderTypeRadioGroup(prop, typeProps = {}, options = []) {
+      return (
+        <el-radio-group v-model={this.model[prop]}>
+          {options.map((option) => {
+            return <el-radio label={option.value}>{option.label}</el-radio>;
+          })}
+        </el-radio-group>
+      );
+    },
+    renderTypeSelect(prop, typeProps = {}, options = []) {
       return (
         <el-select v-model={this.model[prop]} {...typeProps}>
           {options.map((option) => {
@@ -70,10 +99,38 @@ export default {
                 v-model={this.model[prop]}
                 label={option.label}
                 value={option.value}
+                disabled={option.disabled}
               ></el-option>
             );
           })}
         </el-select>
+      );
+    },
+    renderTypeSwitch(prop, typeProps = {}) {
+      return <el-switch v-model={this.model[prop]} {...typeProps} />;
+    },
+    renderTypeTextarea(prop, typeProps = {}) {
+      return (
+        <el-input
+          type="textarea"
+          v-model={this.model[prop]}
+          {...typeProps}
+        ></el-input>
+      );
+    },
+    /**
+     * 低频表单组件
+     */
+    renderTypeColorPicker(prop, typeProps = {}) {
+      return <el-color-picker v-model={this.model[prop]} {...typeProps} />;
+    },
+    renderTypeDate(prop, typeProps = {}) {
+      return (
+        <el-date-picker
+          type="date"
+          v-model={this.model[prop]}
+          {...typeProps}
+        ></el-date-picker>
       );
     },
   },
@@ -93,10 +150,20 @@ export default {
 
     const formItems = fields.map((field) => {
       const {
-        // type: 表单子组件的类型，与elemeng-plus保持一致,可以是:
-        //     cascader, checkbox, checkbox-group, color-picker, date, datetime,
-        //     input, input-number, radio, rate, select,
-        //     slider, switch, textarea, time, upload,
+        // type: 表单子组件的类型，与elemeng-plus保持一致,可以是以下值：
+        // (1)高频表单组件
+        //     cascader(√), checkbox(√), checkbox-group(√),
+        //     input(√), input-number(√),
+        //     radio(×, 这种类型不应该存在,使用radio-group), radio-group(√),
+        //     select(√), switch(√),
+        //     textarea(√),
+        // (2)低频表单组件
+        //     color-picker,
+        //     date-picker, datetime-picker,
+        //     rate,
+        //     slider,
+        //     time-picker, time-select, transfer(不支持),
+        //     upload,
         type,
 
         prop, // 字段名, (对应model中的属性名)
@@ -115,55 +182,44 @@ export default {
 
       let child = null;
       switch (type) {
-        case "color-picker":
-          child = this.renderTypeColorPicker(prop, typeProps);
+        /**
+         * 高频表单组件
+         */
+        case "cascader":
+          child = this.renderTypeCascader(prop, typeProps);
+          break;
+        case "checkbox":
+          child = this.renderTypeCheckbox(prop, typeProps);
+          break;
+        case "checkbox-group":
+          child = this.renderTypeCheckboxGroup(prop, typeProps, field.options);
           break;
         case "input":
           child = this.renderTypeInput(prop, typeProps);
           break;
+        case "input-number":
+          child = this.renderTypeInputNumber(prop, typeProps);
+          break;
+        case "radio-group":
+          child = this.renderTypeRadioGroup(prop, typeProps, field.options);
+          break;
         case "select":
-          child = this.renderTypeSelect(prop, field.options, typeProps);
+          child = this.renderTypeSelect(prop, typeProps, field.options);
           break;
         case "switch":
           child = this.renderTypeSwitch(prop, typeProps);
           break;
-        case "radio":
-          child = (
-            <el-radio-group v-model={model[field.name]}>
-              {field.options.map((option) => {
-                return <el-radio label={option.value}>{option.label}</el-radio>;
-              })}
-            </el-radio-group>
-          );
-          break;
-        case "checkbox":
-          child = (
-            <el-checkbox-group v-model={model[field.name]}>
-              {field.options.map((option) => {
-                return (
-                  <el-checkbox label={option.value}>{option.label}</el-checkbox>
-                );
-              })}
-            </el-checkbox-group>
-          );
-          break;
         case "textarea":
-          child = (
-            <el-input
-              v-model={model[field.name]}
-              placeholder={field.placeholder}
-              type="textarea"
-            ></el-input>
-          );
+          child = this.renderTypeTextarea(prop, typeProps);
+          break;
+        /**
+         * 低频表单组件
+         */
+        case "color-picker":
+          child = this.renderTypeColorPicker(prop, typeProps);
           break;
         case "date":
-          child = (
-            <el-date-picker
-              v-model={model[field.name]}
-              type="date"
-              placeholder={field.placeholder}
-            ></el-date-picker>
-          );
+          child = this.renderTypeDate(prop, typeProps);
           break;
       }
 

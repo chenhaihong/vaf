@@ -71,12 +71,6 @@ export default {
           path: "https://staging-cn.vuejs.org/",
           title: "外链-Vue3",
         },
-        {
-          type: "router-link",
-          id: "/super-admin/vaf-table-demo",
-          path: "/super-admin/vaf-table-demo",
-          title: "vaf-table",
-        },
       ],
     },
     {
@@ -90,6 +84,22 @@ export default {
       type: "http-link",
       path: "https://staging-cn.vuejs.org/",
       title: "外链Vue",
+    },
+    {
+      // 菜单组示例
+      // router-link + children
+      type: "router-link",
+      id: "/pro-components",
+      path: "/pro-components/vaf-pro-form",
+      title: "Pro组件",
+      children: [
+        {
+          type: "router-link",
+          id: "/pro-components/vaf-pro-form",
+          path: "/pro-components/vaf-pro-form",
+          title: "vaf-pro-form",
+        },
+      ],
     },
   ],
 };
