@@ -4,7 +4,7 @@ export default [
     meta: {
       VafLeftmenuId: "/pro-components/vaf-pro-form",
       VafAuthLevel: 1,
-      title: "vaf-form",
+      title: "vaf-pro-form",
     },
     component: () => import("../../../pages/ProComponents/VafProFormDemo.vue"),
   },

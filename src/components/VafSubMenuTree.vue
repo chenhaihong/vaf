@@ -57,7 +57,10 @@ export default {
     selectedSubmenuId(next) {
       this.$nextTick(() => {
         // console.log(this.$refs["subMenuTree"].getCurrentKey());
-        this.$refs["subMenuTree"].setCurrentKey(next);
+        const ref = this.$refs["subMenuTree"];
+        if (ref) {
+          ref.setCurrentKey(next);
+        }
       });
     },
   },

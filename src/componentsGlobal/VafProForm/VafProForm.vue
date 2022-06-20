@@ -9,7 +9,8 @@ import { Search, Brush } from "@element-plus/icons-vue";
  */
 
 import { ElMessage } from "element-plus";
-import { Search, Brush } from "@element-plus/icons-vue";
+
+import previewImage from "./previewImage.jsx";
 
 export default {
   name: "VafProForm",
@@ -35,10 +36,10 @@ export default {
       this.$refs["form"].validate((valid, fields) => {
         // console.log(JSON.stringify(this.model, null, 2));
         if (valid) {
-          console.log("submit!");
+          // console.log("submit!");
           this.$emit("submit", this.model);
         } else {
-          console.log("error submit!", fields);
+          // console.log("error submit!", fields);
           Object.values(fields).forEach((field, index) => {
             // 处理消息框重叠的问题
             setTimeout(() => {
@@ -124,13 +125,79 @@ export default {
     renderTypeColorPicker(prop, typeProps = {}) {
       return <el-color-picker v-model={this.model[prop]} {...typeProps} />;
     },
-    renderTypeDate(prop, typeProps = {}) {
+    renderTypeDatePicker(prop, typeProps = {}) {
       return (
         <el-date-picker
           type="date"
           v-model={this.model[prop]}
           {...typeProps}
         ></el-date-picker>
+      );
+    },
+    renderTypeDateTimePicker(prop, typeProps = {}) {
+      return (
+        <el-date-picker
+          type="datetime"
+          v-model={this.model[prop]}
+          {...typeProps}
+        ></el-date-picker>
+      );
+    },
+    renderTypeRate(prop, typeProps = {}) {
+      return <el-rate v-model={this.model[prop]} {...typeProps} />;
+    },
+    renderTypeSlider(prop, typeProps = {}) {
+      return <el-slider v-model={this.model[prop]} {...typeProps} />;
+    },
+    renderTypeTimePicker(prop, typeProps = {}) {
+      return (
+        <el-time-picker
+          type="time"
+          v-model={this.model[prop]}
+          {...typeProps}
+        ></el-time-picker>
+      );
+    },
+    renderTypeTimeSelect(prop, typeProps = {}) {
+      return (
+        <el-time-select
+          v-model={this.model[prop]}
+          {...typeProps}
+        ></el-time-select>
+      );
+    },
+    renderTypeUpload(prop, typeProps = {}) {
+      // 图片上传成功后，修改 file-list，让预览图正常显示
+      const onSuccess = (response, uploadFile, uploadFiles) => {
+        // console.log(response, uploadFile, uploadFiles);
+        const L = this.model[prop].length;
+        this.model[prop][L - 1] = {
+          name: uploadFile.name,
+          url: response.data?.url,
+        };
+
+        // 图片上传成功后，修改 file-list，为其添加index值，
+        // 让预览图数组正常按顺序显示
+        this.model[prop].forEach((item, idx) => {
+          item.index = idx;
+        });
+      };
+
+      // 当 listType为 "picture-card"时，让预览按钮支持预览图片
+      const onPreview = (a) => {
+        const imageUrls = this.model[prop].map((item) => item.url);
+        previewImage(imageUrls, a.index);
+      };
+
+      return (
+        <el-upload
+          v-model:file-list={this.model[prop]}
+          onSuccess={onSuccess}
+          onPreview={onPreview}
+          {...typeProps}
+        >
+          <el-button>上传</el-button>
+        </el-upload>
       );
     },
   },
@@ -153,16 +220,17 @@ export default {
         // type: 表单子组件的类型，与elemeng-plus保持一致,可以是以下值：
         // (1)高频表单组件
         //     cascader(√), checkbox(√), checkbox-group(√),
-        //     input(√), input-number(√),
+        //     input(√),
         //     radio(×, 这种类型不应该存在,使用radio-group), radio-group(√),
         //     select(√), switch(√),
         //     textarea(√),
         // (2)低频表单组件
-        //     color-picker,
-        //     date-picker, datetime-picker,
-        //     rate,
-        //     slider,
-        //     time-picker, time-select, transfer(不支持),
+        //     color-picker(√),
+        //     date-picker(√), datetime-picker(√),
+        //     input-number(√),
+        //     rate(√),
+        //     slider(√),
+        //     time-picker(√), time-select(√), transfer(不支持),
         //     upload,
         type,
 
@@ -218,9 +286,29 @@ export default {
         case "color-picker":
           child = this.renderTypeColorPicker(prop, typeProps);
           break;
-        case "date":
-          child = this.renderTypeDate(prop, typeProps);
+        case "date-picker":
+          child = this.renderTypeDatePicker(prop, typeProps);
           break;
+        case "datetime-picker":
+          child = this.renderTypeDateTimePicker(prop, typeProps);
+          break;
+        case "rate":
+          child = this.renderTypeRate(prop, typeProps);
+          break;
+        case "slider":
+          child = this.renderTypeSlider(prop, typeProps);
+          break;
+        case "time-picker":
+          child = this.renderTypeTimePicker(prop, typeProps);
+          break;
+        case "time-select":
+          child = this.renderTypeTimeSelect(prop, typeProps);
+          break;
+        case "upload":
+          child = this.renderTypeUpload(prop, typeProps);
+          break;
+        default:
+          child = null;
       }
 
       return (
@@ -237,7 +325,12 @@ export default {
     });
 
     return (
-      <el-form ref="form" model={model} {...restFormProps}>
+      <el-form
+        ref="form"
+        model={model}
+        className="vaf-pro-form"
+        {...restFormProps}
+      >
         {formItems}
         <el-form-item>
           <el-button type="primary" icon={Search} onClick={this.submit}>
@@ -253,4 +346,21 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+@include b(pro-form) {
+  // 修复评分组件不垂直居中的bug
+  .el-rate .el-rate__icon {
+    vertical-align: middle;
+  }
+
+  // 修复上传组件，listType = "picture" 时，预览列表显示异常的的bug
+  // 1. 图片状态标签显示异常
+  .el-upload-list--picture
+    .el-upload-list__item
+    .el-upload-list__item-status-label,
+  // 2. 上传组件的关闭按钮显示异常
+  .el-upload-list--picture .el-upload-list__item .el-icon--close {
+    z-index: 1;
+  }
+}
+</style>

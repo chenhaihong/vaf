@@ -3,13 +3,23 @@
     <el-main>
       <el-row :gutter="20">
         <el-col :span="24">
-          <h1 style="margin-bottom: 20px">vaf-pro-form 使用示例</h1>
+          <h1 style="margin-bottom: 20px; text-align: center">vaf-pro-form</h1>
         </el-col>
         <el-col :span="24">
+          <h2 style="margin-bottom: 20px">1. 高频表单组件</h2>
           <vaf-pro-form
-            :fields="fields"
+            :fields="fields1"
             :inline="false"
-            :label-width="140"
+            :label-width="180"
+            @submit="submit"
+          />
+        </el-col>
+        <el-col :span="24">
+          <h2 style="margin-bottom: 20px">2. 低频表单组件</h2>
+          <vaf-pro-form
+            :fields="fields2"
+            :inline="false"
+            :label-width="180"
             @submit="submit"
           />
         </el-col>
@@ -122,19 +132,6 @@ export default {
         ],
       },
       {
-        type: "input-number",
-        prop: "prop_input-number",
-        defaultValue: 0,
-        label: "数字输入框",
-        rules: [
-          {
-            required: true,
-            message: "请输入邮箱",
-            trigger: "blur",
-          },
-        ],
-      },
-      {
         type: "radio-group",
         prop: "prop_radio-group",
         defaultValue: "male",
@@ -213,18 +210,18 @@ export default {
     const fields2 = [
       {
         type: "color-picker",
-        prop: "color",
+        prop: "prop_color-picker",
         defaultValue: "#ff00ff",
-        label: "颜色",
+        label: "颜色选择器",
         rules: [],
         typeProps: {},
         formItemProps: {},
       },
       {
-        type: "date",
-        prop: "date",
-        label: "日期",
-        defaultValue: "",
+        type: "date-picker",
+        prop: "prop_date-picker",
+        label: "日期选择器",
+        defaultValue: 1655654400000,
         rules: [
           {
             required: true,
@@ -236,13 +233,156 @@ export default {
           valueFormat: "x",
         },
       },
+      {
+        type: "datetime-picker",
+        prop: "prop_datetime-picker",
+        label: "日期时间选择器",
+        defaultValue: 1655686800000,
+        rules: [
+          {
+            required: true,
+            message: "请选择日期时间",
+            trigger: "blur",
+          },
+        ],
+        typeProps: {
+          valueFormat: "x",
+        },
+      },
+      {
+        type: "input-number",
+        prop: "prop_input-number",
+        defaultValue: 0,
+        label: "数字输入框",
+        rules: [
+          {
+            required: true,
+            message: "请输入数字",
+            trigger: "blur",
+          },
+        ],
+      },
+      {
+        type: "rate",
+        prop: "prop_rate",
+        defaultValue: 8.5,
+        label: "评分",
+        rules: [
+          {
+            required: true,
+            message: "请输入评分",
+            trigger: "blur",
+          },
+        ],
+        typeProps: {
+          allowHalf: true,
+          max: 10,
+          size: "large",
+          showScore: true,
+        },
+        formItemProps: {
+          size: "large",
+        },
+      },
+      {
+        type: "slider",
+        prop: "prop_slider",
+        defaultValue: 80,
+        label: "滑块",
+        rules: [
+          {
+            required: true,
+            message: "请拖动滑块",
+            trigger: "blur",
+          },
+        ],
+        typeProps: {
+          height: "100px",
+          min: 60,
+          max: 100,
+          vertical: true,
+          showInput: true,
+        },
+        formItemProps: {},
+      },
+      {
+        type: "time-picker",
+        prop: "prop_time-picker_1",
+        label: "时间选择器_默认",
+        defaultValue: 1655686800000,
+        rules: [
+          {
+            required: true,
+            message: "请选择时间",
+            trigger: "blur",
+          },
+        ],
+        typeProps: {
+          valueFormat: "x",
+        },
+      },
+      {
+        type: "time-picker",
+        prop: "prop_time-picker_2",
+        label: "时间选择器_自定义",
+        defaultValue: [1655686800000, 1655697600000],
+        rules: [
+          {
+            required: true,
+            message: "请选择时间",
+            trigger: "blur",
+          },
+        ],
+        typeProps: {
+          isRange: true,
+          valueFormat: "x",
+        },
+      },
+      {
+        type: "time-select",
+        prop: "prop_time-select",
+        label: "时间下拉选择器",
+        defaultValue: "2022-06-20 18:00:00 +08:00Z",
+        rules: [
+          {
+            required: true,
+            message: "请选择时间",
+            trigger: "blur",
+          },
+        ],
+        typeProps: {
+          format: "YYYY-MM-DD HH:mm:ss Z[Z]",
+        },
+      },
+      {
+        type: "upload",
+        prop: "prop_upload",
+        label: "上传",
+        defaultValue: [
+          {
+            name: "deer.png",
+            url: "https://map.tiiit.cn/deer.png",
+          },
+        ],
+        rules: [
+          {
+            required: false,
+            message: "请上传图片",
+            trigger: "blur",
+          },
+        ],
+        typeProps: {
+          action: "/vaf/upload",
+          listType: "picture-card",
+          listType: "picture",
+          listType: "text",
+        },
+      },
     ];
 
     return {
-      fields: [
-        ...fields1, // 高频表单组件
-        // ...fields2, // 低频表单组件
-      ],
+      fields1, // 高频表单组件
+      fields2, // 低频表单组件
     };
   },
   methods: {

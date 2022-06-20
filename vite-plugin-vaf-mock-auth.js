@@ -54,6 +54,21 @@ export default VitePluginVafAuth = () => {
           );
         }
 
+        // 开发下模拟处理用户上传图片
+        if (req.url === "/vaf/upload") {
+          res.writeHead(200, { "Content-Type": "application/json" });
+          return res.end(
+            JSON.stringify({
+              success: true,
+              error: { message: "成功上传" },
+              data: {
+                name: "deer.png",
+                url: "https://map.tiiit.cn/deer.png",
+              },
+            })
+          );
+        }
+
         next();
       });
     },
