@@ -8,4 +8,13 @@ export default [
     },
     component: () => import("../../../pages/ProComponents/VafProFormDemo.vue"),
   },
+  {
+    path: "/pro-components/vaf-pro-table",
+    meta: {
+      VafLeftmenuId: "/pro-components/vaf-pro-table",
+      VafAuthLevel: 1,
+      title: "vaf-pro-table",
+    },
+    component: () => import("../../../pages/ProComponents/VafProTableDemo.vue"),
+  },
 ];

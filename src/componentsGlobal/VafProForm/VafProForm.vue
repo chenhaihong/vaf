@@ -34,12 +34,9 @@ export default {
   methods: {
     submit() {
       this.$refs["form"].validate((valid, fields) => {
-        // console.log(JSON.stringify(this.model, null, 2));
         if (valid) {
-          // console.log("submit!");
           this.$emit("submit", this.model);
         } else {
-          // console.log("error submit!", fields);
           Object.values(fields).forEach((field, index) => {
             // 处理消息框重叠的问题
             setTimeout(() => {

@@ -1,119 +1,101 @@
-<script setup>
-import { Search, Brush } from "@element-plus/icons-vue";
-</script>
-
-<script>
+<script lang="jsx">
 /**
- * VafTable -- 配置式的重组件
- * <vaf-table :source="getList" :columns="cols" :operations="oprts" />
+ * VafProTable -- 配置式的表格重组件
+ * <vaf-pro-table :dataFunc="getList" :columns="cols" :operations="oprts" :pagination="pagination" />
  */
+
+import { ElMessage } from "element-plus";
+
+import VafColAction from "./cells/VafColAction.vue";
+import VafColumns from "./cells/VafColumns.vue";
+
+const defaultPageIndex = 1;
+const defaultPageSize = 10;
 
 export default {
   name: "VafProTable",
+  inheritAttrs: false,
+  components: {
+    VafColAction,
+    VafColumns,
+  },
   props: {
-    // 表单props
-    // field类型有: input, select, switch, radio, checkbox
-    fields: { type: Array, default: () => [] },
-    // 表格props
-    // index
-    // checkbox
-    cols: { type: Array, default: () => [] },
+    // 异步函数，用于获取表格数据
+    dataFunc: { type: Function, default: () => [] },
+    // 表格的列, 类型包含: index, checkbox, text, image,
+    columns: { type: Array, default: () => [] },
+    // 表格的操作列, 类型用户自定义
     operations: { type: Array, default: () => [] },
-    // 分页props
-  },
-  computed: {
-    // 表单computed
-    model() {
-      const model = {};
-      this.fields.forEach((field) => {
-        model[field.name] = field.value;
-      });
-      return model;
+    // 表格的默认分页数据
+    defaultPagination: {
+      type: Object,
+      default: () => ({
+        pageIndex: defaultPageIndex,
+        pageSize: defaultPageSize,
+        totalSize: 0,
+      }),
     },
   },
+  data() {
+    return {
+      // 表格的数据
+      data: [],
+      pagination: {
+        pageIndex: defaultPageIndex,
+        pageSize: defaultPageSize,
+        totalSize: 0,
+      },
+    };
+  },
+  computed: {},
   methods: {
-    submit() {
-      this.$refs["form"].validate((valid, fields) => {
-        console.log(JSON.stringify(this.model, null, 2));
+    getElTableInstance() {
+      return this.$refs.elTable;
+    },
+    async resolveData(pageIndex, pageSize) {
+      const [err, data] = await this.dataFunc(pageIndex, pageSize);
+      if (err) {
+        return ElMessage.error(err.message || "请求数据失败，请重试");
+      } else {
+        const { list, pageIndex, pageSize, totalSize } = data;
+        this.data = list;
+      }
+    },
+    clickButton(action, row, index) {
+      this.$emit("action", action, row, index);
+    },
+  },
+  created() {
+    // 设置默认分页数据
+    this.pagination = {
+      ...this.defaultPagination,
+      ...this.pagination,
+    };
 
-        if (valid) {
-          console.log("submit!");
-        } else {
-          console.log("error submit!", fields);
-        }
-      });
-    },
-    clear() {
-      // TODO 重置表单
-      this.$refs["form"].resetFields();
-    },
+    // 首次请求数据
+    const pageIndex = this.pagination.pageIndex;
+    const pageSize = this.pagination.pageSize;
+    this.resolveData(pageIndex, pageSize);
+  },
+
+  render() {
+    return (
+      <el-table ref="elTable" data={this.data} {...this.$attrs}>
+        <VafColumns
+          pageIndex={this.pagination.pageIndex}
+          pageSize={this.pagination.pageSize}
+          columns={this.columns}
+        />
+        operations.length > 0 && (
+        <VafColAction
+          operations={this.operations}
+          onClickButton={this.clickButton}
+        />
+        )
+      </el-table>
+    );
   },
 };
 </script>
-
-<template>
-  <el-form ref="form" :model="model" :inline="false">
-    <el-form-item
-      v-for="item in fields"
-      :key="item.name"
-      :label="item.label"
-      :prop="item.name"
-      :rules="item.rules"
-    >
-      <el-input
-        v-if="item.type === 'input'"
-        v-model="item.value"
-        clearable
-        :placeholder="item.placeholder"
-      ></el-input>
-      <el-select
-        v-else-if="item.type === 'select'"
-        v-model="item.value"
-        :placeholder="item.placeholder"
-      >
-        <el-option
-          v-for="itemSelect in item.options"
-          :key="itemSelect.value"
-          :label="itemSelect.label"
-          :value="itemSelect.value"
-        />
-      </el-select>
-      <el-switch v-else-if="item.type === 'switch'" v-model="item.value" />
-      <el-radio-group v-else-if="item.type === 'radio'" v-model="item.value">
-        <el-radio
-          v-for="itemRadio in item.options"
-          :key="itemRadio.value"
-          :label="itemRadio.value"
-          >{{ itemRadio.label }}</el-radio
-        >
-      </el-radio-group>
-      <el-checkbox-group
-        v-else-if="item.type === 'checkbox'"
-        v-model="item.value"
-      >
-        <el-checkbox
-          v-for="itemCheckbox in item.options"
-          :key="itemCheckbox.value"
-          :label="itemCheckbox.value"
-          name="type"
-          >{{ itemCheckbox.label }}</el-checkbox
-        >
-      </el-checkbox-group>
-      <el-input
-        v-if="item.type === 'textarea'"
-        v-model="item.value"
-        clearable
-        :placeholder="item.placeholder"
-        type="textarea"
-      ></el-input>
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary" :icon="Search" @click="submit">
-        查询
-      </el-button>
-      <el-button type="default" :icon="Brush" @click="clear"> 清空 </el-button>
-    </el-form-item>
-  </el-form>
-</template>
 
 <style lang="scss"></style>

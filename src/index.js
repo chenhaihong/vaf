@@ -52,6 +52,6 @@ export { getAuthService } from "@/common/api/AuthService";
 
 export default {
   name: "vaf",
-  version: "0.0.1",
+  version: "0.0.3",
   author: "erye",
 };

@@ -1,15 +1,14 @@
 {
   "name": "@erye/vaf",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Vue Admin Framework.",
   "author": "erye <erye@tiiit.cn>",
   "scripts": {
     "dev": "vite",
     "dev:lib": "vite --mode development:lib",
-    "build": "rimraf ./dist/* && npm run build:production",
-    "build:production": "vite build && vite build --mode build:development",
+    "build": "rimraf ./dist/* && vite build && vite build --mode build:development",
     "pub": "npm publish --access public --registry https://registry.npmjs.org/",
-    "prepub": "npm run build:production"
+    "prepub": "npm run build"
   },
   "main": "./dist/vaf.umd.js",
   "module": "./dist/vaf.es.js",
