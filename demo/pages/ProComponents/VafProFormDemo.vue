@@ -373,9 +373,9 @@ export default {
         ],
         typeProps: {
           action: "/vaf/upload",
-          listType: "picture-card",
-          listType: "picture",
           listType: "text",
+          listType: "picture",
+          listType: "picture-card",
         },
       },
     ];

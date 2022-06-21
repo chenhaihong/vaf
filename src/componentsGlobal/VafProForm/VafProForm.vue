@@ -185,19 +185,23 @@ export default {
 
       // 当 listType为 "picture-card"时，让预览按钮支持预览图片
       const onPreview = (a) => {
-        const imageUrls = this.model[prop].map((item) => item.url);
-        previewImage(imageUrls, a.index);
+        if (typeProps?.listType === "picture-card") {
+          const imageUrls = this.model[prop].map((item) => item.url);
+          previewImage(imageUrls, a.index);
+        }
       };
 
       return (
-        <el-upload
-          v-model:file-list={this.model[prop]}
-          onSuccess={onSuccess}
-          onPreview={onPreview}
-          {...typeProps}
-        >
-          <el-button>上传</el-button>
-        </el-upload>
+        <div className="vaf-pro-form__upload">
+          <el-upload
+            v-model:file-list={this.model[prop]}
+            onSuccess={onSuccess}
+            onPreview={onPreview}
+            {...typeProps}
+          >
+            <el-button>上传</el-button>
+          </el-upload>
+        </div>
       );
     },
   },
@@ -361,6 +365,11 @@ export default {
   // 2. 上传组件的关闭按钮显示异常
   .el-upload-list--picture .el-upload-list__item .el-icon--close {
     z-index: 1;
+  }
+
+  // 修复上传组件，listType = "text"||"pacture" 时，预览列表显示宽度无法显示100%的bug
+  @include e(upload) {
+    flex: 1;
   }
 }
 </style>
