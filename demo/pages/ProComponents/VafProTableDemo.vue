@@ -12,9 +12,13 @@
             :dataFunc="getList"
             :columns="columns"
             :operations="operations"
+            :defaultPagination="{ pageIndex: 1, pageSize: 10, totalSize: 0 }"
             @action="action"
-            border
-            stripe
+            :tableProps="{ border: true, stripe: true }"
+            :paginationProps="{
+              background: false,
+              layout: 'total, sizes, prev, pager, next, jumper',
+            }"
           />
         </el-col>
       </el-row>
@@ -38,8 +42,30 @@ export default {
         tableColumnProps: {},
       },
       {
+        type: "text",
         prop: "cnColor",
-        label: "中文颜色",
+        label: "文本",
+        tableColumnProps: {},
+      },
+      {
+        type: "link",
+        prop: "url",
+        label: "链接",
+        typeProps: {},
+        tableColumnProps: {},
+      },
+      {
+        type: "avatar",
+        prop: "avatar",
+        label: "头像",
+        typeProps: {},
+        tableColumnProps: {},
+      },
+      {
+        type: "image",
+        prop: "avatar",
+        label: "图片",
+        typeProps: {},
         tableColumnProps: {},
       },
     ];
@@ -75,14 +101,20 @@ export default {
             {
               color: "red",
               cnColor: "红色",
+              url: "https://map.tiiit.cn/deer.png",
+              avatar: "https://map.tiiit.cn/deer.png",
             },
             {
               color: "blue",
               cnColor: "蓝色",
+              url: "https://map.tiiit.cn/deer.png",
+              avatar: "https://map.tiiit.cn/deer.png",
             },
             {
               color: "green",
               cnColor: "绿色",
+              url: "https://map.tiiit.cn/deer.png",
+              avatar: "https://map.tiiit.cn/deer.png",
             },
           ],
         },

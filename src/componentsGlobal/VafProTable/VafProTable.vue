@@ -35,6 +35,10 @@ export default {
         totalSize: 0,
       }),
     },
+    // 表格的默认属性,  与element-plus的el-table属性保持一直, 参考 https://element-plus.org/zh-CN/component/table.html#table-%E5%B1%9E%E6%80%A7
+    tableProps: { type: Object, default: () => ({}) },
+    // 分页器的默认属性, 与element-plus的el-pagination属性保持一直, 参考 https://element-plus.org/zh-CN/component/pagination.html#%E5%B1%9E%E6%80%A7
+    paginationProps: { type: Object, default: () => ({}) },
   },
   data() {
     return {
@@ -80,22 +84,44 @@ export default {
 
   render() {
     return (
-      <el-table ref="elTable" data={this.data} {...this.$attrs}>
-        <VafColumns
-          pageIndex={this.pagination.pageIndex}
-          pageSize={this.pagination.pageSize}
-          columns={this.columns}
-        />
-        operations.length > 0 && (
-        <VafColAction
-          operations={this.operations}
-          onClickButton={this.clickButton}
-        />
-        )
-      </el-table>
+      <div className="vaf-pro-table">
+        <div className="vaf-pro-table__table">
+          <el-table ref="elTable" data={this.data} {...this.tableProps}>
+            <VafColumns
+              pageIndex={this.pagination.pageIndex}
+              pageSize={this.pagination.pageSize}
+              columns={this.columns}
+            />
+            operations.length > 0 && (
+            <VafColAction
+              operations={this.operations}
+              onClickButton={this.clickButton}
+            />
+            )
+          </el-table>
+        </div>
+        <div className="vaf-pro-table__pagination">
+          <el-pagination
+            v-model:currentPage={this.pagination.pageIndex}
+            v-model:page-size={this.pagination.pageSize}
+            layout="total, sizes, prev, pager, next, jumper"
+            total={this.pagination.totalSize}
+            pageSizes={[10, 20, 30, 40, 50, 100]}
+            {...this.paginationProps}
+          ></el-pagination>
+        </div>
+      </div>
     );
   },
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+@include b(pro-table) {
+  @include e(pagination) {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+  }
+}
+</style>

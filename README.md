@@ -17,7 +17,7 @@ $ npm install axios element-plus nprogress vue vue-router vuex vuex-persistedsta
 import "element-plus/dist/index.css";
 import "@erye/vaf/dist/index.css";
 
-import { createVafApp } from "@/index";
+import { createVafApp } from "@erye/vaf";
 
 const app = createVafApp({
   settingConfig: {
