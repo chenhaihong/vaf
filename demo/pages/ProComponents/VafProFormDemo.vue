@@ -9,18 +9,22 @@
           <h2 style="margin-bottom: 20px">1. 高频表单组件</h2>
           <vaf-pro-form
             :fields="fields1"
-            :inline="false"
-            :label-width="180"
             @submit="submit"
+            :formProps="{
+              inline: false,
+              'label-width': 180,
+            }"
           />
         </el-col>
         <el-col :span="24">
           <h2 style="margin-bottom: 20px">2. 低频表单组件</h2>
           <vaf-pro-form
             :fields="fields2"
-            :inline="false"
-            :label-width="180"
             @submit="submit"
+            :formProps="{
+              inline: false,
+              'label-width': 180,
+            }"
           />
         </el-col>
       </el-row>

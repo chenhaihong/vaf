@@ -4,12 +4,14 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <h1>Home</h1>
-          <div class="big"></div>
-          <div class="auto"></div>
+          <div class="red"></div>
+          <div class="green"></div>
+          <div class="blue"></div>
         </el-col>
         <el-col :span="18">
+          <h1>Hello Home</h1>
           <template v-for="item in 100" :key="item">
-            <p>{{item}} hello Home! hello Home! ello Home! hello Home!</p>
+            <p>{{ item }} hello Home!</p>
           </template>
         </el-col>
       </el-row>
@@ -22,14 +24,16 @@ export default {};
 </script>
 
 <style lang="scss">
-.big {
-  // width: 1000px;
+.red {
   height: 20px;
   background: red;
 }
-.auto {
-  width: 100%;
+.green {
   height: 20px;
   background: green;
+}
+.blue {
+  height: 20px;
+  background: blue;
 }
 </style>

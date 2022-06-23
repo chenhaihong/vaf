@@ -23,6 +23,8 @@ export default {
   props: {
     // fields: 表单props. field类型参考表单的api
     fields: { type: Array, default: () => [] },
+    // formProps: 可以传递给el-form的属性，参考el-form的API.
+    formProps: { type: Object, default: () => {} },
   },
   created() {
     // 设置默认值
@@ -58,12 +60,12 @@ export default {
     const {
       // fields: 定义了el-form-item信息的配置数组.
       fields,
-    } = this.$props;
 
-    // formAttrs: 可以传递给el-form的属性，参考el-form的API.
-    // https://element-plus.gitee.io/zh-CN/component/form.html#form-%E5%B1%9E%E6%80%A7
-    // https://element-plus.org/zh-CN/component/form.html#form-%E5%B1%9E%E6%80%A7
-    const formAttrs = this.$attrs;
+      // formProps: 可以传递给el-form的属性，参考el-form的API.
+      // https://element-plus.gitee.io/zh-CN/component/form.html#form-%E5%B1%9E%E6%80%A7
+      // https://element-plus.org/zh-CN/component/form.html#form-%E5%B1%9E%E6%80%A7
+      formProps,
+    } = this.$props;
 
     const formItems = fields.map((field) => {
       const {
@@ -94,7 +96,7 @@ export default {
     });
 
     return (
-      <el-form ref="form" model={model} className="vaf-pro-form" {...formAttrs}>
+      <el-form ref="form" model={model} className="vaf-pro-form" {...formProps}>
         {formItems}
         <el-form-item>
           <el-button type="primary" icon={Search} onClick={this.submit}>
