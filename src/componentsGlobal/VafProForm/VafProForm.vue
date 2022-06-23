@@ -35,8 +35,11 @@ export default {
     this.model = defaultModel;
   },
   methods: {
+    getElFormInstance() {
+      return this.$refs.elForm;
+    },
     submit() {
-      this.$refs["form"].validate((valid, fields) => {
+      this.$refs["elForm"].validate((valid, fields) => {
         if (valid) {
           this.$emit("submit", this.model);
         } else {
@@ -50,7 +53,7 @@ export default {
       });
     },
     reset() {
-      this.$refs["form"].resetFields();
+      this.$refs["elForm"].resetFields();
     },
   },
 
@@ -96,7 +99,12 @@ export default {
     });
 
     return (
-      <el-form ref="form" model={model} className="vaf-pro-form" {...formProps}>
+      <el-form
+        ref="elForm"
+        model={model}
+        className="vaf-pro-form"
+        {...formProps}
+      >
         {formItems}
         <el-form-item>
           <el-button type="primary" icon={Search} onClick={this.submit}>
