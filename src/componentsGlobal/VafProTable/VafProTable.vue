@@ -1,22 +1,19 @@
 <script lang="jsx">
 /**
  * VafProTable -- 配置式的表格重组件
- * <vaf-pro-table :dataFunc="getList" :columns="cols" :operations="oprts" :pagination="pagination" />
+ * <vaf-pro-table :dataFunc="getList" :columns="cols" :buttons="oprts" :pagination="pagination" />
  */
 
 import { ElMessage } from "element-plus";
 
-import VafColAction from "./cells/VafColAction.vue";
+import VafColumnButtons from "./cells/VafColumnButtons.vue";
 import VafColumns from "./cells/VafColumns.vue";
-
-const defaultPageIndex = 1;
-const defaultPageSize = 10;
 
 export default {
   name: "VafProTable",
   inheritAttrs: false,
   components: {
-    VafColAction,
+    VafColumnButtons,
     VafColumns,
   },
   props: {
@@ -24,14 +21,16 @@ export default {
     dataFunc: { type: Function, default: () => [] },
     // 表格的列, 类型包含: index, checkbox, text, image,
     columns: { type: Array, default: () => [] },
-    // 表格的操作列, 类型用户自定义
-    operations: { type: Array, default: () => [] },
+    // 表格的按钮列, 类型用户自定义
+    buttons: { type: Array, default: () => [] },
+    // 表格的按钮列的属性, 与element-plus的el-table-column属性保持一直, 参考https://element-plus.org/zh-CN/component/table.html#table-column-%E5%B1%9E%E6%80%A7
+    buttonsColumnProps: { type: Object, default: () => {} },
     // 表格的默认分页数据
     defaultPagination: {
       type: Object,
       default: () => ({
-        pageIndex: defaultPageIndex,
-        pageSize: defaultPageSize,
+        pageIndex: 1,
+        pageSize: 10,
         totalSize: 0,
       }),
     },
@@ -45,8 +44,8 @@ export default {
       // 表格的数据
       data: [],
       pagination: {
-        pageIndex: defaultPageIndex,
-        pageSize: defaultPageSize,
+        pageIndex: 1,
+        pageSize: 10,
         totalSize: 0,
       },
     };
@@ -56,24 +55,35 @@ export default {
     getElTableInstance() {
       return this.$refs.elTable;
     },
-    async resolveData(pageIndex, pageSize) {
-      const [err, data] = await this.dataFunc(pageIndex, pageSize);
+    async resolveData(nextPageIndex, nextPageSize) {
+      const [err, data] = await this.dataFunc(nextPageIndex, nextPageSize);
       if (err) {
         return ElMessage.error(err.message || "请求数据失败，请重试");
       } else {
-        const { list, pageIndex, pageSize, totalSize } = data;
+        const { list, pageIndex = 1, pageSize = 10, totalSize = 0 } = data;
+        this.pagination.pageIndex = pageIndex;
+        this.pagination.pageSize = pageSize;
+        this.pagination.totalSize = totalSize;
         this.data = list;
       }
     },
-    clickButton(action, row, index) {
-      this.$emit("action", action, row, index);
+    clickButton(command, row, index) {
+      this.$emit("clickButton", command, row, index);
+    },
+    handleSizeChange(val) {
+      this.pagination.pageSize = val;
+      this.resolveData(1, val);
+    },
+    handleCurrentChange(val) {
+      this.pagination.pageIndex = val;
+      this.resolveData(val, this.pagination.pageSize);
     },
   },
   created() {
     // 设置默认分页数据
     this.pagination = {
-      ...this.defaultPagination,
       ...this.pagination,
+      ...this.defaultPagination,
     };
 
     // 首次请求数据
@@ -92,21 +102,24 @@ export default {
               pageSize={this.pagination.pageSize}
               columns={this.columns}
             />
-            operations.length > 0 && (
-            <VafColAction
-              operations={this.operations}
+            buttons.length > 0 && (
+            <VafColumnButtons
+              buttons={this.buttons}
               onClickButton={this.clickButton}
+              {...this.buttonsColumnProps}
             />
             )
           </el-table>
         </div>
         <div className="vaf-pro-table__pagination">
           <el-pagination
-            v-model:currentPage={this.pagination.pageIndex}
-            v-model:page-size={this.pagination.pageSize}
             layout="total, sizes, prev, pager, next, jumper"
             total={this.pagination.totalSize}
             pageSizes={[10, 20, 30, 40, 50, 100]}
+            current-page={this.pagination.pageIndex}
+            page-size={this.pagination.pageSize}
+            onCurrentChange={this.handleCurrentChange}
+            onSizeChange={this.handleSizeChange}
             {...this.paginationProps}
           ></el-pagination>
         </div>

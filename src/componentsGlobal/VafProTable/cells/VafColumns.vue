@@ -101,7 +101,7 @@ export default {
       const pageIndex = this.pageIndex;
       const pageSize = this.pageSize;
       const {
-        // 列的类型, 可以为 avatar, expand, index, image, link, selection, text, '',
+        // 列的类型, 可以为 avatar(√), expand(TODO), index(√), image(√), link(√), selection(√), text(√), ''(√),
         type = "",
 
         // 列的属性, 与列表的属性一致
