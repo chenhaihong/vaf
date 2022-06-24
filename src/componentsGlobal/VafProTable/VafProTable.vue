@@ -50,10 +50,14 @@ export default {
       },
     };
   },
-  computed: {},
   methods: {
     getElTableInstance() {
       return this.$refs.elTable;
+    },
+    execDataFunc() {
+      const pageIndex = this.pagination.pageIndex;
+      const pageSize = this.pagination.pageSize;
+      this.resolveData(pageIndex, pageSize);
     },
     async resolveData(nextPageIndex, nextPageSize) {
       const [err, data] = await this.dataFunc(nextPageIndex, nextPageSize);
@@ -87,9 +91,7 @@ export default {
     };
 
     // 首次请求数据
-    const pageIndex = this.pagination.pageIndex;
-    const pageSize = this.pagination.pageSize;
-    this.resolveData(pageIndex, pageSize);
+    this.execDataFunc();
   },
 
   render() {
@@ -101,14 +103,16 @@ export default {
               pageIndex={this.pagination.pageIndex}
               pageSize={this.pagination.pageSize}
               columns={this.columns}
-            />
-            buttons.length > 0 && (
-            <VafColumnButtons
-              buttons={this.buttons}
-              onClickButton={this.clickButton}
-              {...this.buttonsColumnProps}
-            />
-            )
+            >
+              {{ ...this.$slots }}
+            </VafColumns>
+            {this.buttons.length > 0 && (
+              <VafColumnButtons
+                buttons={this.buttons}
+                onClickButton={this.clickButton}
+                {...this.buttonsColumnProps}
+              />
+            )}
           </el-table>
         </div>
         <div className="vaf-pro-table__pagination">

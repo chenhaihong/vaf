@@ -1,4 +1,30 @@
 <script lang="jsx">
+const renderDefaultExpandTip = () => {
+  return (
+    <el-alert
+      title="请在重组件 vaf-pro-table 中定义expand插槽，如："
+      type="warning"
+      show-icon
+      closable={false}
+    >
+      {`<template #expand="{ row, $index }"> 你的内容 </template>`}
+    </el-alert>
+  );
+};
+
+const renderDefaultAnySlotTip = (slotName) => () => {
+  return (
+    <el-alert
+      title={`请在重组件 vaf-pro-table 中定义 ${slotName} 插槽，如：`}
+      type="warning"
+      show-icon
+      closable={false}
+    >
+      {`<template #${slotName}="{ row, $index }"> 你的内容 </template>`}
+    </el-alert>
+  );
+};
+
 export default {
   name: "VafColumns",
   inheritAttrs: false,
@@ -8,22 +34,12 @@ export default {
     columns: { type: Array, default: () => [] },
   },
   methods: {
-    renderTypeAvatar(prop, label, tableColumnProps, typeProps) {
+    renderTypeExpand(prop, label = "", tableColumnProps) {
       const slots = {
-        default: ({ row }) => {
-          return (
-            <el-avatar
-              src={row[prop]}
-              shape="square"
-              size={50}
-              alt={row[prop]}
-              {...typeProps}
-            ></el-avatar>
-          );
-        },
+        default: this.$slots.expand || renderDefaultExpandTip,
       };
       return (
-        <el-table-column label={label || prop} {...tableColumnProps}>
+        <el-table-column type="expand" label={label} {...tableColumnProps}>
           {slots}
         </el-table-column>
       );
@@ -40,45 +56,7 @@ export default {
         },
       };
       return (
-        <el-table-column label="序号" {...tableColumnProps}>
-          {slots}
-        </el-table-column>
-      );
-    },
-    renderTypeImage(prop, label, tableColumnProps, typeProps) {
-      const slots = {
-        default: ({ row }) => {
-          return (
-            <el-image
-              style="width:80px; height:80px"
-              src={row[prop]}
-              preview-src-list={[row[prop]]}
-              preview-teleported={true}
-              fit="cover"
-              alt={row[prop]}
-              {...typeProps}
-            />
-          );
-        },
-      };
-      return (
-        <el-table-column label={label || prop} {...tableColumnProps}>
-          {slots}
-        </el-table-column>
-      );
-    },
-    renderTypeLink(prop, label, tableColumnProps, typeProps) {
-      const slots = {
-        default: ({ row, $index }) => {
-          return (
-            <el-link target="blank" href={row[prop]} {...typeProps}>
-              {row[prop]}
-            </el-link>
-          );
-        },
-      };
-      return (
-        <el-table-column label={label || prop} {...tableColumnProps}>
+        <el-table-column label={label || "序号"} {...tableColumnProps}>
           {slots}
         </el-table-column>
       );
@@ -95,13 +73,39 @@ export default {
         />
       );
     },
+    renderTypeAnySlot(prop, label, tableColumnProps, slotName) {
+      const slots = {
+        default: this.$slots[slotName] || renderDefaultAnySlotTip(slotName),
+      };
+      return (
+        <el-table-column label={label} {...tableColumnProps}>
+          {slots}
+        </el-table-column>
+      );
+    },
   },
   render() {
     const cols = this.columns.map((item, index) => {
       const pageIndex = this.pageIndex;
       const pageSize = this.pageSize;
       const {
-        // 列的类型, 可以为 avatar(√), expand(TODO), index(√), image(√), link(√), selection(√), text(√), ''(√),
+        /**
+         * 列的类型,
+         *  (1)可以为内置支持的类型: expand(√), index(√), selection(√), text(√), ''(√)
+         *  (2)可以为自定义类型: any-slot(√)
+         *
+         *  expand: 展开列,
+         *  当使用 expand 这一类型时, 需要在插槽中定义插槽 expand, 参考 element-plus 文档,
+         *  https://element-plus.org/zh-CN/component/table.html#%E5%B1%95%E5%BC%80%E8%A1%8C
+         *
+         *  any-slot: 任意slot列,
+         *  当使用 any-slot 这一类型时, 需要在 columns 中定义 slot<string> 字段,
+         *  并在插槽中定义名称与这个字段相同的插槽, 如:
+         *  cloumn={ type: 'any-slot', slot: 'avatar', tableColumnProps: {} }
+         *  <template #avatar="{ row, $index }">
+         *    <el-avatar :src="row.avatar" />
+         *  </template>
+         */
         type = "",
 
         // 列的属性, 与列表的属性一致
@@ -118,26 +122,34 @@ export default {
       } = item;
 
       switch (type) {
-        case "avatar":
-          return this.renderTypeAvatar(
+        /**
+         * vaf-pro-table 的内置类型
+         */
+        case "expand":
+          return this.renderTypeExpand(prop, label, tableColumnProps);
+        case "index":
+          return this.renderTypeIndex(prop, label, tableColumnProps);
+        case "selection":
+          return this.renderTypeSelection(prop, label, tableColumnProps);
+        case "":
+        case "text":
+          return this.renderTypeText(prop, label, tableColumnProps);
+        /**
+         * vaf-pro-table 的自定义类型
+         */
+        case "any-slot":
+          const slotName = item.slot;
+          return this.renderTypeAnySlot(
             prop,
             label,
             tableColumnProps,
-            typeProps
+            slotName
           );
-        case "expand": // TODO 展开行
-          return null;
-        case "index":
-          return this.renderTypeIndex(prop, label, tableColumnProps);
-        case "image":
-          return this.renderTypeImage(prop, label, tableColumnProps, typeProps);
-        case "link":
-          return this.renderTypeLink(prop, label, tableColumnProps, typeProps);
-        case "selection":
-          return this.renderTypeSelection(prop, label, tableColumnProps);
-        case "text":
+        /**
+         * vaf-pro-table 的默认类型，直接返回空
+         */
         default:
-          return this.renderTypeText(prop, label, tableColumnProps);
+          return null;
       }
     });
 

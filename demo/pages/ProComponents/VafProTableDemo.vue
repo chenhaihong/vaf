@@ -13,7 +13,7 @@
             :dataFunc="getList"
             :columns="columns"
             :buttons="buttons"
-            :defaultPagination="{ pageIndex: 20, pageSize: 10, totalSize: 0 }"
+            :defaultPagination="{ pageIndex: 2, pageSize: 10, totalSize: 0 }"
             @clickButton="clickButton"
             :tableProps="{ border: true, stripe: true }"
             :paginationProps="{
@@ -21,7 +21,14 @@
               layout: 'total, sizes, prev, pager, next, jumper',
             }"
             :buttonsColumnProps="{ width: '160px' }"
-          />
+          >
+            <template #expand="scope">
+              这是第 {{ scope.$index }} 个插槽
+            </template>
+            <template #avatar="scope">
+              <el-avatar :src="scope.row.avatar" />
+            </template>
+          </vaf-pro-table>
         </el-col>
       </el-row>
     </el-main>
@@ -35,12 +42,16 @@ export default {
       {
         type: "selection",
         prop: "color",
-        label: "English Color",
         tableColumnProps: {},
       },
       {
         type: "index",
         label: "序号",
+        tableColumnProps: {},
+      },
+      {
+        type: "expand",
+        label: "展开",
         tableColumnProps: {},
       },
       {
@@ -50,23 +61,23 @@ export default {
         tableColumnProps: {},
       },
       {
-        type: "link",
-        prop: "url",
+        type: "any-slot",
         label: "链接",
+        slot: "expand",
         typeProps: {},
         tableColumnProps: {},
       },
       {
-        type: "avatar",
-        prop: "avatar",
+        type: "any-slot",
         label: "头像",
+        slot: "avatar",
         typeProps: {},
         tableColumnProps: {},
       },
       {
-        type: "image",
-        prop: "avatar",
+        type: "any-slot",
         label: "图片",
+        slot: "image",
         typeProps: {},
         tableColumnProps: {},
       },
@@ -98,6 +109,20 @@ export default {
       await sleep(500);
 
       this.loading = false;
+
+      const list = [];
+      for (let i = 0; i < pageSize; i++) {
+        list.push(
+          JSON.parse(
+            JSON.stringify({
+              color: "red",
+              cnColor: "红色",
+              url: "https://map.tiiit.cn/deer.png",
+              avatar: "https://map.tiiit.cn/deer.png",
+            })
+          )
+        );
+      }
       return [
         null,
         // { message: "获取列表失败" },
@@ -105,12 +130,7 @@ export default {
           pageIndex,
           pageSize,
           totalSize: 28565,
-          list: new Array(pageSize).fill({
-            color: "red",
-            cnColor: "红色",
-            url: "https://map.tiiit.cn/deer.png",
-            avatar: "https://map.tiiit.cn/deer.png",
-          }),
+          list,
         },
       ];
     },
