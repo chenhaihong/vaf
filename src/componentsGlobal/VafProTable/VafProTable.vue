@@ -25,6 +25,8 @@ export default {
     buttons: { type: Array, default: () => [] },
     // 表格的按钮列的属性, 与element-plus的el-table-column属性保持一直, 参考https://element-plus.org/zh-CN/component/table.html#table-column-%E5%B1%9E%E6%80%A7
     buttonsColumnProps: { type: Object, default: () => {} },
+    // 表格的默认列表数据
+    defaultData: { type: Array, default: () => [] },
     // 表格的默认分页数据
     defaultPagination: {
       type: Object,
@@ -84,7 +86,8 @@ export default {
     },
   },
   created() {
-    // 设置默认分页数据
+    // 设置默认数据
+    this.data = { ...this.defaultData };
     this.pagination = {
       ...this.pagination,
       ...this.defaultPagination,
