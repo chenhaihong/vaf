@@ -114,26 +114,11 @@ export default {
         // 列的标题, 如果没有设置, 则使用列的属性
         label,
 
-        // 当前使用类型的组件的属性, 与element-plus定义的约束一致, 参考element-plus的API
-        typeProps = {},
-
         // 表格列的配置属性, 与列表的配置一致, 参考 https://element-plus.org/zh-CN/component/table.html#table-column-%E5%B1%9E%E6%80%A7
         tableColumnProps = {},
       } = item;
 
       switch (type) {
-        /**
-         * vaf-pro-table 的内置类型
-         */
-        case "expand":
-          return this.renderTypeExpand(prop, label, tableColumnProps);
-        case "index":
-          return this.renderTypeIndex(prop, label, tableColumnProps);
-        case "selection":
-          return this.renderTypeSelection(prop, label, tableColumnProps);
-        case "":
-        case "text":
-          return this.renderTypeText(prop, label, tableColumnProps);
         /**
          * vaf-pro-table 的自定义类型
          */
@@ -145,11 +130,20 @@ export default {
             tableColumnProps,
             slotName
           );
+
         /**
-         * vaf-pro-table 的默认类型，直接返回空
+         * vaf-pro-table 的内置类型
          */
+        case "expand":
+          return this.renderTypeExpand(prop, label, tableColumnProps);
+        case "index":
+          return this.renderTypeIndex(prop, label, tableColumnProps);
+        case "selection":
+          return this.renderTypeSelection(prop, label, tableColumnProps);
+        case "":
+        case "text":
         default:
-          return null;
+          return this.renderTypeText(prop, label, tableColumnProps);
       }
     });
 
