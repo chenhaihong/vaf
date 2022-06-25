@@ -9,6 +9,8 @@
           <h2 style="margin-bottom: 20px">1. 高频表单组件</h2>
           <vaf-pro-form
             :fields="fields1"
+            :hide-submit="false"
+            :hide-reset="false"
             @submit="submit"
             :formProps="{
               inline: false,
@@ -20,6 +22,7 @@
           <h2 style="margin-bottom: 20px">2. 低频表单组件</h2>
           <vaf-pro-form
             :fields="fields2"
+            hide-reset
             @submit="submit"
             :formProps="{
               inline: false,

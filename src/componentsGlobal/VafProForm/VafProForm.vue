@@ -25,6 +25,10 @@ export default {
     fields: { type: Array, default: () => [] },
     // formProps: 可以传递给el-form的属性，参考el-form的API.
     formProps: { type: Object, default: () => {} },
+    // hideSubmit: 是否隐藏提交按钮
+    hideSubmit: { type: Boolean, default: false },
+    // hideReset: 是否隐藏重置按钮
+    hideReset: { type: Boolean, default: false },
   },
   created() {
     // 设置默认值
@@ -86,7 +90,6 @@ export default {
 
       return (
         <el-form-item
-          inheritAttrs={false}
           key={prop}
           prop={prop}
           label={label}
@@ -98,22 +101,30 @@ export default {
       );
     });
 
+    const hideSubmit = this.hideSubmit;
+    const hideReset = this.hideReset;
+    const buttons = [
+      hideSubmit ? null : (
+        <el-button type="primary" icon={Search} onClick={this.submit}>
+          查询
+        </el-button>
+      ),
+      hideReset ? null : (
+        <el-button type="default" icon={Brush} onClick={this.reset}>
+          重置
+        </el-button>
+      ),
+    ];
+    const buttonsFormItem =
+      hideSubmit && hideReset ? null : <el-form-item>{buttons}</el-form-item>;
+
+    // fix
+    // 使用 className="vaf-pro-form" 会覆盖掉el-form的className,
+    // 使用 class="vaf-pro-form"可以避免这个问题.
     return (
-      <el-form
-        ref="elForm"
-        model={model}
-        className="vaf-pro-form"
-        {...formProps}
-      >
+      <el-form ref="elForm" model={model} class="vaf-pro-form" {...formProps}>
         {formItems}
-        <el-form-item>
-          <el-button type="primary" icon={Search} onClick={this.submit}>
-            查询
-          </el-button>
-          <el-button type="default" icon={Brush} onClick={this.reset}>
-            重置
-          </el-button>
-        </el-form-item>
+        {buttonsFormItem}
       </el-form>
     );
   },

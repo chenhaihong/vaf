@@ -7,3 +7,5 @@ function install(app) {
 }
 
 export default install;
+
+export { VafProForm, VafProTable };

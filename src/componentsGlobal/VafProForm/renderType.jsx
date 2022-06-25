@@ -35,7 +35,7 @@ function renderType(field = {}) {
     //     rate(√),
     //     slider(√),
     //     time-picker(√), time-select(√), transfer(不支持),
-    //     upload,
+    //     upload(√),
     type,
 
     prop, // 字段名, (对应model中的属性名)

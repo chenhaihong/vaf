@@ -49,9 +49,10 @@ export { getStore } from "@/common/store";
 export { getRouter } from "@/common/router";
 export { getRequest } from "@/common/helpers/request";
 export { getAuthService } from "@/common/api/AuthService";
+export { VafProForm, VafProTable } from "@/componentsGlobal/GlobalComponents";
 
 export default {
-  name: "vaf",
+  name: "@erye/vaf",
   version: "0.0.3",
   author: "erye",
 };
