@@ -20,6 +20,7 @@ export default {
       model: {},
     };
   },
+  emits: ["submit"],
   props: {
     // fields: 表单props. field类型参考表单的api
     fields: { type: Array, default: () => [] },

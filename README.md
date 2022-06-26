@@ -109,3 +109,8 @@ const app = createVafApp({
 });
 app.mount("#app");
 ```
+
+## 重组件
+
+- [表单重组件 `vaf-pro-form`](https://github.com/chenhaihong/vaf/tree/main/src/componentsGlobal/VafProForm)
+- [表格重组件 `vaf-pro-table`](https://github.com/chenhaihong/vaf/tree/main/src/componentsGlobal/VafProTable)

@@ -12,6 +12,15 @@ import VafApp from "./VafApp.vue";
 export const createVafApp = (vafAppConfig = {}) => {
   const {
     vafAppId = "vaf-app", // 用来标记应用的唯一id，可以帮助拿到vaf\store\router
+    /**
+     * TODO 将apiConfig替换为dataFuncsConfig, 添加灵活性
+     *
+     * dataFuncsConfig: {
+     *   async login() {}
+     *   async logout() {}
+     *   async getUserinfo() {}
+     * }
+     */
     apiConfig = {},
     leftmenuConfig = {},
     routeConfig = {},

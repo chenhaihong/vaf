@@ -128,7 +128,10 @@ const columns = [{ type: "expand", label: '展开', tableColumnProps: {} }];
 </template>
 
 <script>
+import { VafProTable } from "@erye/vaf";
+
 export default {
+  components: { VafProTable },
   data() {
     const columns = [
       {
