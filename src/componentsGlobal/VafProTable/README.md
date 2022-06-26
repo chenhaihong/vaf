@@ -4,15 +4,18 @@
 
 ## 1. vaf-pro-table 属性
 
-| 属性                 | 说明                                          | 类型                   | 默认值                                         |
-| -------------------- | --------------------------------------------- | ---------------------- | ---------------------------------------------- |
-| `dataFunc`           | 异步函数, 用于获取表格数据                    | `Resolve<DataFuncRes>` | --                                             |
-| `columns`            | 列配置, 参考 1.1                              | `ColumnConfig[]`       | `[]`                                           |
-| `buttons`            | 按钮配置, 参考 1.2                            | `ButtonConfig[]`       | `[]`                                           |
-| `defaultPagination`  | 分页的默认配置                                | `object`               | `{ pageIndex: 1, pageSize: 10, totalSize: 0 }` |
-| `buttonsColumnProps` | 按钮列的属性, 与 el-table-column 属性保持一直 | `object`               | `{}`                                           |
-| `tableProps`         | 表格的属性, 与 el-table 属性保持一直          | `object`               | `{}`                                           |
-| `paginationProps`    | 分页器的属性, 与 el-pagination 属性保持一直   | `object`               | `{}`                                           |
+| 属性                 | 说明                                                 | 类型                   | 默认值                                         |
+| -------------------- | ---------------------------------------------------- | ---------------------- | ---------------------------------------------- |
+| `dataFunc`           | 异步函数, 用于获取表格数据                           | `Resolve<DataFuncRes>` | --                                             |
+| `columns`            | 列配置, 参考 1.1                                     | `ColumnConfig[]`       | `[]`                                           |
+| `buttons`            | 按钮配置, 参考 1.2                                   | `ButtonConfig[]`       | `[]`                                           |
+| `defaultPagination`  | 分页的默认配置                                       | `object`               | `{ pageIndex: 1, pageSize: 10, totalSize: 0 }` |
+| `defaultData`        | 默认列表数据                                         | `any[]`                | `[]`                                           |
+| `stopAutoQuery`      | pageIndex 或 pageSize 变化时, 自动执行 dataFunc 函数 | `boolean`              | `false`                                        |
+| `stopCreatedQuery`   | 创建实例时, 阻止执行 dataFunc 方法                   | `boolean`              | `false`                                        |
+| `buttonsColumnProps` | 按钮列的属性, 与 el-table-column 属性保持一直        | `object`               | `{}`                                           |
+| `tableProps`         | 表格的属性, 与 el-table 属性保持一直                 | `object`               | `{}`                                           |
+| `paginationProps`    | 分页器的属性, 与 el-pagination 属性保持一直          | `object`               | `{}`                                           |
 
 ```ts
 type DataFuncRes = [
@@ -52,16 +55,16 @@ type DataFuncRes = [
 
 ## 3. vaf-pro-table 方法
 
-| 方法名               | 说明                     | 类型                    |
-| -------------------- | ------------------------ | ----------------------- |
-| `getElTableInstance` | 拿到内部的 el-table 实例 | `() => ELTableInstance` |
-| `execDataFunc`       | 执行 `dataFunc` 函数     | `() => void`            |
+| 方法名               | 说明                     | 类型                                                                  |
+| -------------------- | ------------------------ | --------------------------------------------------------------------- |
+| `getElTableInstance` | 拿到内部的 el-table 实例 | `() => ELTableInstance`                                               |
+| `execDataFunc`       | 执行 `dataFunc` 函数     | `(pageIndex: number\|undefined, pageSize: number\|undefined) => void` |
 
 ## 4. vaf-pro-table 实例属性
 
 | 属性         | 说明     | 类型     | 默认值                                         |
 | ------------ | -------- | -------- | ---------------------------------------------- |
-| `data`       | 列表数据 | `any[]`  | `[]`                                           |
+| `list`       | 列表数据 | `any[]`  | `[]`                                           |
 | `pagination` | 分页数据 | `object` | `{ pageIndex: 1, pageSize: 10, totalSize: 0 }` |
 
 ## 5. vaf-pro-table 插槽

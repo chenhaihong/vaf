@@ -10,10 +10,11 @@
           <vaf-pro-table
             v-loading="loading"
             ref="table"
+            v-model:data="data"
+            v-model:pagination="pagination"
             :dataFunc="getList"
             :columns="columns"
             :buttons="buttons"
-            :defaultPagination="{ pageIndex: 2, pageSize: 10, totalSize: 0 }"
             @clickButton="clickButton"
             :tableProps="{ border: true, stripe: true }"
             :paginationProps="{
@@ -69,14 +70,14 @@ export default {
       },
       {
         type: "any-slot",
-        label: "头像",
+        label: "头像 any-slot",
         slot: "avatar",
         typeProps: {},
         tableColumnProps: {},
       },
       {
         type: "any-slot",
-        label: "图片",
+        label: "图片 any-slot",
         slot: "image",
         typeProps: {},
         tableColumnProps: {},
@@ -93,6 +94,8 @@ export default {
       loading: false,
       columns,
       buttons,
+      data: [],
+      pagination: { pageIndex: 2, pageSize: 10, totalSize: 0 },
     };
   },
   methods: {
@@ -123,6 +126,7 @@ export default {
           )
         );
       }
+
       return [
         null,
         // { message: "获取列表失败" },

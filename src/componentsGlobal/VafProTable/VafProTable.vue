@@ -16,7 +16,10 @@ export default {
     VafColumnButtons,
     VafColumns,
   },
+  emits: ["clickButton", "update:data", "update:pagination"],
   props: {
+    // 表格的列表数据
+    data: { type: Array, default: () => [] },
     // 异步函数，用于获取表格数据
     dataFunc: { type: Function, default: () => [] },
     // 表格的列, 类型包含: index, checkbox, text, image,
@@ -25,10 +28,8 @@ export default {
     buttons: { type: Array, default: () => [] },
     // 表格的按钮列的属性, 与element-plus的el-table-column属性保持一直, 参考https://element-plus.org/zh-CN/component/table.html#table-column-%E5%B1%9E%E6%80%A7
     buttonsColumnProps: { type: Object, default: () => {} },
-    // 表格的默认列表数据
-    defaultData: { type: Array, default: () => [] },
-    // 表格的默认分页数据
-    defaultPagination: {
+    // 表格的分页数据
+    pagination: {
       type: Object,
       default: () => ({
         pageIndex: 1,
@@ -36,6 +37,10 @@ export default {
         totalSize: 0,
       }),
     },
+    // pageIndex, pageSize 变化时, 自动执行dataFunc函数
+    stopAutoQuery: { type: Boolean, default: false },
+    // 创建实例时, 阻止执行dataFunc方法
+    stopCreatedQuery: { type: Boolean, default: false },
     // 表格的默认属性,  与element-plus的el-table属性保持一直, 参考 https://element-plus.org/zh-CN/component/table.html#table-%E5%B1%9E%E6%80%A7
     tableProps: { type: Object, default: () => ({}) },
     // 分页器的默认属性, 与element-plus的el-pagination属性保持一直, 参考 https://element-plus.org/zh-CN/component/pagination.html#%E5%B1%9E%E6%80%A7
@@ -43,58 +48,61 @@ export default {
   },
   data() {
     return {
-      // 表格的数据
-      data: [],
-      pagination: {
-        pageIndex: 1,
-        pageSize: 10,
-        totalSize: 0,
-      },
+      // list: [],
+      // pagenation: {},
     };
+  },
+  watch: {
+    "pagination.pageIndex": {
+      immediate: false,
+      handler(next, prev) {
+        if (!this.stopAutoQuery && next !== prev) {
+          this.execDataFunc(next, this.pagination.pageSize);
+        }
+      },
+    },
+    "pagination.pageSize": {
+      immediate: false,
+      handler(next, prev) {
+        if (!this.stopAutoQuery && next !== prev) {
+          this.execDataFunc(this.pagination.pageIndex, next);
+        }
+      },
+    },
   },
   methods: {
     getElTableInstance() {
       return this.$refs.elTable;
     },
-    execDataFunc() {
-      const pageIndex = this.pagination.pageIndex;
-      const pageSize = this.pagination.pageSize;
-      this.resolveData(pageIndex, pageSize);
-    },
-    async resolveData(nextPageIndex, nextPageSize) {
+    async execDataFunc(pageIndex = void 0, pageSize = void 0) {
+      const nextPageIndex = pageIndex || this.pagination.pageIndex || 1;
+      const nextPageSize = pageSize || this.pagination.pageSize || 10;
       const [err, data] = await this.dataFunc(nextPageIndex, nextPageSize);
       if (err) {
-        return ElMessage.error(err.message || "请求数据失败，请重试");
+        ElMessage.error(err.message || "请求数据失败，请重试");
       } else {
-        const { list, pageIndex = 1, pageSize = 10, totalSize = 0 } = data;
-        this.pagination.pageIndex = pageIndex;
-        this.pagination.pageSize = pageSize;
-        this.pagination.totalSize = totalSize;
-        this.data = list;
+        const { list = [], pageIndex = 1, pageSize = 10, totalSize = 0 } = data;
+        this.$emit("update:pagination", { pageIndex, pageSize, totalSize });
+        this.$emit("update:data", list);
       }
+      return [err, data];
     },
     clickButton(command, row, index) {
       this.$emit("clickButton", command, row, index);
     },
-    handleSizeChange(val) {
-      this.pagination.pageSize = val;
-      this.resolveData(1, val);
+    handlePageIndexChange(val) {
+      this.$emit("update:pagination", { ...this.pagination, pageIndex: val });
     },
-    handleCurrentChange(val) {
-      this.pagination.pageIndex = val;
-      this.resolveData(val, this.pagination.pageSize);
+    handlePageSizeChange(val) {
+      this.$emit("update:pagination", {
+        ...this.pagination,
+        pageIndex: 1, // 分页大小改变时, 重置pageIndex为1, 避免出现分页数大于总数时, 无数据展示的问题
+        pageSize: val,
+      });
     },
   },
   created() {
-    // 设置默认数据
-    this.data = { ...this.defaultData };
-    this.pagination = {
-      ...this.pagination,
-      ...this.defaultPagination,
-    };
-
-    // 首次请求数据
-    this.execDataFunc();
+    !this.stopCreatedQuery && this.execDataFunc(); // 首次请求数据
   },
 
   render() {
@@ -125,8 +133,8 @@ export default {
             pageSizes={[10, 20, 30, 40, 50, 100]}
             current-page={this.pagination.pageIndex}
             page-size={this.pagination.pageSize}
-            onCurrentChange={this.handleCurrentChange}
-            onSizeChange={this.handleSizeChange}
+            onCurrentChange={this.handlePageIndexChange}
+            onSizeChange={this.handlePageSizeChange}
             {...this.paginationProps}
           ></el-pagination>
         </div>
