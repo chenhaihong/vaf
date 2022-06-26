@@ -9,8 +9,8 @@
 | `dataFunc`           | 异步函数, 用于获取表格数据                           | `Resolve<DataFuncRes>` | --                                             |
 | `columns`            | 列配置, 参考 1.1                                     | `ColumnConfig[]`       | `[]`                                           |
 | `buttons`            | 按钮配置, 参考 1.2                                   | `ButtonConfig[]`       | `[]`                                           |
-| `defaultPagination`  | 分页的默认配置                                       | `object`               | `{ pageIndex: 1, pageSize: 10, totalSize: 0 }` |
 | `defaultData`        | 默认列表数据                                         | `any[]`                | `[]`                                           |
+| `defaultPagination`  | 默认分页配置                                         | `object`               | `{ pageIndex: 1, pageSize: 10, totalSize: 0 }` |
 | `stopAutoQuery`      | pageIndex 或 pageSize 变化时, 自动执行 dataFunc 函数 | `boolean`              | `false`                                        |
 | `stopCreatedQuery`   | 创建实例时, 阻止执行 dataFunc 方法                   | `boolean`              | `false`                                        |
 | `buttonsColumnProps` | 按钮列的属性, 与 el-table-column 属性保持一直        | `object`               | `{}`                                           |
@@ -35,7 +35,7 @@ type DataFuncRes = [
 | ------------------ | --------------------------------------------------------- | -------------------------------------------------------- | ------ |
 | `type`             | 列类型, type 为 `any-slot \| expand` 时, 需要提供对应插槽 | `any-slot \| expand \| index \| selection \| text \| ''` | `''`   |
 | `prop`             | 列属性, 对应列数据的字段名                                | `string`                                                 | --     |
-| `label`            | 列标题, 如果没有设置, 则使用列属性                        | `string`                                                 | --     |
+| `label`            | 列标题, 假如没有设置, 则使用列属性                        | `string`                                                 | --     |
 | `slot`             | type 为 `any-slot` 时, 通过该字段映射到对应插槽           | `string`                                                 | --     |
 | `tableColumnProps` | 列属性的配置, 与 table-column 属性一致                    | 'object'                                                 | `{}`   |
 
@@ -49,16 +49,20 @@ type DataFuncRes = [
 
 ## 2. vaf-pro-table 事件
 
-| 事件名        | 说明                   | 回调参数                        |
-| ------------- | ---------------------- | ------------------------------- |
-| `clickButton` | 点击按钮时, 执行该函数 | `(command, row, index) => void` |
+| 事件名              | 说明                         | 回调参数                                               |
+| ------------------- | ---------------------------- | ------------------------------------------------------ |
+| `button-click`      | 点击按钮时, 执行该函数       | `(command: string, row: any[], index: number) => void` |
+| `page-index-change` | pageIndex 改变时, 执行该函数 | `(val: number) => void`                                |
+| `page-size-change`  | pageSize 改变时, 执行该函数  | `(val: number) => void`                                |
 
 ## 3. vaf-pro-table 方法
 
-| 方法名               | 说明                     | 类型                                                                  |
-| -------------------- | ------------------------ | --------------------------------------------------------------------- |
-| `getElTableInstance` | 拿到内部的 el-table 实例 | `() => ELTableInstance`                                               |
-| `execDataFunc`       | 执行 `dataFunc` 函数     | `(pageIndex: number\|undefined, pageSize: number\|undefined) => void` |
+| 方法名               | 说明                                                                    | 类型                                                                  |
+| -------------------- | ----------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| `getElTableInstance` | 拿到内部的 el-table 实例                                                | `() => ELTableInstance`                                               |
+| `execDataFunc`       | 执行 `dataFunc` 函数, 假如不传递参数, 则使用当前的 pageIndex 和 pgeSize | `(pageIndex: number\|undefined, pageSize: number\|undefined) => void` |
+| `updatePageIndex`    | 更改 pageIndex, 假如 `stopAutoQuery` 为 `false`, 则执行 `dataFunc` 函数 | `(pageIndex: number) => void`                                         |
+| `updatePageSize`     | 更改 pageSize, 假如 `stopAutoQuery` 为 `false`, 则执行 `dataFunc` 函数  | `(pageSize: number) => void`                                          |
 
 ## 4. vaf-pro-table 实例属性
 
@@ -69,11 +73,11 @@ type DataFuncRes = [
 
 ## 5. vaf-pro-table 插槽
 
-### 5.1 插槽 - `any-slot`
+### 5.1 插槽 `any-slot`
 
-`vaf-pro-table` 添加 `any-slot` 任意插槽特性, 使得重组件表格也能有很强大的灵活性.
+`vaf-pro-table` 加入了 `any-slot` 任意插槽特性, 使得重组件表格也能有很强大的灵活性.
 
-当添加了如下的列配置时, 需要添加名称为 `avatar` 的插槽.
+当添加了如下的列配置时, 并添加名称为 `avatar` 的插槽后, `vaf-pro-table`将会在该列渲染这个插槽.
 
 ```javascript
 const columns = [{ type: "any-slot", label: '头像', slot: "avatar", tableColumnProps: {} }];
@@ -83,7 +87,9 @@ const columns = [{ type: "any-slot", label: '头像', slot: "avatar", tableColum
 </template>
 ```
 
-### 5.2 插槽 - `expand`
+### 5.2 插槽 `expand`
+
+当添加了如下的列配置时, 需要添加名称为 `expand` 的插槽. `vaf-pro-table`将会在该列渲染这个插槽.
 
 ```javascript
 const columns = [{ type: "expand", label: '展开', tableColumnProps: {} }];
@@ -104,7 +110,7 @@ const columns = [{ type: "expand", label: '展开', tableColumnProps: {} }];
     :columns="columns"
     :buttons="buttons"
     :defaultPagination="{ pageIndex: 2, pageSize: 10, totalSize: 0 }"
-    @clickButton="clickButton"
+    @button-click="clickButton"
     :tableProps="{ border: true, stripe: true }"
     :paginationProps="{
       background: false,

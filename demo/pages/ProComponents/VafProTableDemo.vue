@@ -9,13 +9,13 @@
           <h2 style="margin-bottom: 20px">1. 基础使用</h2>
           <vaf-pro-table
             v-loading="loading"
-            ref="table"
-            v-model:data="data"
-            v-model:pagination="pagination"
+            ref="vafprotable"
             :dataFunc="getList"
             :columns="columns"
             :buttons="buttons"
-            @clickButton="clickButton"
+            @button-click="clickButton"
+            :defaultData="[]"
+            :defaultPagination="{ pageIndex: 2, pageSize: 10, totalSize: 0 }"
             :tableProps="{ border: true, stripe: true }"
             :paginationProps="{
               background: false,
@@ -94,8 +94,6 @@ export default {
       loading: false,
       columns,
       buttons,
-      data: [],
-      pagination: { pageIndex: 2, pageSize: 10, totalSize: 0 },
     };
   },
   methods: {
@@ -140,7 +138,7 @@ export default {
     },
     clickButton(command, row, index) {
       console.log(command, row, index);
-      this.$refs.table.getElTableInstance().clearSelection();
+      this.$refs.vafprotable.getElTableInstance().clearSelection();
 
       if (command === "edit") {
         this.$message.success("编辑成功");

@@ -16,10 +16,8 @@ export default {
     VafColumnButtons,
     VafColumns,
   },
-  emits: ["clickButton", "update:data", "update:pagination"],
+  emits: ["button-click", "page-index-change", "page-size-change"],
   props: {
-    // 表格的列表数据
-    data: { type: Array, default: () => [] },
     // 异步函数，用于获取表格数据
     dataFunc: { type: Function, default: () => [] },
     // 表格的列, 类型包含: index, checkbox, text, image,
@@ -28,14 +26,12 @@ export default {
     buttons: { type: Array, default: () => [] },
     // 表格的按钮列的属性, 与element-plus的el-table-column属性保持一直, 参考https://element-plus.org/zh-CN/component/table.html#table-column-%E5%B1%9E%E6%80%A7
     buttonsColumnProps: { type: Object, default: () => {} },
-    // 表格的分页数据
-    pagination: {
+    // 表格的默认列表数据
+    defaultData: { type: Array, default: () => [] },
+    // 表格的默认分页数据
+    defaultPagination: {
       type: Object,
-      default: () => ({
-        pageIndex: 1,
-        pageSize: 10,
-        totalSize: 0,
-      }),
+      default: () => ({ pageIndex: 1, pageSize: 10, totalSize: 0 }),
     },
     // pageIndex, pageSize 变化时, 自动执行dataFunc函数
     stopAutoQuery: { type: Boolean, default: false },
@@ -48,27 +44,9 @@ export default {
   },
   data() {
     return {
-      // list: [],
-      // pagenation: {},
+      list: [],
+      pagination: { pageIndex: 1, pageSize: 10, totalSize: 0 },
     };
-  },
-  watch: {
-    "pagination.pageIndex": {
-      immediate: false,
-      handler(next, prev) {
-        if (!this.stopAutoQuery && next !== prev) {
-          this.execDataFunc(next, this.pagination.pageSize);
-        }
-      },
-    },
-    "pagination.pageSize": {
-      immediate: false,
-      handler(next, prev) {
-        if (!this.stopAutoQuery && next !== prev) {
-          this.execDataFunc(this.pagination.pageIndex, next);
-        }
-      },
-    },
   },
   methods: {
     getElTableInstance() {
@@ -82,34 +60,47 @@ export default {
         ElMessage.error(err.message || "请求数据失败，请重试");
       } else {
         const { list = [], pageIndex = 1, pageSize = 10, totalSize = 0 } = data;
-        this.$emit("update:pagination", { pageIndex, pageSize, totalSize });
-        this.$emit("update:data", list);
+        this.pagination = { pageIndex, pageSize, totalSize };
+        this.list = list;
       }
       return [err, data];
     },
+    updatePageIndex(pageIndex) {
+      this.pagination.pageIndex = pageIndex;
+      !this.stopAutoQuery && this.execDataFunc();
+    },
+    updatePageSize(pageSize) {
+      this.pagination.pageSize = pageSize;
+      !this.stopAutoQuery && this.execDataFunc();
+    },
     clickButton(command, row, index) {
-      this.$emit("clickButton", command, row, index);
+      this.$emit("button-click", command, row, index);
     },
     handlePageIndexChange(val) {
-      this.$emit("update:pagination", { ...this.pagination, pageIndex: val });
+      this.pagination.pageIndex = val;
+      this.$emit("page-index-change", val);
+      !this.stopAutoQuery && this.execDataFunc();
     },
     handlePageSizeChange(val) {
-      this.$emit("update:pagination", {
-        ...this.pagination,
-        pageIndex: 1, // 分页大小改变时, 重置pageIndex为1, 避免出现分页数大于总数时, 无数据展示的问题
-        pageSize: val,
-      });
+      this.pagination.pageSize = val;
+      this.$emit("page-size-change", val);
+      !this.stopAutoQuery && this.execDataFunc();
     },
   },
   created() {
-    !this.stopCreatedQuery && this.execDataFunc(); // 首次请求数据
+    // 默认数据
+    this.list = [...this.defaultData];
+    this.pagination = { ...this.pagination, ...this.defaultPagination };
+
+    // 首次请求数据
+    !this.stopCreatedQuery && this.execDataFunc();
   },
 
   render() {
     return (
       <div className="vaf-pro-table">
         <div className="vaf-pro-table__table">
-          <el-table ref="elTable" data={this.data} {...this.tableProps}>
+          <el-table ref="elTable" data={this.list} {...this.tableProps}>
             <VafColumns
               pageIndex={this.pagination.pageIndex}
               pageSize={this.pagination.pageSize}
