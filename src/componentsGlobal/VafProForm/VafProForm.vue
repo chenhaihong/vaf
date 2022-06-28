@@ -21,6 +21,13 @@ export default {
     };
   },
   emits: ["submit"],
+  expose: [
+    "getElFormInstance",
+    "getFormData",
+    "clearValidate",
+    "submit",
+    "reset",
+  ],
   props: {
     // fields: 表单props. field类型参考表单的api
     fields: { type: Array, default: () => [] },
@@ -42,6 +49,12 @@ export default {
   methods: {
     getElFormInstance() {
       return this.$refs.elForm;
+    },
+    getFormData() {
+      return this.model;
+    },
+    clearValidate(props) {
+      this.$refs.elForm?.clearValidate(props);
     },
     submit() {
       this.$refs["elForm"].validate((valid, fields) => {

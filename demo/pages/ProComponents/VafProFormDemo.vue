@@ -7,15 +7,22 @@
         </el-col>
         <el-col :span="24">
           <h2 style="margin-bottom: 20px">1. 高频表单组件</h2>
+          <el-button
+            @click="() => $refs.form1.clearValidate(['prop_textarea'])"
+          >
+            清除多行文本输入框的验证
+          </el-button>
+          <el-button @click="logFormData"> 打印表单数据 </el-button>
+          <el-button @click="logFormInstance">
+            打印表单实例查看expose
+          </el-button>
           <vaf-pro-form
+            ref="form1"
             :fields="fields1"
             :hide-submit="false"
             :hide-reset="false"
             @submit="submit"
-            :formProps="{
-              inline: false,
-              'label-width': 180,
-            }"
+            :formProps="{ inline: false, 'label-width': 180 }"
           />
         </el-col>
         <el-col :span="24">
@@ -24,10 +31,7 @@
             :fields="fields2"
             hide-reset
             @submit="submit"
-            :formProps="{
-              inline: false,
-              'label-width': 180,
-            }"
+            :formProps="{ inline: false, 'label-width': 180 }"
           />
         </el-col>
       </el-row>
@@ -393,6 +397,12 @@ export default {
     };
   },
   methods: {
+    logFormData() {
+      console.log(JSON.stringify(this.$refs.form1?.getFormData(), null, 2));
+    },
+    logFormInstance() {
+      console.log(this.$refs.form1);
+    },
     submit(data) {
       console.log(JSON.stringify(data, null, 2));
     },
