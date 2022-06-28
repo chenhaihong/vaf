@@ -17,9 +17,23 @@ export default {
     VafColumns,
   },
   emits: ["button-click", "page-index-change", "page-size-change"],
+  expose: [
+    "execDataFunc",
+    "getElTableInstance",
+    "getList",
+    "getPagination",
+    "getRow",
+    "updateList",
+    "updatePageIndex",
+    "updatePageSize",
+    "updateRow",
+  ],
   props: {
     // 异步函数，用于获取表格数据
-    dataFunc: { type: Function, default: () => [] },
+    dataFunc: {
+      type: Function,
+      default: () => [null, { list: [], pageIndex: 1, pageSize: 10, total: 0 }],
+    },
     // 表格的列, 类型包含: index, checkbox, text, image,
     columns: { type: Array, default: () => [] },
     // 表格的按钮列, 类型用户自定义
@@ -36,7 +50,7 @@ export default {
     // pageIndex, pageSize 变化时, 自动执行dataFunc函数
     stopAutoQuery: { type: Boolean, default: false },
     // 创建实例时, 阻止执行dataFunc方法
-    stopCreatedQuery: { type: Boolean, default: false },
+    stopCreatedQuery: { type: Boolean, default: true },
     // 表格的默认属性,  与element-plus的el-table属性保持一直, 参考 https://element-plus.org/zh-CN/component/table.html#table-%E5%B1%9E%E6%80%A7
     tableProps: { type: Object, default: () => ({}) },
     // 分页器的默认属性, 与element-plus的el-pagination属性保持一直, 参考 https://element-plus.org/zh-CN/component/pagination.html#%E5%B1%9E%E6%80%A7
@@ -49,9 +63,39 @@ export default {
     };
   },
   methods: {
+    /**
+     * public methods
+     */
     getElTableInstance() {
       return this.$refs.elTable;
     },
+    getRow(index) {
+      return this.list[index];
+    },
+    updateRow(index, row) {
+      this.list[index] = row;
+    },
+    getList() {
+      return this.list;
+    },
+    updateList(list) {
+      this.list = list;
+    },
+    getPagination() {
+      return this.pagination;
+    },
+    updatePageIndex(pageIndex) {
+      this.pagination.pageIndex = pageIndex;
+      !this.stopAutoQuery && this.execDataFunc();
+    },
+    updatePageSize(pageSize) {
+      this.pagination.pageSize = pageSize;
+      !this.stopAutoQuery && this.execDataFunc();
+    },
+
+    /**
+     * private methods
+     */
     async execDataFunc(pageIndex = void 0, pageSize = void 0) {
       const nextPageIndex = pageIndex || this.pagination.pageIndex || 1;
       const nextPageSize = pageSize || this.pagination.pageSize || 10;
@@ -64,14 +108,6 @@ export default {
         this.list = list;
       }
       return [err, data];
-    },
-    updatePageIndex(pageIndex) {
-      this.pagination.pageIndex = pageIndex;
-      !this.stopAutoQuery && this.execDataFunc();
-    },
-    updatePageSize(pageSize) {
-      this.pagination.pageSize = pageSize;
-      !this.stopAutoQuery && this.execDataFunc();
     },
     clickButton(command, row, index) {
       this.$emit("button-click", command, row, index);

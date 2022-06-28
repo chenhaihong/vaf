@@ -99,9 +99,10 @@ export default {
          *  https://element-plus.org/zh-CN/component/table.html#%E5%B1%95%E5%BC%80%E8%A1%8C
          *
          *  any-slot: 任意slot列,
-         *  当使用 any-slot 这一类型时, 需要在 columns 中定义 slot<string> 字段,
-         *  并在插槽中定义名称与这个字段相同的插槽, 如:
+         *  当使用 any-slot 这一类型时, 需要在 columns 中定义 slot<string> 字段, 如:
          *  cloumn={ type: 'any-slot', slot: 'avatar', tableColumnProps: {} }
+         *
+         *  并在插槽中定义名称与这个字段相同的插槽, 如:
          *  <template #avatar="{ row, $index }">
          *    <el-avatar :src="row.avatar" />
          *  </template>

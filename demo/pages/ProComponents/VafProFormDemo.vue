@@ -16,6 +16,7 @@
           <el-button @click="logFormInstance">
             打印表单实例查看expose
           </el-button>
+          <el-divider />
           <vaf-pro-form
             ref="form1"
             :fields="fields1"

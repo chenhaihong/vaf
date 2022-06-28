@@ -6,7 +6,16 @@
           <h1 style="margin-bottom: 20px; text-align: center">vaf-pro-table</h1>
         </el-col>
         <el-col :span="24">
-          <h2 style="margin-bottom: 20px">1. 基础使用</h2>
+          <h2 style="margin-bottom: 20px">1. 表格</h2>
+          <el-button @click="logExpose">打印expose</el-button>
+          <el-button @click="logRow0">打印第1行数据</el-button>
+          <el-button @click="updateRow0"> 更新第1行数据</el-button>
+          <el-button @click="logList">打印整个表格数据</el-button>
+          <el-button @click="updateList">更新整个表格数据</el-button>
+          <el-button @click="logPagination">打印分页</el-button>
+          <el-button @click="updatePageIndex">更新pageIndex</el-button>
+          <el-button @click="updatePageSize">更新pageSize</el-button>
+          <el-divider />
           <vaf-pro-table
             v-loading="loading"
             ref="vafprotable"
@@ -22,9 +31,10 @@
               layout: 'total, sizes, prev, pager, next, jumper',
             }"
             :buttonsColumnProps="{ width: '160px' }"
+            :stopCreatedQuery="false"
           >
             <template #expand="scope">
-              这是第 {{ scope.$index }} 个插槽
+              这是第 {{ scope.$index + 1 }} 个 expand 插槽
             </template>
             <template #avatar="scope">
               <el-avatar :src="scope.row.avatar" />
@@ -59,13 +69,6 @@ export default {
         type: "text",
         prop: "cnColor",
         label: "文本",
-        tableColumnProps: {},
-      },
-      {
-        type: "any-slot",
-        label: "链接",
-        slot: "expand",
-        typeProps: {},
         tableColumnProps: {},
       },
       {
@@ -145,6 +148,46 @@ export default {
       } else if (command === "delete") {
         this.$message.success("删除成功");
       }
+    },
+    logExpose() {
+      console.log(this.$refs.vafprotable);
+    },
+    logRow0() {
+      console.log(this.$refs.vafprotable.getRow(0));
+    },
+    updateRow0() {
+      const row = this.$refs.vafprotable?.getRow(0) || {};
+      this.$refs.vafprotable?.updateRow(0, {
+        ...row,
+        color: "blue",
+        cnColor: "蓝色",
+      });
+    },
+    logList() {
+      console.log(this.$refs.vafprotable.getList());
+    },
+    updateList() {
+      const list = this.$refs.vafprotable?.getList() || [];
+      this.$refs.vafprotable?.updateList(
+        list.map((item) => {
+          return {
+            ...item,
+            color: "blue",
+            cnColor: "蓝色",
+          };
+        })
+      );
+    },
+    logPagination() {
+      console.log(this.$refs.vafprotable.getPagination());
+    },
+    updatePageIndex() {
+      const pageIndex = this.$refs.vafprotable?.getPagination().pageIndex + 1;
+      this.$refs.vafprotable?.updatePageIndex(pageIndex);
+    },
+    updatePageSize() {
+      const pageSize = this.$refs.vafprotable?.getPagination().pageSize + 1;
+      this.$refs.vafprotable?.updatePageSize(pageSize);
     },
   },
 };
