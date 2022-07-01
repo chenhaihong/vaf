@@ -190,6 +190,15 @@ export default {
       this.$refs.vafprotable?.updatePageSize(pageSize);
     },
   },
+  // created() {
+  //   console.log("vaf-pro-table created");
+  // },
+  // activated() {
+  //   console.log("vaf-pro-table activated");
+  // },
+  // deactivated() {
+  //   console.log("vaf-pro-table deactivated");
+  // },
 };
 </script>
 

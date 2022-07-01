@@ -5,7 +5,7 @@ import SuperAdmin from "./modules/SuperAdmin";
 import ProComponents from "./modules/ProComponents";
 
 export default {
-  mode: "hash",
+  mode: "history",
   base: "/",
   vanillaRoutes,
   pageRoutes: [...home, ...SuperAdmin, ...ProComponents],

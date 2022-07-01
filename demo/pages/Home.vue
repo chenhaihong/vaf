@@ -8,10 +8,21 @@
           <div class="green"></div>
           <div class="blue"></div>
         </el-col>
-        <el-col :span="18">
-          <h1>Hello Home</h1>
+        <el-col :span="6">
+          <h1>Hello ProComponent</h1>
+          <el-button-group>
+            <el-button type="primary" @click="gotoProForm(1)">
+              ProForm query.id=1
+            </el-button>
+            <el-button type="success" @click="gotoProForm(2)">
+              ProForm query.id=2
+            </el-button>
+          </el-button-group>
+        </el-col>
+        <el-col :span="6">
+          <h1>Hello Scrollbar</h1>
           <template v-for="item in 100" :key="item">
-            <p>{{ item }} hello Home!</p>
+            <p>{{ item }} 撑出滚动条!</p>
           </template>
         </el-col>
       </el-row>
@@ -20,7 +31,18 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    gotoProForm(id) {
+      this.$router.push({
+        path: "/pro-components/vaf-pro-form",
+        query: {
+          id: id,
+        },
+      });
+    },
+  },
+};
 </script>
 
 <style lang="scss">

@@ -4,6 +4,15 @@
       <el-row :gutter="20">
         <el-col :span="24">
           <h1 style="margin-bottom: 20px; text-align: center">vaf-pro-form</h1>
+          <el-button-group>
+            <el-button type="primary" @click="gotoProForm(1)">
+              ProForm query.id=1
+            </el-button>
+            <el-button type="success" @click="gotoProForm(2)">
+              ProForm query.id=2
+            </el-button>
+          </el-button-group>
+          <el-divider />
         </el-col>
         <el-col :span="24">
           <h2 style="margin-bottom: 20px">1. 高频表单组件</h2>
@@ -398,6 +407,14 @@ export default {
     };
   },
   methods: {
+    gotoProForm(id) {
+      this.$router.push({
+        path: "/pro-components/vaf-pro-form",
+        query: {
+          id: id,
+        },
+      });
+    },
     logFormData() {
       console.log(JSON.stringify(this.$refs.form1?.getFormData(), null, 2));
     },
@@ -408,6 +425,15 @@ export default {
       console.log(JSON.stringify(data, null, 2));
     },
   },
+  // created() {
+  //   console.log("vaf-pro-form created");
+  // },
+  // activated() {
+  //   console.log("vaf-pro-form activated");
+  // },
+  // deactivated() {
+  //   console.log("vaf-pro-form deactivated");
+  // },
 };
 </script>
 
