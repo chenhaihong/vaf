@@ -14,13 +14,15 @@ const routers = {};
 
 export const createMakeRouter =
   (vafAppId) =>
-  ({
-    mode = "hash", // hash || history
-    base = "/",
-    pageRoutes = [],
-    vanillaRoutes = [],
-    globalNavigationGuards = {}, // 符合VueRouter约束的全局导航配置
-  } = {}) => {
+  (routeConfig = {}, settingConfig = {}) => {
+    const {
+      mode = "hash", // hash || history
+      base = "/",
+      pageRoutes = [],
+      vanillaRoutes = [],
+      globalNavigationGuards = {}, // 符合VueRouter约束的全局导航配置
+    } = routeConfig;
+
     const attachedRoutes = attachDefaultRoutes([
       ...attachPageLayout(pageRoutes), // 植入了VafPageLayout的路由
       ...vanillaRoutes, // 原生的VueRouter的路由配置，不做额外处理
@@ -34,7 +36,8 @@ export const createMakeRouter =
 
     createAttachGlobalNavigationGuards(vafAppId)(
       $router,
-      globalNavigationGuards
+      globalNavigationGuards,
+      settingConfig
     ); // 添加用户定义的全局导航守卫
 
     routers[vafAppId] = $router;

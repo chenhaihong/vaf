@@ -1,0 +1,197 @@
+[33mcommit e0ea363300121d8d5f20237d915016b7ca89f030[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;33mtag: v0.0.4[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: erye <erye@tiiit.cn>
+Date:   Tue Jun 28 16:44:12 2022 +0800
+
+    更新 vaf-pro-table api 与文档
+    
+    1. 添加方法: getRow updateRow getList updateList getPagination
+    2. expose 公共方法, 隐藏实例属性
+    3. 更新 vaf-pro-table 文档
+
+[33mcommit f948c884bb560a9131c76aefba43ee5643552fdb[m
+Author: erye <erye@tiiit.cn>
+Date:   Tue Jun 28 15:35:06 2022 +0800
+
+    vaf-pro-form添加getFormData clearValidate方法，使用expose屏蔽内部属性.
+
+[33mcommit 303e4096c44beb8325ce5c84bc316a23c9e2f1b6[m[33m ([m[1;33mtag: v0.0.3[m[33m)[m
+Author: erye <erye@tiiit.cn>
+Date:   Sun Jun 26 21:23:41 2022 +0800
+
+    更新文档
+
+[33mcommit b5c16cffa2643bc267697446a989e426c13b1014[m
+Author: erye <erye@tiiit.cn>
+Date:   Sun Jun 26 20:50:47 2022 +0800
+
+    更新vaf-pro-table API, 并更新文档
+    
+    - 恢复属性 defaultData defaultPagination
+    - 添加属性 stopAutoQuery stopCreatedQuery
+    - 添加事件 page-index-change page-size-change
+    - 添加方法 updatePageIndex updatePageSize
+
+[33mcommit 6554ceedcc1564b79a756cb46a1ec06c3ede246b[m
+Author: erye <erye@tiiit.cn>
+Date:   Sun Jun 26 18:25:58 2022 +0800
+
+    修改 vaf-pro-table API
+
+[33mcommit 07126d2134a95f9b005fca38befd3088970ef4b7[m
+Author: erye <erye@tiiit.cn>
+Date:   Sat Jun 25 18:23:07 2022 +0800
+
+    vaf-pro-table 添加 defaultData 字段，支持传入默认列表数据
+
+[33mcommit 19ca71a9af5c2ad540d8001ec3da208daa218c1f[m
+Author: erye <erye@tiiit.cn>
+Date:   Sat Jun 25 18:18:12 2022 +0800
+
+    更新 vaf-pro-table 文档
+
+[33mcommit 0988f62daa621dcd3b62ed46aca7d07a084810a5[m
+Author: erye <erye@tiiit.cn>
+Date:   Sat Jun 25 18:02:34 2022 +0800
+
+    添加 vaf-pro-table 文档
+
+[33mcommit 120ac79f7c9992218aef8753c7dc799e424bccd6[m
+Author: erye <erye@tiiit.cn>
+Date:   Sat Jun 25 17:02:55 2022 +0800
+
+    更新 vaf-pro-form 文档
+
+[33mcommit 1b3e14b9dc9420121a8e9056a78798cf675609e2[m
+Author: erye <erye@tiiit.cn>
+Date:   Sat Jun 25 16:56:28 2022 +0800
+
+    更新vaf-pro-form API，并添加说明文档
+
+[33mcommit b098e43a20cd204e050a609d5d9d31ef87887bd4[m
+Author: erye <erye@tiiit.cn>
+Date:   Fri Jun 24 18:14:18 2022 +0800
+
+    更新 vaf-pro-table api，加入 any-slot 特性，支持列使用任意插槽
+
+[33mcommit c844e426388bcda02d8efe74a8b02041fcd15df8[m
+Author: erye <erye@tiiit.cn>
+Date:   Thu Jun 23 17:52:06 2022 +0800
+
+    更新vaf-pro-table的api
+
+[33mcommit 4f6fe96ca236f74dd9df737642736b904cc4fd25[m
+Author: erye <erye@tiiit.cn>
+Date:   Thu Jun 23 16:05:24 2022 +0800
+
+    vaf-pro-form添加getElFormInstance方法，来支持获取拿到el-form实例
+
+[33mcommit 4c82c37b3bd1d9a108fe4e1b1cc0944000a94392[m
+Author: erye <erye@tiiit.cn>
+Date:   Thu Jun 23 15:54:24 2022 +0800
+
+    vaf-pro-form新增formProps属性，用来支持传入el-form属性
+
+[33mcommit 72d06291b6cb52893eba09d8009536f9e022d6a2[m
+Author: erye <erye@tiiit.cn>
+Date:   Wed Jun 22 18:33:43 2022 +0800
+
+    vaf-pro-table更新约束配置，添加分页
+
+[33mcommit 2749da4e8a300ee3484df7e3f05aa94439792dd2[m
+Author: erye <erye@tiiit.cn>
+Date:   Tue Jun 21 21:21:25 2022 +0800
+
+    vaf-pro-form关闭自动继承attrs
+
+[33mcommit 0b4a8bd3eb1978a7d99a057638bfedeca4eecabe[m
+Author: erye <erye@tiiit.cn>
+Date:   Tue Jun 21 21:11:31 2022 +0800
+
+    添加vaf-pro-table雏形代码
+
+[33mcommit 5bb6a4ddfc2aa764e3d386a5e520d98a5ed7e6ee[m
+Author: erye <erye@tiiit.cn>
+Date:   Tue Jun 21 16:52:48 2022 +0800
+
+    整理拆分vaf-pro-form代码
+
+[33mcommit 6eb8674798ff6154259e148995d02ca4a2815df3[m
+Author: erye <erye@tiiit.cn>
+Date:   Tue Jun 21 15:45:50 2022 +0800
+
+    修复upload表单组件type为text、picture时，文件列表宽度无法100%显示的bug
+
+[33mcommit 7e4d6073444d2abcfd16dbb4967b68c51e80e840[m
+Author: erye <erye@tiiit.cn>
+Date:   Mon Jun 20 18:23:25 2022 +0800
+
+    vaf-pro-component：添加低频表单组件的支持
+
+[33mcommit 6c434f34455233feb6db2e0fa0dd2a292d5b22e9[m
+Author: erye <erye@tiiit.cn>
+Date:   Sun Jun 19 18:14:38 2022 +0800
+
+    vaf-pro-form添加高频表单组件的支持
+
+[33mcommit 1422269d00448b7a7cc8e1943ec88d47ee8c5f32[m
+Author: erye <erye@tiiit.cn>
+Date:   Fri Jun 17 19:09:11 2022 +0800
+
+    确定vaf-prop-form的api（确定了雏形约束）
+
+[33mcommit e37b21c54081cb6a22944d152b29a2da96f76ff1[m[33m ([m[1;33mtag: v0.0.2[m[33m)[m
+Author: erye <erye@tiiit.cn>
+Date:   Sat Jun 11 20:58:43 2022 +0800
+
+    更新demo
+
+[33mcommit 8ba062eae4bf713d190c34e8d675e9ab6ebe17da[m
+Author: erye <erye@tiiit.cn>
+Date:   Sat Jun 11 20:54:22 2022 +0800
+
+    更新package.json
+
+[33mcommit 16890921f52d923009669ea78af09eab16e6a9e1[m
+Author: erye <erye@tiiit.cn>
+Date:   Sat Jun 11 20:48:42 2022 +0800
+
+    更新构建配置
+    
+    1.导出2套文件，一份包含sourcemap配置，一份不包含；
+    2.更新scripts，使用rimraf清空目录
+
+[33mcommit 604b7601c3955042860ce1d1bd4d16358eaab71c[m
+Author: erye <erye@tiiit.cn>
+Date:   Sat Jun 11 19:59:35 2022 +0800
+
+    修复子菜单无法高亮选中的问题；修复获取子菜单的所有父级菜单错误的问题
+
+[33mcommit 93872a53d763a015cae255b9927b77427a3cd573[m[33m ([m[1;33mtag: v0.0.1[m[33m)[m
+Author: erye <erye@tiiit.cn>
+Date:   Fri Jun 3 20:35:53 2022 +0800
+
+    更新工作流文件
+
+[33mcommit 87446f193f70295091f73f895a8e2776365b6123[m
+Author: erye <erye@tiiit.cn>
+Date:   Fri Jun 3 20:21:16 2022 +0800
+
+    更新npm-publish.yml
+
+[33mcommit cd4eaf9ab50c89a2e851f4393f2ebf798d97e7fe[m
+Author: erye <erye@tiiit.cn>
+Date:   Fri Jun 3 20:01:03 2022 +0800
+
+    修改触发npm-publish action的分支为main分支
+
+[33mcommit 064eff986a9b818d31bdf6919004844cc6386c32[m
+Author: erye <erye@tiiit.cn>
+Date:   Fri Jun 3 20:00:21 2022 +0800
+
+    Add publish workflow
+
+[33mcommit 9ab31844209d1cc6fe31026927c267647d454f1d[m
+Author: erye <erye@tiiit.cn>
+Date:   Fri Jun 3 19:38:41 2022 +0800
+
+    添加雏形 v0.0.1

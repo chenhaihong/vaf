@@ -20,9 +20,7 @@ const confirmLink = (link, options = {}) => {
     showConfirmButton: false,
     cancelButtonText: "关闭",
     type: "prompt",
-  }).catch((err) => {
-    console.log(err);
-  });
+  }).catch(() => {});
 };
 
 export default confirmLink;

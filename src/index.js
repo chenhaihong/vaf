@@ -9,18 +9,16 @@ import GlobalComponents from "@/componentsGlobal/GlobalComponents";
 
 import VafApp from "./VafApp.vue";
 
+export default {
+  name: "@erye/vaf",
+  version: "0.0.5",
+  author: "erye",
+};
+
 export const createVafApp = (vafAppConfig = {}) => {
   const {
     vafAppId = "vaf-app", // 用来标记应用的唯一id，可以帮助拿到vaf\store\router
-    /**
-     * TODO 将apiConfig替换为dataFuncsConfig, 添加灵活性
-     *
-     * dataFuncsConfig: {
-     *   async login() {}
-     *   async logout() {}
-     *   async getUserinfo() {}
-     * }
-     */
+    settingConfig = {},
     apiConfig = {},
     leftmenuConfig = {},
     routeConfig = {},
@@ -37,7 +35,7 @@ export const createVafApp = (vafAppConfig = {}) => {
 
   const app = createApp(VafApp);
   const store = createMakeStore(vafAppId)(storeConfig, leftmenuConfig); // 先创建store
-  const router = createMakeRouter(vafAppId)(routeConfig); // 先创建router
+  const router = createMakeRouter(vafAppId)(routeConfig, settingConfig); // 再创建router
   const request = makeRequest(vafAppId); // 再创建request
   const AuthService = makeAuthService(vafAppId, apiConfig); // 再创建AuthService
 
@@ -59,9 +57,3 @@ export { getRouter } from "@/common/router";
 export { getRequest } from "@/common/helpers/request";
 export { getAuthService } from "@/common/api/AuthService";
 export { VafProForm, VafProTable } from "@/componentsGlobal/GlobalComponents";
-
-export default {
-  name: "@erye/vaf",
-  version: "0.0.3",
-  author: "erye",
-};

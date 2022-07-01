@@ -1,5 +1,4 @@
 import { createStore } from "vuex";
-import createPersistedState from "vuex-persistedstate";
 
 import makeAuthModule from "./makeAuthModule";
 import makeLeftmenModule from "./makeLeftmenModule";
