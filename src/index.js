@@ -17,6 +17,9 @@ export default {
   author: "erye",
 };
 
+// vafApp实例池
+const vafApps = {};
+
 export const createVafApp = (vafAppConfig = {}) => {
   const {
     vafAppId = "vaf-app", // 用来标记应用的唯一id，可以帮助拿到vaf\store\router
@@ -51,7 +54,12 @@ export const createVafApp = (vafAppConfig = {}) => {
   app.use(store);
   app.use(router);
 
+  vafApps[vafAppId] = app;
   return app;
+};
+
+export const getVafApp = (vafAppId = "vaf-app") => {
+  return vafApps[vafAppId];
 };
 
 export { getStore } from "@/common/store";
