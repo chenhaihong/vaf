@@ -3,7 +3,7 @@
     <VafSidebar class="vaf-page-layout__left" />
     <div class="vaf-page-layout__right">
       <VafNavbar class="vaf-page-layout__right__navbar" />
-      <el-scrollbar :native="false" always>
+      <el-scrollbar ref="scrollbar" :native="false" always>
         <router-view v-slot="{ Component, route }">
           <transition
             :name="route.meta.VafTransition || 'vaf-fade'"
@@ -38,6 +38,34 @@ import VafNavbar from "@/components/VafNavbar.vue";
 export default {
   name: "VafPageLayout",
   components: { VafSidebar, VafNavbar },
+  removeAutoScrollGuard: null,
+  mounted() {
+    /**
+     * 切换路由时时，自动滚动内容到顶部.
+     *
+     * 因为我在router-view外层套了一个scrollbar，造成vue-router的scroobehavior无法有效地控制滚动，
+     * 所以需要在scrollBar上层级的组件上加上这个guard.
+     *
+     * 同时，有两种路由配置vanillaRoutes pageRoutes，vanillaRoutes不会使用VafPageLayout组件.
+     * VafPageLayout这个layout组件是一个可选的组件，因而把控制滚动逻辑放在这里是比较正确地.
+     *
+     * 这个是router3的issue，但是很有参考价值.
+     * Need a way to set what scroll position is saved #1187
+     * https://github.com/vuejs/vue-router/issues/1187
+     *
+     * refer
+     * https://github.com/vuejs/vue-router/issues/1187#issuecomment-500406965
+     *
+     * router.afterEach会返回一个删除guard的函数，这个函数可以在组件销毁时调用.
+     * https://github.com/vuejs/router/blob/60e8b7a1ee729bafc5c9ff3646ac440ae629c333/packages/router/src/utils/callbacks.ts#L4
+     */
+    this.removeAutoScrollGuard = this.$router.afterEach(() => {
+      this.$refs.scrollbar?.scrollTo(0, 0);
+    });
+  },
+  beforeUnmount() {
+    this.removeAutoScrollGuard && this.removeAutoScrollGuard();
+  },
 };
 </script>
 
