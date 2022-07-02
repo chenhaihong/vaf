@@ -32,6 +32,7 @@ export const createMakeRouter =
       history:
         mode === "hash" ? createWebHashHistory(base) : createWebHistory(base),
       routes: attachedRoutes,
+      scrollBehavior: makeScrollBehavior(vafAppId),
     });
 
     createAttachGlobalNavigationGuards(vafAppId)(
@@ -47,3 +48,16 @@ export const createMakeRouter =
 export const getRouter = (vafAppId) => {
   return routers[vafAppId];
 };
+
+function makeScrollBehavior(vafAppId) {
+  // 重置滚动位置到 {x: 0, y: 0}
+  return () => {
+    // VafPageLayout给容器设置了这个类名标识符, 通过他获取容器元素.
+    const wrap = document.querySelector(".scrollbar__wrap--" + vafAppId);
+    if (wrap) {
+      wrap.scrollTo(0, 0);
+    } else {
+      return { x: 0, y: 0 };
+    }
+  };
+}

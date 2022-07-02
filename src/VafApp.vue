@@ -1,7 +1,9 @@
 <template>
   <div class="vaf-app">
-    <router-view v-slot="{ Component }">
-      <component :is="Component" />
+    <router-view v-slot="{ Component, route }">
+      <transition :name="route.meta.VafTransition || 'vaf-fade'" mode="out-in">
+        <component :is="Component" />
+      </transition>
     </router-view>
   </div>
 </template>

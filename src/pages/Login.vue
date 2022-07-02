@@ -101,7 +101,8 @@ $glay: #ccc;
 
 @include b(login) {
   position: relative;
-  margin: 80px auto 0 auto;
+  margin: 0 auto;
+  padding-top: 80px;
   padding-bottom: 1px;
   width: 500px;
   max-width: 100%;

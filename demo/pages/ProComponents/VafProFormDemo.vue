@@ -36,7 +36,7 @@
           />
         </el-col>
         <el-col :span="24">
-          <h2 style="margin-bottom: 20px">2. 低频表单组件</h2>
+          <h2 id="h22" style="margin-bottom: 20px">2. 低频表单组件</h2>
           <vaf-pro-form
             :fields="fields2"
             hide-reset

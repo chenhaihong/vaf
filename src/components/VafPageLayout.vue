@@ -3,13 +3,25 @@
     <VafSidebar class="vaf-page-layout__left" />
     <div class="vaf-page-layout__right">
       <VafNavbar class="vaf-page-layout__right__navbar" />
-      <el-scrollbar ref="scrollbar" :native="false" always>
+      <el-scrollbar
+        ref="scrollbar"
+        :native="false"
+        always
+        :wrap-class="scrollbarWrapId"
+      >
         <router-view v-slot="{ Component, route }">
           <transition
             :name="route.meta.VafTransition || 'vaf-fade'"
             mode="out-in"
             appear
           >
+            <!-- 
+              keep-alive源码
+              https://github.com/vuejs/core/blob/main/packages/runtime-core/src/components/KeepAlive.ts
+              
+              因为在组件卸载时, 会清除所有实例缓存, 所以不要在keep-alive上使用v-if指令.
+              https://github.com/vuejs/core/blob/fb3bfde26468f3fc455d09599ae526c72dd053ee/packages/runtime-core/src/components/KeepAlive.ts#L228
+             -->
             <keep-alive>
               <component
                 v-if="route.meta.VafKeepAlive"
@@ -38,33 +50,12 @@ import VafNavbar from "@/components/VafNavbar.vue";
 export default {
   name: "VafPageLayout",
   components: { VafSidebar, VafNavbar },
-  removeAutoScrollGuard: null,
-  mounted() {
-    /**
-     * 切换路由时时，自动滚动内容到顶部.
-     *
-     * 因为我在router-view外层套了一个scrollbar，造成vue-router的scroobehavior无法有效地控制滚动，
-     * 所以需要在scrollBar上层级的组件上加上这个guard.
-     *
-     * 同时，有两种路由配置vanillaRoutes pageRoutes，vanillaRoutes不会使用VafPageLayout组件.
-     * VafPageLayout这个layout组件是一个可选的组件，因而把控制滚动逻辑放在这里是比较正确地.
-     *
-     * 这个是router3的issue，但是很有参考价值.
-     * Need a way to set what scroll position is saved #1187
-     * https://github.com/vuejs/vue-router/issues/1187
-     *
-     * refer
-     * https://github.com/vuejs/vue-router/issues/1187#issuecomment-500406965
-     *
-     * router.afterEach会返回一个删除guard的函数，这个函数可以在组件销毁时调用.
-     * https://github.com/vuejs/router/blob/60e8b7a1ee729bafc5c9ff3646ac440ae629c333/packages/router/src/utils/callbacks.ts#L4
-     */
-    this.removeAutoScrollGuard = this.$router.afterEach(() => {
-      this.$refs.scrollbar?.scrollTo(0, 0);
-    });
-  },
-  beforeUnmount() {
-    this.removeAutoScrollGuard && this.removeAutoScrollGuard();
+  data() {
+    return {
+      // scrollBehavior里会使用这个标识符来获取scrollbar__wrap容器,
+      // 用于重置scrollbar的滚动位置到 {x: 0, y: 0}
+      scrollbarWrapId: "scrollbar__wrap--" + this.$vafAppId,
+    };
   },
 };
 </script>
@@ -94,19 +85,5 @@ export default {
 
 @include e(right__navbar) {
   flex-shrink: 0;
-}
-
-// transition name="fade"
-.vaf-fade-enter-from,
-.vaf-fade-leave-to {
-  opacity: 0;
-}
-.vaf-fade-enter-active,
-.vaf-fade-leave-active {
-  transition: opacity 0.3s cubic-bezier(0.55, 0, 0.1, 1);
-}
-.vaf-fade-enter-to,
-.vaf-fade-leave-from {
-  opacity: 1;
 }
 </style>

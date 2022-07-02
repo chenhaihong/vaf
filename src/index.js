@@ -1,3 +1,5 @@
+import "@/common/style/index.scss";
+
 import { createApp } from "vue";
 import ElementPlus from "element-plus";
 
