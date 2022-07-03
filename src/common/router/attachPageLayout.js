@@ -1,4 +1,4 @@
-import VafPageLayout from "@/components/VafPageLayout.vue";
+import VafPageLayout from "@/common/layouts/VafPageLayout.vue";
 
 // 为了方便外部使用，植入VafPageLayout的操作统一由内部处理
 export default function attachVafPageLayout(pageRoutes) {

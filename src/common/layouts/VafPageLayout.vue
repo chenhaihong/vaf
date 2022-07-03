@@ -22,20 +22,9 @@
               因为在组件卸载时, 会清除所有实例缓存, 所以不要在keep-alive上使用v-if指令.
               https://github.com/vuejs/core/blob/fb3bfde26468f3fc455d09599ae526c72dd053ee/packages/runtime-core/src/components/KeepAlive.ts#L228
              -->
-            <keep-alive>
-              <component
-                v-if="route.meta.VafKeepAlive"
-                :is="Component"
-                :key="route.fullPath"
-              />
+            <keep-alive :include="cachedViews">
+              <component :is="Component" :key="route.fullPath" />
             </keep-alive>
-          </transition>
-          <transition
-            :name="route.meta.VafTransition || 'vaf-fade'"
-            mode="out-in"
-            appear
-          >
-            <component v-if="!route.meta.VafKeepAlive" :is="Component" />
           </transition>
         </router-view>
       </el-scrollbar>
@@ -44,8 +33,8 @@
 </template>
 
 <script>
-import VafSidebar from "@/components/VafSidebar.vue";
-import VafNavbar from "@/components/VafNavbar.vue";
+import VafSidebar from "./VafSideBar/VafSidebar.vue";
+import VafNavbar from "./VafNavbar/VafNavbar.vue";
 
 export default {
   name: "VafPageLayout",
@@ -56,6 +45,11 @@ export default {
       // 用于重置scrollbar的滚动位置到 {x: 0, y: 0}
       scrollbarWrapId: "scrollbar__wrap--" + this.$vafAppId,
     };
+  },
+  computed: {
+    cachedViews() {
+      return this.$store.state.VafTabmenuModule.cachedViews;
+    },
   },
 };
 </script>
@@ -72,6 +66,7 @@ export default {
 
 @include e(left) {
   flex-shrink: 0;
+  @include flex(row, nowrap, flex-start, stretch);
 }
 
 @include e(right) {

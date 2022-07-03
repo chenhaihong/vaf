@@ -51,8 +51,8 @@ export default {
 </script>
 
 <style lang="scss">
-.el-scrollbar--vaf-mainmenu :deep {
-  height: calc(100% - $navbarHeight);
+.el-scrollbar--vaf-mainmenu {
+  height: calc(100% - $navbarHeight) !important;
 
   .el-scrollbar__wrap--vaf-mainmenu {
     overflow-x: hidden !important;

@@ -4,7 +4,7 @@ export default [
     meta: {
       VafLeftmenuId: "/pro-components/vaf-pro-form",
       VafAuthLevel: 1,
-      VafKeepAlive: true,
+      VafNoKeepAlive: true,
       title: "vaf-pro-form",
     },
     component: () => import("../../../pages/ProComponents/VafProFormDemo.vue"),
@@ -14,7 +14,7 @@ export default [
     meta: {
       VafLeftmenuId: "/pro-components/vaf-pro-table",
       VafAuthLevel: 1,
-      VafKeepAlive: true,
+      VafNoKeepAlive: true,
       title: "vaf-pro-table",
     },
     component: () => import("../../../pages/ProComponents/VafProTableDemo.vue"),

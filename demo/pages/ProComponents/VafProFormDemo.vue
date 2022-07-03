@@ -90,6 +90,7 @@ const cascaderOptions = [
 ];
 
 export default {
+  name: "VafProFormDemo",
   data() {
     // 高频表单组件
     const fields1 = [
@@ -433,6 +434,9 @@ export default {
   // },
   // deactivated() {
   //   console.log("vaf-pro-form deactivated");
+  // },
+  // unmounted() {
+  //   console.log("vaf-pro-form unmounted");
   // },
 };
 </script>

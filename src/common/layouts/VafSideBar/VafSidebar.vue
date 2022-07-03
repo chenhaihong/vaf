@@ -80,18 +80,10 @@ function resolveMatchedNodes(id, nodes) {
 <style lang="scss">
 @include b(sidebar) {
   z-index: $sidebarZIndex;
-  // position: absolute;
-  // top: 0;
-  // bottom: 0;
-  // left: 0;
-  width: $sidebarWidth;
   height: 100%;
-  // font-size: 0px;
   background-color: white;
-  transition: width 0.28s;
 
   @include e(left) {
-    float: left;
     width: $mainMenuWidth;
     height: 100%;
     background-color: $mainMenuBgColor;
@@ -100,9 +92,6 @@ function resolveMatchedNodes(id, nodes) {
   }
 
   @include e(right) {
-    position: absolute;
-    left: $mainMenuWidth;
-    top: 0;
     width: $subMenuWidth;
     height: 100%;
     background-color: $subMenuBgColor;

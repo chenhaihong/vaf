@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import VafUserinfo from "@/components/VafUserinfo.vue";
+import VafUserinfo from "./VafUserinfo.vue";
 
 export default {
   name: "VafNavbar",

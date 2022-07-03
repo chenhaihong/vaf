@@ -1,16 +1,15 @@
 <template>
   <div class="vaf-app">
-    <router-view v-slot="{ Component, route }">
-      <transition :name="route.meta.VafTransition || 'vaf-fade'" mode="out-in">
-        <component :is="Component" />
-      </transition>
-    </router-view>
+    <VafGroundLayout />
   </div>
 </template>
 
 <script>
+import VafGroundLayout from "@/common/layouts/VafGroundLayout.vue";
+
 export default {
   name: "VafApp",
+  components: { VafGroundLayout },
 };
 </script>
 
@@ -18,7 +17,5 @@ export default {
 @include b(app) {
   width: 100%;
   height: 100%;
-  // overflow: hidden;
-  // background: yellow;
 }
 </style>

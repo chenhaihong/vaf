@@ -7,7 +7,7 @@ import { createMakeStore } from "@/common/store";
 import { createMakeRouter } from "@/common/router";
 import { makeRequest } from "@/common/helpers/request";
 import { makeAuthService } from "@/common/api/AuthService";
-import GlobalComponents from "@/componentsGlobal/GlobalComponents";
+import installProComponents from "@/ProComponents";
 
 import VafApp from "./VafApp.vue";
 
@@ -50,7 +50,7 @@ export const createVafApp = (vafAppConfig = {}) => {
   app.config.globalProperties.$vafAuthService = AuthService;
 
   app.use(ElementPlus);
-  app.use(GlobalComponents);
+  app.use(installProComponents);
   app.use(store);
   app.use(router);
 
@@ -66,4 +66,4 @@ export { getStore } from "@/common/store";
 export { getRouter } from "@/common/router";
 export { getRequest } from "@/common/helpers/request";
 export { getAuthService } from "@/common/api/AuthService";
-export { VafProForm, VafProTable } from "@/componentsGlobal/GlobalComponents";
+export { VafProForm, VafProTable } from "@/ProComponents";

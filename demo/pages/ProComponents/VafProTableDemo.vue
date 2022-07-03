@@ -48,6 +48,7 @@
 
 <script>
 export default {
+  name: "VafProTableDemo",
   data() {
     const columns = [
       {
