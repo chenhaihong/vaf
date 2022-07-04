@@ -40,8 +40,21 @@ $subMenuContentBgColorActive: #f3f3f3;
 // sidebar
 $sidebarWidth: $mainMenuWidth + $subMenuWidth; // 左侧菜单总宽度
 $sidebarZIndex: 2;
-$sideBarBorderColor: #e8e8e8;
 
 // navbar
 $navbarHeight: 56px; // 顶部导航高度
 $navbarZIndex: 1; // 顶部导航高度
+
+// history bar
+$historyBarHeight: 56px; // 顶部导航高度
+$historyBarZIndex: $navbarZIndex + 1; // 顶部导航高度
+$historyBarTextFontSize: 14px;
+$historyBarContentHeight: 30px;
+$historyBarContentColorHover: #448aff;
+$historyBarContentColor: #666;
+$historyBarContentColorActive: #666;
+$historyBarContentBgColor: #f3f3f3;
+$historyBarContentBgColorActive: #ecf5ff;
+
+/////////////////////////////
+$borderColor: #e8e8e8;

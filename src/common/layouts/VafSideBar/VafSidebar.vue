@@ -87,7 +87,7 @@ function resolveMatchedNodes(id, nodes) {
     width: $mainMenuWidth;
     height: 100%;
     background-color: $mainMenuBgColor;
-    border-right: 1px solid $sideBarBorderColor;
+    border-right: 1px solid $borderColor;
     box-sizing: border-box;
   }
 
@@ -95,6 +95,7 @@ function resolveMatchedNodes(id, nodes) {
     width: $subMenuWidth;
     height: 100%;
     background-color: $subMenuBgColor;
+    border-right: 1px solid $borderColor;
     box-sizing: border-box;
 
     .submenu-tree-wrapper--hover {

@@ -53,6 +53,8 @@ export default {
 <style lang="scss">
 .el-scrollbar--vaf-mainmenu {
   height: calc(100% - $navbarHeight) !important;
+  border-top: 1px solid $borderColor;
+  box-sizing: border-box;
 
   .el-scrollbar__wrap--vaf-mainmenu {
     overflow-x: hidden !important;

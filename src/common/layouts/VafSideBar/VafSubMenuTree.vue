@@ -93,17 +93,19 @@ export default {
 
 <style lang="scss">
 @include b(submenu-tree-wrap) {
-  width: $subMenuWidth;
+  // width: $subMenuWidth;
   height: 100%;
   overflow: hidden;
 
-  border-right: 1px solid $sideBarBorderColor;
+  // border-right: 1px solid $borderColor;
   box-sizing: border-box;
 }
 
 @include b(submenu-tree) {
-  width: $subMenuWidth;
+  // width: $subMenuWidth;
   height: calc(100% - $navbarHeight);
+  border-top: 1px solid $borderColor;
+  box-sizing: border-box;
   overflow: hidden;
 }
 
@@ -117,7 +119,6 @@ export default {
   word-wrap: normal;
   white-space: nowrap;
   text-overflow: ellipsis;
-  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
 
   @include e(name) {
     padding: 0 4px;
@@ -138,7 +139,7 @@ export default {
 .vaf-submenu-tree .el-tree {
   & {
     padding: $subMenuPadding;
-    width: $subMenuWidth;
+    // width: $subMenuWidth;
     font-size: $subMenuFontSize;
     box-sizing: border-box;
   }
@@ -152,7 +153,7 @@ export default {
 
   .el-tree-node__content {
     margin: $subMenuContentMargin 0;
-    width: $subMenuContentWidth;
+    // width: $subMenuContentWidth;
     height: $subMenuContentHeight;
     color: $subMenuContentColor;
     border-radius: 3px;

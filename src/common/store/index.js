@@ -2,7 +2,6 @@ import { createStore } from "vuex";
 
 import makeAuthModule from "./makeAuthModule";
 import makeLeftmenModule from "./makeLeftmenModule";
-import makeTabmenuModule from "./makeTabmenuModule";
 import makePersistedStatePlugin from "./makePersistedStatePlugin";
 
 // store实例池
@@ -16,10 +15,9 @@ export const createMakeStore =
 
     const VafAuth = makeAuthModule(vafAppId);
     const VafLeftmenu = makeLeftmenModule(leftmenuConfig);
-    const VafTabmenuModule = makeTabmenuModule();
 
     const $store = createStore({
-      modules: { VafAuth, VafLeftmenu, VafTabmenuModule, ...modules }, // 植入内置的vuex模块
+      modules: { VafAuth, VafLeftmenu, ...modules }, // 植入内置的vuex模块
       plugins: [makePersistedStatePlugin(vafAppId), ...plugins], // 植入内置的vuex插件
       ...rest,
     });

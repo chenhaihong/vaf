@@ -36,7 +36,7 @@ export default [
       VafLeftmenuId: "/super-admin/api/client-api",
       VafAuthLevel: 2,
       VafAuthRoles: ["admin", "super-admin"],
-      title: "管理员API",
+      title: "客户端API",
     },
     component: () => import("../../../pages/SuperAdmin/ClientApi.vue"),
   },

@@ -25,7 +25,6 @@ export default {
   line-height: $navbarHeight;
   font-size: 20px;
   text-align: center;
-  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
 
   @include e(img) {
     width: 100%;
