@@ -73,13 +73,11 @@ export default {
 
 <template>
   <div class="vaf-history-bar">
-    <el-scrollbar always :native="false">
-      <VafHistoryList
-        :list="this.list"
-        :currentFullPath="currentFullPath"
-        @close="remove"
-      />
-    </el-scrollbar>
+    <VafHistoryList
+      :list="this.list"
+      :currentFullPath="currentFullPath"
+      @close="remove"
+    />
   </div>
 </template>
 
