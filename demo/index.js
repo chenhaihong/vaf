@@ -2,6 +2,8 @@
 import "element-plus/dist/index.css";
 import "./index.css";
 
+// import vaf, { createVafApp } from "../src/index.js";
+
 // TODO 将uniapp的条件编译使用到这里来
 let vaf, createVafApp, module;
 if (import.meta.env.MODE === "development:lib") {

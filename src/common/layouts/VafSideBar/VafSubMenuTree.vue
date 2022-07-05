@@ -182,7 +182,7 @@ export default {
     }
   }
 
-  .is-current > .el-tree-node__content {
+  .el-tree-node.is-current > .el-tree-node__content {
     background: $subMenuContentBgColorActive;
 
     .custom-label > .custom-label__text {
