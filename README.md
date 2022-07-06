@@ -13,6 +13,9 @@ $ npm install axios element-plus nprogress vue vue-router vuex vuex-persistedsta
 
 ## 使用
 
+<details>
+  <summary>创建 VafApp 实例</summary>
+
 ```javascript
 import "element-plus/dist/index.css";
 import "@erye/vaf/dist/index.css";
@@ -110,7 +113,11 @@ const app = createVafApp({
 app.mount("#app");
 ```
 
-## 重组件
+</details>
 
-- [表单重组件 `vaf-pro-form`](https://github.com/chenhaihong/vaf/tree/main/src/componentsGlobal/VafProForm)
-- [表格重组件 `vaf-pro-table`](https://github.com/chenhaihong/vaf/tree/main/src/componentsGlobal/VafProTable)
+<br/>
+
+## 内置的全局重组件
+
+- [表单重组件 `vaf-pro-form`](https://github.com/chenhaihong/vaf/tree/main/src/ProComponents/VafProForm)
+- [表格重组件 `vaf-pro-table`](https://github.com/chenhaihong/vaf/tree/main/src/ProComponents/VafProTable)
