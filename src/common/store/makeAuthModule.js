@@ -11,12 +11,17 @@ export default function makeAuthModule(vafAppId) {
       // 数据来自接口 apiConfog.loginUrl
       token: "",
 
+      isLoadingUserinfo: false, // 是否正在加载用户信息
+
       // 数据来自接口 apiConfog.getUserinfoUrl
       userinfo: {},
       roles: [],
     },
     getters: {},
     mutations: {
+      setIsLoadingUserinfo(state, isLoading) {
+        state.isLoadingUserinfo = isLoading;
+      },
       setToken(state, token) {
         state.token = token;
       },
@@ -41,8 +46,13 @@ export default function makeAuthModule(vafAppId) {
         return [err, data];
       },
       async getUserinfo({ commit }) {
+        commit("setIsLoadingUserinfo", true);
+
         const AuthService = getAuthService(vafAppId);
         const [err, data] = await AuthService.getUserinfo();
+
+        commit("setIsLoadingUserinfo", false);
+
         if (!err) {
           const { userinfo, roles } = data;
           commit("setUserinfo", { userinfo, roles });

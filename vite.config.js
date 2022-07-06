@@ -3,12 +3,10 @@ import path from "path";
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
-import VitePluginVafMockAuth from "./vite-plugin-vaf-mock-auth";
+import VitePluginMock from "./vite-plugin-mock";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
-  console.log(command, mode);
-
   return {
     root: path.resolve(__dirname, "./demo"),
     base: "/",
@@ -17,7 +15,7 @@ export default defineConfig(({ command, mode }) => {
       vueJsx({
         // options are passed on to @vue/babel-plugin-jsx
       }),
-      VitePluginVafMockAuth(),
+      VitePluginMock(),
     ],
     css: {
       preprocessorOptions: {
