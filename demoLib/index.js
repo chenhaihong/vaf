@@ -1,10 +1,11 @@
 import "element-plus/dist/index.css";
-import "./index.css";
+import "../demo/index.css";
 
-import vaf, { createVafApp } from "../src/index.js";
+import "../dist/index.css";
+import vaf, { createVafApp } from "../dist/vaf.es.js";
 
-import leftmenuConfig from "./common/config/leftmenu";
-import routeConfig from "./common/routes";
+import leftmenuConfig from "../demo/common/config/leftmenu";
+import routeConfig from "../demo/common/routes";
 
 console.log(JSON.stringify(vaf, null, 2));
 

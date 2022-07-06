@@ -7,41 +7,63 @@ import VitePluginMock from "./vite-plugin-mock";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
-  return {
-    root: path.resolve(__dirname, "./demo"),
-    base: "/",
-    plugins: [
-      vue(),
-      vueJsx({
-        // options are passed on to @vue/babel-plugin-jsx
-      }),
-      VitePluginMock(),
-    ],
+  const config = {
+    plugins: [vue(), vueJsx(), VitePluginMock()],
     css: {
       preprocessorOptions: {
-        scss: {
-          additionalData: `@import "@/common/scss/index.scss";`,
-        },
+        scss: { additionalData: `@import "@/common/scss/index.scss";` },
       },
       devSourcemap: true,
     },
-    resolve: {
-      alias: {
-        "@": path.resolve(__dirname, "./src"),
-      },
-    },
+    resolve: { alias: { "@": path.resolve(__dirname, "./src") } },
+  };
+
+  let commandConfig = {};
+  if (command === "build") {
+    commandConfig = getBuildConfig(mode);
+  } else if (command === "serve") {
+    commandConfig = getServeConfig(mode);
+  }
+
+  return { ...config, ...commandConfig };
+});
+
+function getServeConfig(mode) {
+  let config = {};
+
+  switch (mode) {
+    case "development":
+      config = {
+        root: path.resolve(__dirname, "./demo"),
+        base: "/",
+      };
+      break;
+    case "development:lib":
+      config = {
+        root: path.resolve(__dirname, "./demoLib"),
+        base: "/",
+      };
+      break;
+  }
+
+  return config;
+}
+
+function getBuildConfig(mode) {
+  const isSourceMap = "production:sourcemap" === mode;
+  const config = {
     build: {
       lib: {
         entry: path.resolve(__dirname, "src/index.js"),
         name: "Vaf",
         fileName: (format) => {
-          const withMin = "build:development" === mode ? "" : ".min";
+          const withMin = isSourceMap ? "" : ".min";
           return `vaf.${format + withMin}.js`;
         },
       },
       polyfillModulePreload: false,
       emptyOutDir: false,
-      sourcemap: "build:development" === mode,
+      sourcemap: isSourceMap,
       rollupOptions: {
         // 确保外部化处理那些你不想打包进库的依赖
         external: [
@@ -61,7 +83,7 @@ export default defineConfig(({ command, mode }) => {
           // https://github.com/vitejs/vite/issues/8115
           assetFileNames: (chunkInfo) => {
             if (chunkInfo.name === "style.css") {
-              const withMin = "build:development" === mode ? "" : ".min";
+              const withMin = isSourceMap ? "" : ".min";
               return `index${withMin}.css`;
             }
           },
@@ -79,4 +101,5 @@ export default defineConfig(({ command, mode }) => {
       },
     },
   };
-});
+  return config;
+}

@@ -2,7 +2,7 @@
 
 export default VitePluginVafAuth = () => {
   return {
-    name: "vite:vaf-mock-auth",
+    name: "vite:mock",
     enforce: "pre",
     apply: "serve",
     configureServer(server) {
