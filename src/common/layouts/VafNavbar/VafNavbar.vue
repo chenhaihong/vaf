@@ -25,6 +25,7 @@ export default {
 @include b(navbar) {
   z-index: $navbarZIndex;
   position: relative;
+  padding: 0 10px;
   height: $navbarHeight;
   background-color: white;
   border-bottom: 1px solid $borderColor;

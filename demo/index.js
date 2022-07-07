@@ -8,7 +8,7 @@ import routeConfig from "./common/routes";
 
 console.log(JSON.stringify(vaf, null, 2));
 
-const vafApp = createVafApp({
+const { app } = createVafApp({
   settingConfig: {
     name: "Vue Admin Framework",
     slogan: "方便、快捷、精准",
@@ -24,4 +24,4 @@ const vafApp = createVafApp({
   routeConfig,
   storeConfig: {},
 });
-vafApp.mount("#app");
+app.mount("#app");

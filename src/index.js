@@ -55,10 +55,10 @@ export const createVafApp = (vafAppConfig = {}) => {
   app.use(router);
 
   vafApps[vafAppId] = app;
-  return app;
+  return { app, router, store, request, AuthService };
 };
 
-export const getVafApp = (vafAppId = "vaf-app") => {
+export const getVafApp = (vafAppId) => {
   return vafApps[vafAppId];
 };
 
@@ -66,4 +66,9 @@ export { getStore } from "@/common/store";
 export { getRouter } from "@/common/router";
 export { getRequest } from "@/common/helpers/request";
 export { getAuthService } from "@/common/api/AuthService";
-export { VafProForm, VafProTable } from "@/ProComponents";
+export {
+  default as installProComponents,
+  VafFragment,
+  VafProForm,
+  VafProTable,
+} from "@/ProComponents";

@@ -115,8 +115,6 @@ app.mount("#app");
 
 </details>
 
-<br/>
-
 ## 内置的全局重组件
 
 - [表单重组件 `vaf-pro-form`](https://github.com/chenhaihong/vaf/tree/main/src/ProComponents/VafProForm)
