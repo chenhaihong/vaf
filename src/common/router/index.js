@@ -17,7 +17,7 @@ export const createMakeRouter =
   (vafAppId) =>
   (routeConfig = {}, settingConfig = {}) => {
     const {
-      mode = "hash", // hash || history
+      mode = "hash", // hash || history || memory
       base = "/",
       pageRoutes = [],
       vanillaRoutes = [],
@@ -31,15 +31,15 @@ export const createMakeRouter =
 
     let history;
     switch (mode) {
-      case "hash":
-        history = createWebHashHistory(base);
+      case "history":
+        history = createWebHistory(base);
         break;
       case "memory":
         history = createMemoryHistory(base);
         break;
-      case "history":
+      case "hash":
       default:
-        history = createWebHistory(base);
+        history = createWebHashHistory(base);
         break;
     }
     const $router = createRouter({
