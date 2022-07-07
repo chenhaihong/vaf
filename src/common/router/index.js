@@ -1,6 +1,7 @@
 import {
   createRouter,
   createWebHashHistory,
+  createMemoryHistory,
   createWebHistory,
 } from "vue-router";
 
@@ -28,9 +29,21 @@ export const createMakeRouter =
       ...vanillaRoutes, // 原生的VueRouter的路由配置，不做额外处理
     ]);
 
+    let history;
+    switch (mode) {
+      case "hash":
+        history = createWebHashHistory(base);
+        break;
+      case "memory":
+        history = createMemoryHistory(base);
+        break;
+      case "history":
+      default:
+        history = createWebHistory(base);
+        break;
+    }
     const $router = createRouter({
-      history:
-        mode === "hash" ? createWebHashHistory(base) : createWebHistory(base),
+      history,
       routes: attachedRoutes,
       scrollBehavior: makeScrollBehavior(vafAppId),
     });
