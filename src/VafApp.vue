@@ -15,6 +15,7 @@ export default {
 
 <style lang="scss">
 @include b(app) {
+  position: relative;
   width: 100%;
   height: 100%;
 }

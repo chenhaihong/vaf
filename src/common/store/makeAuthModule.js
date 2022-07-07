@@ -51,7 +51,11 @@ export default function makeAuthModule(vafAppId) {
         const AuthService = getAuthService(vafAppId);
         const [err, data] = await AuthService.getUserinfo();
 
-        commit("setIsLoadingUserinfo", false);
+        // 1. 偷懒式等待路由跳往目标地址
+        // 2. 让loading组件显示久一点
+        setTimeout(() => {
+          commit("setIsLoadingUserinfo", false);
+        }, 1000);
 
         if (!err) {
           const { userinfo, roles } = data;

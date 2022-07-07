@@ -26,22 +26,20 @@ export default VitePluginVafAuth = () => {
         // 开发下模拟获取用户信息请求
         if (req.url === "/vaf-auth/userinfo") {
           res.writeHead(200, { "Content-Type": "application/json" });
-          return setTimeout(() => {
-            res.end(
-              JSON.stringify({
-                success: true,
-                error: { message: "获取用户信息成功" },
-                data: {
-                  userinfo: {
-                    username: "haihong",
-                    nickname: "海宏",
-                    avatar: "https://map.tiiit.cn/deer.png",
-                  },
-                  roles: ["admin"],
+          return res.end(
+            JSON.stringify({
+              success: true,
+              error: { message: "获取用户信息成功" },
+              data: {
+                userinfo: {
+                  username: "haihong",
+                  nickname: "海宏",
+                  avatar: "https://map.tiiit.cn/deer.png",
                 },
-              })
-            );
-          }, 1000);
+                roles: ["admin"],
+              },
+            })
+          );
         }
 
         // 开发下模拟用户注销登录

@@ -48,7 +48,7 @@ const attachVafBeforeEach = (vafAppId) => ($router) => {
       else if (0 === VafAuthLevel) next();
       // 2.3 需登录才能访问 || 需鉴别权限后才能访问
       else if ([1, 2].includes(VafAuthLevel)) {
-        // 2.3.1 未拉取用户信息
+        // 2.3.1 未拉取用户信息，则拉取用户信息
         if (!$store.state.VafAuth?.userinfo?.username) {
           const [err, data] = await $store.dispatch("VafAuth/getUserinfo");
 
@@ -57,13 +57,9 @@ const attachVafBeforeEach = (vafAppId) => ($router) => {
             return next("/500");
           }
           // 2.3.1.2 拉取信息成功
-          else {
-            // 更新本地信息
-            $store.commit("VafAuth/setUserinfo", {
-              userinfo: data.userinfo,
-              roles: data.roles,
-            });
-          }
+          //         更新本地信息(在action里做更新信息操作)，走分支2.3.2
+          // else {
+          // }
         }
 
         // 2.3.2 已拉取用户信息

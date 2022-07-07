@@ -11,9 +11,14 @@
         <el-col :span="6">
           <h1>Hello ProComponent</h1>
           <el-button-group>
+            <el-button type="primary" @click="gotoProForm()">
+              ProForm query.id=null
+            </el-button>
+            <br />
             <el-button type="primary" @click="gotoProForm(1)">
               ProForm query.id=1
             </el-button>
+            <br />
             <el-button type="success" @click="gotoProForm(2)">
               ProForm query.id=2
             </el-button>

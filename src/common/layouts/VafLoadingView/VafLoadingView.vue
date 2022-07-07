@@ -1,16 +1,16 @@
 <template>
-  <div
-    v-loading="true"
-    :element-loading-text="loadingText"
-    class="vaf-loading-view"
-  />
+  <div v-loading="true" :element-loading-text="text" class="vaf-loading-view" />
 </template>
 
 <script>
 export default {
   name: "VafLoadingView",
+  props: {
+    loadingText: { type: String },
+  },
   computed: {
-    loadingText() {
+    text() {
+      if (this.loadingText) return this.loadingText;
       return this.$vafAppConfig?.settingConfig?.name || "加载用户信息";
     },
   },
