@@ -1,9 +1,10 @@
 <template>
-  <router-view v-slot="{ Component, route }">
+  <router-view v-show="!isLoadingUserinfo" v-slot="{ Component, route }">
     <transition :name="route.meta.VafTransition || 'vaf-fade'" mode="out-in">
-      <component :is="isLoadingUserinfo ? 'vaf-loading-view' : Component" />
+      <component :is="Component" />
     </transition>
   </router-view>
+  <vaf-loading-view v-if="isLoadingUserinfo" />
 </template>
 
 <script>

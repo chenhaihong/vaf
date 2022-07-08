@@ -11,3 +11,66 @@
 .#{$namespace}-fade-leave-from {
   opacity: 1;
 }
+
+// transition name="bounce"
+.#{$namespace}-bounce-enter-active {
+  animation: --bounce-in-- 0.5s;
+}
+.#{$namespace}-bounce-leave-active {
+  animation: --bounce-in-- 0.5s reverse;
+}
+@keyframes --bounce-in-- {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+// transition name="slide"
+.#{$namespace}-slide-enter-from,
+.#{$namespace}-slide-leave-to {
+  opacity: 0;
+  transform: translate(-40px, 0);
+}
+.#{$namespace}-slide-enter-active,
+.#{$namespace}-slide-leave-active {
+  transition: opacity 0.2s, transform 0.2s;
+}
+.#{$namespace}-slide-enter-to,
+.#{$namespace}-slide-leave-from {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+// transition name="slide-left"
+.#{$namespace}-slide-left-enter-from {
+  opacity: 0;
+  transform: translate(20px, 0);
+}
+.#{$namespace}-slide-left-enter-active {
+  transition: opacity 0.3s cubic-bezier(0.55, 0, 0.1, 1),
+    transform 0.3s cubic-bezier(0.55, 0, 0.1, 1);
+}
+.#{$namespace}-slide-left-enter-to {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+// transition name="slide-right"
+.#{$namespace}-slide-right-enter-from {
+  opacity: 0;
+  transform: translate(-20px, 0);
+}
+.#{$namespace}-slide-right-enter-active {
+  transition: opacity 0.3s cubic-bezier(0.55, 0, 0.1, 1),
+    transform 0.3s cubic-bezier(0.55, 0, 0.1, 1);
+}
+.#{$namespace}-slide-right-enter-to {
+  opacity: 1;
+  transform: translate(0, 0);
+}

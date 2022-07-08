@@ -12,7 +12,7 @@
       >
         <router-view v-slot="{ Component, route }">
           <transition
-            :name="route.meta.VafTransition || 'vaf-fade'"
+            :name="route.meta.VafTransition || 'vaf-slide-left'"
             mode="out-in"
             appear
           >

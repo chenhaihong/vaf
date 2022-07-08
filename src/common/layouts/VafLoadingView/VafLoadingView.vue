@@ -19,6 +19,7 @@ export default {
 
 <style lang="scss">
 @include b(loading-view) {
+  position: absolute;
   width: 100%;
   height: 100%;
 }
