@@ -24,12 +24,12 @@
           :current-node-key="selectedSubmenuId"
           @node-click="clickTreeNode"
         >
-          <template #default="{ node }">
-            <div class="custom-label">
-              <div class="custom-label__text" :title="node.label">
+          <template #default="{ node, data }">
+            <a class="custom-label" :href="data.path" @click.prevent>
+              <span class="custom-label__text">
                 {{ node.label }}
-              </div>
-            </div>
+              </span>
+            </a>
           </template>
         </el-tree>
       </el-scrollbar>
@@ -174,6 +174,8 @@ export default {
       word-wrap: normal;
       white-space: nowrap;
       text-overflow: ellipsis;
+      text-decoration: none;
+      color: $subMenuContentColor;
 
       & > .custom-label__text {
         z-index: 1;

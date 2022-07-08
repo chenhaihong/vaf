@@ -55,7 +55,7 @@ export default {
           nextRoute = this.list[index + 1];
         }
 
-        this.$router.push({
+        this.$router.replace({
           name: nextRoute.name,
           path: nextRoute.path,
           query: nextRoute.query,

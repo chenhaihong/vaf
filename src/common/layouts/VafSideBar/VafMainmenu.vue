@@ -10,9 +10,9 @@
         v-for="item in mainmenu"
         :key="item.path"
         :title="item.label"
-        @click.stop="handleClick(item)"
+        @click="handleClick(item)"
       >
-        <span class="vaf-mainmenu__item__title">{{ item.title }}</span>
+        <a class="vaf-mainmenu__item__title" @click.prevent>{{ item.title }}</a>
       </li>
     </ul>
   </el-scrollbar>
@@ -102,6 +102,7 @@ export default {
     word-wrap: normal;
     white-space: nowrap;
     text-overflow: ellipsis;
+    text-decoration: none;
   }
 }
 
