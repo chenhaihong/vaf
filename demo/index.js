@@ -6,6 +6,8 @@ import vaf, { createVafApp } from "../src/index.js";
 import leftmenuConfig from "./common/config/leftmenu";
 import routeConfig from "./common/routes";
 
+import installDirectives from "./common/directives";
+
 console.log(JSON.stringify(vaf, null, 2));
 
 const { app } = createVafApp({
@@ -24,4 +26,5 @@ const { app } = createVafApp({
   routeConfig,
   storeConfig: {},
 });
+app.use(installDirectives);
 app.mount("#app");
