@@ -2,11 +2,12 @@ import { createApp } from "vue";
 import { ElImageViewer } from "element-plus";
 
 export default function previewImage(imageUrls, initialIndex = 0) {
+  let app;
   const root = document.createElement("div");
   const onClose = () => {
     app.unmount();
   };
-  const app = createApp({
+  app = createApp({
     render() {
       return (
         <el-image-viewer

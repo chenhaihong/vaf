@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import confirmLink from "@/common/helpers/confirmLink";
+import confirmLink from "@/common/helpers/confirmLink.vue";
 
 export default {
   name: "VafSubMenuTree",
