@@ -10,7 +10,7 @@ export default {
   props: {
     loading: { type: Boolean, default: false },
     option: { type: Object, default: () => ({}) },
-    autoResize: { default: false },
+    autoResize: { type: Boolean, default: false },
     events: { type: Object, default: () => ({}) },
   },
   computed: {
@@ -75,9 +75,9 @@ export default {
     autoResize(val) {
       if (this.echartsInstance) {
         if (val) {
-          window.addEventListener("resize", this.resize);
+          window.addEventListener("resize", () => this.resize());
         } else {
-          window.removeEventListener("resize", this.resize);
+          window.removeEventListener("resize", () => this.resize());
         }
       }
     },
@@ -108,12 +108,12 @@ export default {
     });
 
     if (this.autoResize) {
-      window.addEventListener("resize", this.resize);
+      window.addEventListener("resize", () => this.resize());
     }
   },
   beforeUnmount() {
     if (this.autoResize) {
-      window.removeEventListener("resize", this.resize);
+      window.removeEventListener("resize", () => this.resize());
     }
     if (this.echartsInstance && !this.echartsInstance.isDisposed()) {
       echarts.dispose(this.echartsInstance);

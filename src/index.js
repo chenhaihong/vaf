@@ -7,13 +7,14 @@ import { createMakeStore } from "@/common/store";
 import { createMakeRouter } from "@/common/router";
 import { makeRequest } from "@/common/helpers/request";
 import { makeAuthService } from "@/common/api/AuthService";
-import installProComponents from "@/ProComponents";
+import installVafProComponents from "@/ProComponents";
+import installVafComponents from "@/components";
 
 import VafApp from "./VafApp.vue";
 
 export default {
   name: "@erye/vaf",
-  version: "0.0.6",
+  version: "0.0.7",
   author: "erye",
 };
 
@@ -28,15 +29,7 @@ export const createVafApp = (vafAppConfig = {}) => {
     leftmenuConfig = {},
     routeConfig = {},
     storeConfig = {},
-    // slots = {}, // 暂不开放
   } = vafAppConfig;
-
-  // for (let name in slots) {
-  //   if (Object.prototype.hasOwnProperty.call(slots, name)) {
-  //     const component = slots[name];
-  //     Vue.component(name, component);
-  //   }
-  // }
 
   const app = createApp(VafApp);
   const store = createMakeStore(vafAppId)(storeConfig, leftmenuConfig); // 先创建store
@@ -50,7 +43,8 @@ export const createVafApp = (vafAppConfig = {}) => {
   app.config.globalProperties.$vafAuthService = AuthService;
 
   app.use(ElementPlus);
-  app.use(installProComponents);
+  app.use(installVafProComponents);
+  app.use(installVafComponents);
   app.use(store);
   app.use(router);
 
@@ -67,8 +61,12 @@ export { getRouter } from "@/common/router";
 export { getRequest } from "@/common/helpers/request";
 export { getAuthService } from "@/common/api/AuthService";
 export {
-  default as installProComponents,
-  VafFragment,
+  default as installVafProComponents,
   VafProForm,
   VafProTable,
 } from "@/ProComponents";
+export {
+  default as installVafComponents,
+  VafEcharts,
+  VafFragment,
+} from "@/components";

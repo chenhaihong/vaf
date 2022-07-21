@@ -1,6 +1,6 @@
 {
   "name": "@erye/vaf",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Vue Admin Framework.",
   "author": "erye <erye@tiiit.cn>",
   "scripts": {
@@ -10,6 +10,9 @@
     "pub": "npm publish --access public --registry https://registry.npmjs.org/",
     "prepub": "npm run build"
   },
+  "files": [
+    "dist"
+  ],
   "main": "./dist/vaf.umd.js",
   "module": "./dist/vaf.es.js",
   "style": "./dist/index.css",

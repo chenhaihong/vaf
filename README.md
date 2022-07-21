@@ -115,7 +115,9 @@ app.mount("#app");
 
 </details>
 
-## 内置的全局重组件
+## 内置的全局组件
 
 - [表单重组件 `vaf-pro-form`](https://github.com/chenhaihong/vaf/tree/main/src/ProComponents/VafProForm)
 - [表格重组件 `vaf-pro-table`](https://github.com/chenhaihong/vaf/tree/main/src/ProComponents/VafProTable)
+
+- [图表组件 `vaf-echarts`](https://github.com/chenhaihong/vaf/tree/main/src/ProComponents/VafEcharts)
