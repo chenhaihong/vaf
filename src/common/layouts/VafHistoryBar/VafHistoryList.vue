@@ -43,13 +43,17 @@ import { Close } from "@element-plus/icons-vue";
 <script>
 export default {
   name: "VafHistoryList",
-  props: {
-    list: { type: Array, default: () => [] },
-    currentFullPath: { type: String, default: "" },
+  computed: {
+    list() {
+      return this.$store.state.VafRouteHistory.list;
+    },
+    currentFullPath() {
+      return this.$store.state.VafRouteHistory.currentFullPath;
+    },
   },
   methods: {
     close(index) {
-      this.$emit("close", index);
+      this.$store.dispatch("VafRouteHistory/removeRouteHistory", index);
     },
   },
 };

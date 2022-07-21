@@ -23,8 +23,11 @@
               因为在组件卸载时, 会清除所有实例缓存, 所以不要在keep-alive上使用v-if指令.
               https://github.com/vuejs/core/blob/fb3bfde26468f3fc455d09599ae526c72dd053ee/packages/runtime-core/src/components/KeepAlive.ts#L228
              -->
-            <keep-alive>
-              <component :is="Component" :key="route.fullPath" />
+            <keep-alive :include="include">
+              <component
+                :is="wrap(route.fullPath, Component)"
+                :key="route.fullPath"
+              />
             </keep-alive>
           </transition>
         </router-view>
@@ -34,9 +37,14 @@
 </template>
 
 <script>
+import { h } from "vue";
+
 import VafSidebar from "./VafSideBar/VafSidebar.vue";
 import VafNavbar from "./VafNavbar/VafNavbar.vue";
 import VafHistoryBar from "./VafHistoryBar/VafHistoryBar.vue";
+
+// 自定义name的壳的集合
+const wrapperMap = new Map();
 
 export default {
   name: "VafPageLayout",
@@ -47,6 +55,32 @@ export default {
       // 用于重置scrollbar的滚动位置到 {x: 0, y: 0}
       scrollbarWrapId: "scrollbar__wrap--" + this.$vafAppId,
     };
+  },
+  computed: {
+    include() {
+      return this.$store.getters["VafRouteHistory/fullPathList"];
+    },
+  },
+  methods: {
+    // 为keep-alive里的component接收的组件包上一层自定义name的壳
+    wrap(fullPath, component) {
+      let wrapper;
+
+      const wrapperName = fullPath;
+      if (wrapperMap.has(wrapperName)) {
+        wrapper = wrapperMap.get(wrapperName);
+      } else {
+        wrapper = {
+          name: wrapperName,
+          render() {
+            return h("div", component);
+          },
+        };
+        wrapperMap.set(wrapperName, wrapper);
+      }
+
+      return h(wrapper);
+    },
   },
 };
 </script>
