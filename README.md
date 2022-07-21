@@ -22,7 +22,7 @@ import "@erye/vaf/dist/index.css";
 
 import { createVafApp } from "@erye/vaf";
 
-const app = createVafApp({
+const { app } = createVafApp({
   settingConfig: {
     name: "Vue Admin Framework",
     slogan: "方便、快捷、精准",
