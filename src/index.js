@@ -14,7 +14,7 @@ import VafApp from "./VafApp.vue";
 
 export default {
   name: "@erye/vaf",
-  version: "0.0.7",
+  version: "0.0.8",
   author: "erye",
 };
 

@@ -12,7 +12,9 @@
         :title="item.label"
         @click="handleClick(item)"
       >
-        <a class="vaf-mainmenu__item__title" @click.prevent>{{ item.title }}</a>
+        <a class="vaf-mainmenu__item__title" :href="item.path" @click.prevent>
+          {{ item.title }}
+        </a>
       </li>
     </ul>
   </el-scrollbar>
@@ -82,16 +84,21 @@ export default {
 
     &:hover {
       background: $mainMenuTextColorHover;
-      .main-menu-icon {
-        color: $mainMenuIconColorHover;
-      }
+      // .main-menu-icon {
+      //   color: $mainMenuIconColorHover;
+      // }
     }
 
     @include when(active) {
       color: $mainMenuTextColorActive;
-      .main-menu-icon {
-        color: $mainMenuIconColorActive;
+
+      @include e(item__title) {
+        color: $mainMenuTextColorActive;
       }
+
+      // .main-menu-icon {
+      //   color: $mainMenuIconColorActive;
+      // }
     }
   }
 
@@ -103,6 +110,7 @@ export default {
     white-space: nowrap;
     text-overflow: ellipsis;
     text-decoration: none;
+    color: $mainMenuTextColor;
   }
 }
 
