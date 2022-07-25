@@ -41,7 +41,9 @@
 | 方法名              | 说明                                               | 类型                                    |
 | ------------------- | -------------------------------------------------- | --------------------------------------- |
 | `getElFormInstance` | 拿到内部的 el-form 实例                            | `() => ELFormInstance`                  |
-| `getFormData`       | 拿到表单数据                                       | `() => Model`                           |
+| `getModel`          | 拿到表单数据                                       | `() => Model`                           |
+| `updateModel`       | 更新表单的多个数据                                 | `(model: object) => void`               |
+| `updateProp`        | 更新一个表单数据                                   | `(prop: string, value: any) => void`    |
 | `clearValidate`     | 清理某个字段的表单验证信息                         | `(props?: Array<FormItemProp>) => void` |
 | `submit`            | 验证表单, 成功则发布 `submit` 事件; 失败则提示错误 | `(model: object) => void`               |
 | `reset`             | 重置表单值为初始值，并移除校验结果                 | `() => void`                            |

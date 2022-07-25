@@ -48,8 +48,6 @@
           <h2 style="margin-bottom: 20px">2. 任意插槽</h2>
           <vaf-pro-form
             :fields="fields3"
-            hide-submit
-            hide-reset
             @submit="submit"
             :formProps="{ inline: false, 'label-width': 180 }"
           >
@@ -443,7 +441,7 @@ export default {
       });
     },
     logFormData() {
-      console.log(JSON.stringify(this.$refs.form1?.getFormData(), null, 2));
+      console.log(JSON.stringify(this.$refs.form1?.getModel(), null, 2));
     },
     logFormInstance() {
       console.log(this.$refs.form1);

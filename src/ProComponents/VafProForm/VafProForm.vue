@@ -24,7 +24,9 @@ export default {
   emits: ["submit"],
   expose: [
     "getElFormInstance",
-    "getFormData",
+    "getModel",
+    "updateModel",
+    "updateProp",
     "clearValidate",
     "submit",
     "reset",
@@ -53,8 +55,14 @@ export default {
     getElFormInstance() {
       return this.$refs.elForm;
     },
-    getFormData() {
-      return this.model;
+    getModel() {
+      return { ...this.model };
+    },
+    updateModel(model) {
+      this.model = { ...this.model, ...model };
+    },
+    updateProp(prop, value) {
+      this.model[prop] = value;
     },
     clearValidate(props) {
       this.$refs.elForm?.clearValidate(props);
@@ -62,7 +70,7 @@ export default {
     submit() {
       this.$refs["elForm"].validate((valid, fields) => {
         if (valid) {
-          this.$emit("submit", this.model);
+          this.$emit("submit", { ...this.model });
         } else {
           Object.values(fields).forEach((field, index) => {
             // 处理消息框重叠的问题
