@@ -3,6 +3,7 @@ function renderTypeDatePicker(prop, typeProps = {}) {
     <el-date-picker
       type="date"
       v-model={this.model[prop]}
+      onChange={(value) => this.handlePropChange(prop, value)}
       {...typeProps}
     ></el-date-picker>
   );

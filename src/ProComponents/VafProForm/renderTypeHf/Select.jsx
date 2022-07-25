@@ -1,6 +1,10 @@
 function renderTypeSelect(prop, typeProps = {}, options = []) {
   return (
-    <el-select v-model={this.model[prop]} {...typeProps}>
+    <el-select
+      v-model={this.model[prop]}
+      onChange={(value) => this.handlePropChange(prop, value)}
+      {...typeProps}
+    >
       {options.map((option) => {
         return (
           <el-option

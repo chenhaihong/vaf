@@ -21,7 +21,7 @@ export default {
       model: {},
     };
   },
-  emits: ["submit"],
+  emits: ["submit", "prop-change", "model-change"],
   expose: [
     "getElFormInstance",
     "getModel",
@@ -60,9 +60,12 @@ export default {
     },
     updateModel(model) {
       this.model = { ...this.model, ...model };
+      this.$emit("model-change", { ...this.model });
     },
     updateProp(prop, value) {
       this.model[prop] = value;
+      this.$emit("prop-change", prop, value, { ...this.model });
+      this.$emit("model-change", { ...this.model });
     },
     clearValidate(props) {
       this.$refs.elForm?.clearValidate(props);
@@ -83,6 +86,11 @@ export default {
     },
     reset() {
       this.$refs["elForm"].resetFields();
+      this.$emit("model-change", { ...this.model });
+    },
+    handlePropChange(prop, value) {
+      this.$emit("prop-change", prop, value, { ...this.model });
+      this.$emit("model-change", { ...this.model });
     },
   },
 
@@ -117,7 +125,7 @@ export default {
 
       const child =
         type === "any-slot"
-          ? renderAnySlot.call(this, field, model)
+          ? renderAnySlot.call(this, field)
           : renderType.call(this, field);
 
       return (

@@ -16,6 +16,12 @@ function renderTypeUpload(prop, typeProps = {}) {
     this.model[prop].forEach((item, idx) => {
       item.index = idx;
     });
+
+    this.handlePropChange(prop, this.model[prop]);
+  };
+
+  const onRemove = () => {
+    this.handlePropChange(prop, this.model[prop]);
   };
 
   // 当 listType为 "picture-card"时，让预览按钮支持预览图片
@@ -31,6 +37,7 @@ function renderTypeUpload(prop, typeProps = {}) {
       <el-upload
         v-model:file-list={this.model[prop]}
         onSuccess={onSuccess}
+        onRemove={onRemove}
         onPreview={onPreview}
         {...typeProps}
       >

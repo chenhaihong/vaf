@@ -3,6 +3,7 @@ function renderTypeTimePicker(prop, typeProps = {}) {
     <el-time-picker
       type="time"
       v-model={this.model[prop]}
+      onChange={(value) => this.handlePropChange(prop, value)}
       {...typeProps}
     ></el-time-picker>
   );

@@ -3,6 +3,7 @@ function renderTypeTextarea(prop, typeProps = {}) {
     <el-input
       type="textarea"
       v-model={this.model[prop]}
+      onChange={(value) => this.handlePropChange(prop, value)}
       {...typeProps}
     ></el-input>
   );

@@ -32,6 +32,8 @@
             :hide-submit="false"
             :hide-reset="false"
             @submit="submit"
+            @prop-change="onPropChange"
+            @model-change="onModelChange"
             :formProps="{ inline: false, 'label-width': 180 }"
           />
         </el-col>
@@ -41,6 +43,8 @@
             :fields="fields2"
             hide-reset
             @submit="submit"
+            @prop-change="onPropChange"
+            @model-change="onModelChange"
             :formProps="{ inline: false, 'label-width': 180 }"
           />
         </el-col>
@@ -49,6 +53,8 @@
           <vaf-pro-form
             :fields="fields3"
             @submit="submit"
+            @prop-change="onPropChange"
+            @model-change="onModelChange"
             :formProps="{ inline: false, 'label-width': 180 }"
           >
             <template #avatar="{ prop, model }">
@@ -448,6 +454,12 @@ export default {
     },
     submit(data) {
       console.log(JSON.stringify(data, null, 2));
+    },
+    onPropChange(prop, vaule) {
+      console.log(prop, vaule);
+    },
+    onModelChange(model) {
+      console.log(JSON.stringify(model, null, 2));
     },
   },
   // created() {
