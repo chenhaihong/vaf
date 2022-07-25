@@ -15,6 +15,9 @@
           <el-button @click="logPagination">打印分页</el-button>
           <el-button @click="updatePageIndex">更新pageIndex</el-button>
           <el-button @click="updatePageSize">更新pageSize</el-button>
+          <el-button @click="hidePagination = !hidePagination"
+            >切换分页器</el-button
+          >
           <el-divider />
           <vaf-pro-table
             v-loading="loading"
@@ -25,6 +28,7 @@
             @button-click="clickButton"
             :defaultData="[]"
             :defaultPagination="{ pageIndex: 2, pageSize: 10, totalSize: 0 }"
+            :hidePagination="hidePagination"
             :tableProps="{ border: true, stripe: true }"
             :paginationProps="{
               background: false,
@@ -98,6 +102,7 @@ export default {
       loading: false,
       columns,
       buttons,
+      hidePagination: false,
     };
   },
   methods: {

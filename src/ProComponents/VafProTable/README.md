@@ -11,6 +11,7 @@
 | `buttons`            | 按钮配置, 参考 1.2                                   | `ButtonConfig[]`       | `[]`                                                               |
 | `defaultData`        | 默认列表数据                                         | `any[]`                | `[]`                                                               |
 | `defaultPagination`  | 默认分页配置                                         | `object`               | `{ pageIndex: 1, pageSize: 10, totalSize: 0 }`                     |
+| `hidePagination`     | 隐藏分页器                                           | `boolean`              | `false`                                                            |
 | `stopAutoQuery`      | pageIndex 或 pageSize 变化时, 自动执行 dataFunc 函数 | `boolean`              | `false`                                                            |
 | `stopCreatedQuery`   | 创建实例时, 阻止执行 dataFunc 方法                   | `boolean`              | `true`                                                             |
 | `buttonsColumnProps` | 按钮列的属性, 与 el-table-column 属性保持一直        | `object`               | `{}`                                                               |

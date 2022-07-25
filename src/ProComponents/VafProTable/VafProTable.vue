@@ -47,6 +47,8 @@ export default {
       type: Object,
       default: () => ({ pageIndex: 1, pageSize: 10, totalSize: 0 }),
     },
+    // 隐藏分页器
+    hidePagination: { type: Boolean, default: false },
     // pageIndex, pageSize 变化时, 自动执行dataFunc函数
     stopAutoQuery: { type: Boolean, default: false },
     // 创建实例时, 阻止执行dataFunc方法
@@ -153,18 +155,20 @@ export default {
             )}
           </el-table>
         </div>
-        <div className="vaf-pro-table__pagination">
-          <el-pagination
-            layout="total, sizes, prev, pager, next, jumper"
-            total={this.pagination.totalSize}
-            pageSizes={[10, 20, 30, 40, 50, 100]}
-            current-page={this.pagination.pageIndex}
-            page-size={this.pagination.pageSize}
-            onCurrentChange={this.handlePageIndexChange}
-            onSizeChange={this.handlePageSizeChange}
-            {...this.paginationProps}
-          ></el-pagination>
-        </div>
+        {!this.hidePagination && (
+          <div className="vaf-pro-table__pagination">
+            <el-pagination
+              layout="total, sizes, prev, pager, next, jumper"
+              total={this.pagination.totalSize}
+              pageSizes={[10, 20, 30, 40, 50, 100]}
+              current-page={this.pagination.pageIndex}
+              page-size={this.pagination.pageSize}
+              onCurrentChange={this.handlePageIndexChange}
+              onSizeChange={this.handlePageSizeChange}
+              {...this.paginationProps}
+            ></el-pagination>
+          </div>
+        )}
       </div>
     );
   },
