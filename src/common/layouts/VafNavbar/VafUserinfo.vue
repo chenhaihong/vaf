@@ -20,14 +20,17 @@
             ></el-avatar>
           </div>
           <div class="vaf-userinfo-popover__right">
-            <div class="vaf-userinfo-popover__nickname">{{ userinfo.nickname }}</div>
+            <div class="vaf-userinfo-popover__nickname">
+              {{ userinfo.nickname }}
+            </div>
             <div v-if="roles.length" class="vaf-userinfo-popover__roles">
               <el-tag
-                v-for="(role) in roles"
+                v-for="role in roles"
                 :key="role"
                 class="vaf-userinfo-popover__role"
                 type="success"
-              >{{role}}</el-tag>
+                >{{ role }}</el-tag
+              >
             </div>
           </div>
         </div>
@@ -67,10 +70,10 @@ export default {
               instance.confirmButtonText = "正在退出...";
 
               const [err] = await this.$store.dispatch("VafAuth/logout");
-              done();
               if (!err) {
                 this.$router.push("/login");
               }
+              done();
             } else {
               done();
             }
