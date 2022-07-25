@@ -10,6 +10,7 @@ import { Search, Brush } from "@element-plus/icons-vue";
 
 import { ElMessage } from "element-plus";
 
+import renderAnySlot from "./renderAnySlot";
 import renderType from "./renderType";
 
 export default {
@@ -42,7 +43,9 @@ export default {
     // 设置默认值
     const defaultModel = {};
     this.fields.forEach((field) => {
-      defaultModel[field.prop] = field.defaultValue;
+      if (field.prop) {
+        defaultModel[field.prop] = field.defaultValue;
+      }
     });
     this.model = defaultModel;
   },
@@ -86,10 +89,14 @@ export default {
       // https://element-plus.gitee.io/zh-CN/component/form.html#form-%E5%B1%9E%E6%80%A7
       // https://element-plus.org/zh-CN/component/form.html#form-%E5%B1%9E%E6%80%A7
       formProps,
+
+      hideSubmit,
+      hideReset,
     } = this.$props;
 
     const formItems = fields.map((field) => {
       const {
+        type, // 表单子组件的类型
         prop, // 字段名, (对应model中的属性名)
         label, // 子组件的label
         rules, // 子组件的校验规则
@@ -100,7 +107,10 @@ export default {
         formItemProps = {},
       } = field;
 
-      let child = renderType.call(this, field);
+      const child =
+        type === "any-slot"
+          ? renderAnySlot.call(this, field, model)
+          : renderType.call(this, field);
 
       return (
         <el-form-item
@@ -115,8 +125,6 @@ export default {
       );
     });
 
-    const hideSubmit = this.hideSubmit;
-    const hideReset = this.hideReset;
     const buttons = [
       hideSubmit ? null : (
         <el-button type="primary" icon={Search} onClick={this.submit}>
@@ -146,6 +154,6 @@ export default {
 </script>
 
 <style lang="scss">
-@include b(pro-form) {
-}
+// @include b(pro-form) {
+// }
 </style>

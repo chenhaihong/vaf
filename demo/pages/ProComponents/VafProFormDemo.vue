@@ -44,6 +44,21 @@
             :formProps="{ inline: false, 'label-width': 180 }"
           />
         </el-col>
+        <el-col :span="24">
+          <h2 style="margin-bottom: 20px">2. 任意插槽</h2>
+          <vaf-pro-form
+            :fields="fields3"
+            hide-submit
+            hide-reset
+            @submit="submit"
+            :formProps="{ inline: false, 'label-width': 180 }"
+          >
+            <template #avatar="{ prop, model }">
+              <el-avatar shape="square" :size="50" :src="model[prop]" />
+              <el-input v-model="model[prop]" placeholder="请输入头像地址" />
+            </template>
+          </vaf-pro-form>
+        </el-col>
       </el-row>
     </el-main>
   </el-container>
@@ -402,9 +417,20 @@ export default {
       },
     ];
 
+    const fields3 = [
+      {
+        type: "any-slot",
+        slot: "avatar",
+        prop: "prop_any-slot_avatar",
+        label: "任意插槽-头像",
+        defaultValue: "https://map.tiiit.cn/deer.png",
+      },
+    ];
+
     return {
       fields1, // 高频表单组件
       fields2, // 低频表单组件
+      fields3, // 任意插槽组件
     };
   },
   methods: {

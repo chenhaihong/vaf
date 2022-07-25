@@ -15,17 +15,19 @@
 
 | 属性            | 说明                                                                    | 类型                             | 默认值 |
 | --------------- | ----------------------------------------------------------------------- | -------------------------------- | ------ |
-| `type`          | 表单子组件的类型                                                        | 参考高频类型, 低频类型           | --     |
+| `type`          | 表单子组件的类型, type 为 `any-slot` 时, 需要提供对应插槽               | 参考高频类型, 低频类型, 任意插槽 | --     |
 | `prop`          | `model` 的键名                                                          | `string`                         | --     |
 | `label`         | 标签文本                                                                | `string`                         | --     |
 | `defaultValue`  | 默认值                                                                  | `any`                            | --     |
 | `options`       | `type` 为 `checkbox-group, radio-group, select`时, 使用该字段来支持选项 | `any`                            | --     |
 | `rules`         | 表单验证规则, 参考 element-plus 表单组件的 API                          | `FormItemRule \| FormItemRule[]` | --     |
+| `slot`          | type 为 `any-slot` 时, 通过该字段映射到对应插槽                         | `string`                         | --     |
 | `typeProps`     | API 传递给表单子组件的属性, 参考 element-plus 表单组件的 API            | `object`                         | `{}`   |
 | `formItemProps` | 可以传递给 el-form-item 的属性，参考 el-form 的 API                     | `object`                         | `{}`   |
 
-- 表单子组件类型 : `cascader | checkbox | checkbox-group | input | radio-group | select | switch | textarea` .
-- 表单子组件类型 : `color-picker | date-picker | datetime-picker | input-number | rate | slider | time-picker | time-select | upload` .
+- 高频类型 : `cascader | checkbox | checkbox-group | input | radio-group | select | switch | textarea` .
+- 低频类型 : `color-picker | date-picker | datetime-picker | input-number | rate | slider | time-picker | time-select | upload` .
+- 任意插槽 : `any-slot`
 - `type` 为 `cascader`时，在 `typeProps` 中添加 `options` 字段来支持选项.
 
 ## 2. vaf-pro-form 事件

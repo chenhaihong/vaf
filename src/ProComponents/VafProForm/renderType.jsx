@@ -19,6 +19,8 @@ import renderTypeTimePicker from "./renderTypeLf/TimePicker";
 import renderTypeTimeSelect from "./renderTypeLf/TimeSelect";
 import renderTypeUpload from "./renderTypeLf/Upload.vue";
 
+export default renderType;
+
 function renderType(field = {}) {
   const {
     // type: 表单子组件的类型，与elemeng-plus保持一致,可以是以下值：
@@ -114,5 +116,3 @@ function renderType(field = {}) {
 
   return child;
 }
-
-export default renderType;
