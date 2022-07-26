@@ -9,14 +9,16 @@ export default function attachVafPageLayout(pageRoutes) {
     })
     .map((item) => {
       // console.log(JSON.stringify(item, null, 2));
-      const { beforeEnter, component, ...rest } = item;
-
+      const { beforeEnter, component, meta: sourceMeta = {}, ...rest } = item;
+      const meta = { ...sourceMeta, VafIsPageRoute: true };
       return {
         ...rest,
         component: VafPageLayout,
+        meta,
         children: [
           {
             ...rest,
+            meta,
             beforeEnter, //文档 https://router.vuejs.org/zh/api/#beforeenter
             component,
           },

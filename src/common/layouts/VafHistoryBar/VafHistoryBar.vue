@@ -7,11 +7,17 @@ export default {
   watch: {
     $route: {
       handler(next) {
-        // 1. 高亮选项卡
-        this.$store.commit("VafRouteHistory/setCurrentFullPath", next.fullPath);
+        // 当下个路由是PageRoute时, 才会加入到tab路由历史中
+        if (next.meta?.VafIsPageRoute) {
+          // 1. 高亮选项卡
+          this.$store.commit(
+            "VafRouteHistory/setCurrentFullPath",
+            next.fullPath
+          );
 
-        // 2. 如果没加入这个路由记录，则加入路由历史记录
-        this.$store.commit("VafRouteHistory/add", next);
+          // 2. 如果没加入这个路由记录，则加入路由历史记录
+          this.$store.commit("VafRouteHistory/add", next);
+        }
       },
       immediate: true,
     },
