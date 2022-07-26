@@ -31,6 +31,7 @@
             :fields="fields1"
             :hide-submit="false"
             :hide-reset="false"
+            auto-submit
             @submit="submit"
             @prop-change="onPropChange"
             @model-change="onModelChange"

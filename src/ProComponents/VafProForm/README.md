@@ -8,6 +8,7 @@
 | ------------- | ------------------------- | --------- | ------- |
 | `fields`      | 表单配置, 参考 1.1        | `Field[]` | `[]`    |
 | `formProps`   | 提供对 el-form 属性的支持 | `object`  | `{}`    |
+| `auto-submit` | 自动提交表单              | `boolean` | `false` |
 | `hide-submit` | 隐藏提交按钮              | `boolean` | `false` |
 | `hide-reset`  | 隐藏重置按钮              | `boolean` | `false` |
 

@@ -36,6 +36,8 @@ export default {
     fields: { type: Array, default: () => [] },
     // formProps: 可以传递给el-form的属性，参考el-form的API.
     formProps: { type: Object, default: () => {} },
+    // autoSubmit: 是否自动提交表单
+    autoSubmit: { type: Boolean, default: false },
     // hideSubmit: 是否隐藏提交按钮
     hideSubmit: { type: Boolean, default: false },
     // hideReset: 是否隐藏重置按钮
@@ -61,11 +63,13 @@ export default {
     updateModel(model) {
       this.model = { ...this.model, ...model };
       this.$emit("model-change", { ...this.model });
+      this.autoSubmit && this.submit();
     },
     updateProp(prop, value) {
       this.model[prop] = value;
       this.$emit("prop-change", prop, value, { ...this.model });
       this.$emit("model-change", { ...this.model });
+      this.autoSubmit && this.submit();
     },
     clearValidate(props) {
       this.$refs.elForm?.clearValidate(props);
@@ -87,10 +91,12 @@ export default {
     reset() {
       this.$refs["elForm"].resetFields();
       this.$emit("model-change", { ...this.model });
+      this.autoSubmit && this.submit();
     },
     handlePropChange(prop, value) {
       this.$emit("prop-change", prop, value, { ...this.model });
       this.$emit("model-change", { ...this.model });
+      this.autoSubmit && this.submit();
     },
   },
 
