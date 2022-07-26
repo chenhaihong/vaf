@@ -75,9 +75,12 @@ export default {
     autoResize(val) {
       if (this.echartsInstance) {
         if (val) {
-          window.addEventListener("resize", () => this.resize());
+          if (!this.__resizeHandler) {
+            this.__resizeHandler = this.resize.bind(this);
+          }
+          window.addEventListener("resize", this.__resizeHandler);
         } else {
-          window.removeEventListener("resize", () => this.resize());
+          window.removeEventListener("resize", this.__resizeHandler);
         }
       }
     },
@@ -108,12 +111,13 @@ export default {
     });
 
     if (this.autoResize) {
-      window.addEventListener("resize", () => this.resize());
+      this.__resizeHandler = this.resize.bind(this);
+      window.addEventListener("resize", this.__resizeHandler);
     }
   },
   beforeUnmount() {
     if (this.autoResize) {
-      window.removeEventListener("resize", () => this.resize());
+      window.removeEventListener("resize", this.__resizeHandler);
     }
     if (this.echartsInstance && !this.echartsInstance.isDisposed()) {
       echarts.dispose(this.echartsInstance);
