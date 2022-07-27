@@ -51,7 +51,32 @@
 | `submit`            | 验证表单, 成功则发布 `submit` 事件; 失败则提示错误 | `(model: object) => void`               |
 | `reset`             | 重置表单值为初始值，并移除校验结果                 | `() => void`                            |
 
-## 4. 使用示例
+## 4. vaf-pro-form 插槽
+
+### 4.1 插槽 any-slot
+
+`vaf-pro-form` 加入了 `any-slot` 任意插槽特性, 使得重组件表单也能有很强大的灵活性.
+
+当添加了如下的字段配置时, 并添加名称为 `avatar` 的插槽后, `vaf-pro-form` 将会在该行渲染这个插槽.
+
+```javascript
+const fields = [
+  {
+    type: "any-slot",
+    slot: "avatar",
+    prop: "avatar",
+    label: "任意插槽-头像",
+    defaultValue: "https://map.tiiit.cn/deer.png",
+  }
+];
+
+<template #avatar="{ prop, model }">
+  <el-avatar shape="square" :size="50" :src="model[prop]" />
+  <el-input v-model="model[prop]" placeholder="请输入头像地址" />
+</template>
+```
+
+## 5. 使用示例
 
 ```javascript
 <template>
