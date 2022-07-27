@@ -3,6 +3,8 @@ import "nprogress/nprogress.css"; // progress bar style
 
 import { getStore } from "@/common/store";
 
+import hasIntersect from "@/common/helpers/hasIntersect";
+
 // NProgress Configuration
 NProgress.configure({
   minimum: 0.5, // Changes the minimum percentage used upon starting. (default: 0.08).
@@ -82,15 +84,5 @@ const attachVafBeforeEach = (vafAppId) => ($router) => {
     }
   });
 };
-
-// 2个数组是否有交集
-function hasIntersect(a, b) {
-  if (Array.isArray(a) && a.length && Array.isArray(b) && b.length) {
-    for (const item of a) {
-      if (b.includes(item)) return true;
-    }
-  }
-  return false;
-}
 
 export default attachVafBeforeEach;

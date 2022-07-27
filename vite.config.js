@@ -29,17 +29,23 @@ export default defineConfig(({ command, mode }) => {
 });
 
 function getServeConfig(mode) {
-  let config = {};
+  let config = {
+    server: {
+      port: 3000,
+    },
+  };
 
   switch (mode) {
     case "development":
       config = {
+        ...config,
         root: path.resolve(__dirname, "./demo"),
         base: "/",
       };
       break;
     case "development:lib":
       config = {
+        ...config,
         root: path.resolve(__dirname, "./demoLib"),
         base: "/",
       };

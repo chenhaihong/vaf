@@ -42,6 +42,8 @@
 </template>
 
 <script>
+import { ElMessageBox } from "element-plus";
+
 export default {
   name: "VafUserinfo",
   computed: {
@@ -54,13 +56,12 @@ export default {
   },
   methods: {
     logout() {
-      this.$confirm(
+      ElMessageBox.confirm(
         "退出前，请确认您的操作已经执行完毕。",
         "您确定要退出吗？",
         {
+          autofocus: false,
           showClose: false,
-          closeOnClickModal: false,
-
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           beforeClose: async (action, instance, done) => {
@@ -71,9 +72,14 @@ export default {
 
               const [err] = await this.$store.dispatch("VafAuth/logout");
               if (!err) {
+                done();
+                this.$store.commit("VafRouteHistory/clear");
                 this.$router.push("/login");
+              } else {
+                instance.showCancelButton = true;
+                instance.confirmButtonLoading = false;
+                instance.confirmButtonText = "确定";
               }
-              done();
             } else {
               done();
             }

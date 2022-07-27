@@ -45,6 +45,10 @@ export default function makeRouteHistoryModule(vafAppId) {
           state.list = nextList;
         }
       },
+      // 清空路由历史记录
+      clear(state) {
+        state.list = [];
+      },
     },
     actions: {
       removeRouteHistory({ commit, state }, index) {

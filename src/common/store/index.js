@@ -16,7 +16,7 @@ export const createMakeStore =
     const { modules = {}, plugins = [], ...rest } = storeConfig;
 
     const VafAuth = makeAuthModule(vafAppId);
-    const VafLeftmenu = makeLeftmenModule(leftmenuConfig);
+    const VafLeftmenu = makeLeftmenModule(vafAppId, leftmenuConfig);
     const VafRouteHistory = makeRouteHistoryModule(vafAppId);
 
     const $store = createStore({
