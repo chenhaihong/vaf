@@ -14,7 +14,7 @@ import VafApp from "./VafApp.vue";
 
 export default {
   name: "@erye/vaf",
-  version: "0.0.9",
+  version: "0.0.10",
   author: "erye",
 };
 
@@ -23,9 +23,9 @@ const vafApps = {};
 
 export const createVafApp = (vafAppConfig = {}) => {
   const {
-    vafAppId = "vaf-app", // 用来标记应用的唯一id，可以帮助拿到vaf\store\router
+    vafAppId = "vaf-app", // 用来标记应用的唯一id，可以帮助拿到vafapp\store\router\request
     settingConfig = {},
-    apiConfig = {},
+    dataFuncConfig = {},
     leftmenuConfig = {},
     routeConfig = {},
     storeConfig = {},
@@ -35,12 +35,11 @@ export const createVafApp = (vafAppConfig = {}) => {
   const store = createMakeStore(vafAppId)(storeConfig, leftmenuConfig); // 先创建store
   const router = createMakeRouter(vafAppId)(routeConfig, settingConfig); // 再创建router
   const request = makeRequest(vafAppId); // 再创建request
-  const AuthService = makeAuthService(vafAppId, apiConfig); // 再创建AuthService
+  makeAuthService(vafAppId, dataFuncConfig); // 再创建AuthService
 
   app.config.globalProperties.$vafAppConfig = vafAppConfig;
   app.config.globalProperties.$vafAppId = vafAppId;
   app.config.globalProperties.$vafRequest = request;
-  app.config.globalProperties.$vafAuthService = AuthService;
 
   app.use(ElementPlus);
   app.use(installVafProComponents);
@@ -49,7 +48,7 @@ export const createVafApp = (vafAppConfig = {}) => {
   app.use(router);
 
   vafApps[vafAppId] = app;
-  return { app, router, store, request, AuthService };
+  return { app, router, store, request };
 };
 
 export const getVafApp = (vafAppId) => {

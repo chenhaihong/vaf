@@ -29,10 +29,10 @@ const { app } = createVafApp({
     logo: "/logo.png",
     copyright: "本网站属于个人技术分享网站",
   },
-  apiConfig: {
-    loginUrl: '/auth/login',
-    getUserinfoUrl: '/auth/getUserinfo',
-    logoutUrl: '/auth/logout',
+  dataFuncConfig: {
+    login: AuthService.login,
+    getUserinfo: AuthService.getUserinfo,
+    logout: AuthService.logout,
   },
   leftmenuConfig: {
     logo: "/logo.png", // 左侧菜单的logo

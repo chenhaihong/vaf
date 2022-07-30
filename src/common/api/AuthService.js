@@ -1,21 +1,16 @@
-import { getRequest } from "@/common/helpers/request";
-
 // 实例池
 const authServices = {};
 
-export const makeAuthService = (vafAppId, apiConfig = {}) => {
-  const request = getRequest(vafAppId);
-
+export const makeAuthService = (vafAppId, dataFuncConfig = {}) => {
   class AuthService {
     static login({ username, password } = {}) {
-      const data = { username, password };
-      return request({ url: apiConfig.loginUrl, method: "post", data });
+      return dataFuncConfig.login({ username, password });
     }
     static getUserinfo() {
-      return request({ url: apiConfig.getUserinfoUrl, method: "get" });
+      return dataFuncConfig.getUserinfo();
     }
     static logout() {
-      return request({ url: apiConfig.logoutUrl, method: "get" });
+      return dataFuncConfig.logout();
     }
   }
 

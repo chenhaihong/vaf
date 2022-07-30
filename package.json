@@ -1,6 +1,6 @@
 {
   "name": "@erye/vaf",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Vue Admin Framework.",
   "author": "erye <erye@tiiit.cn>",
   "scripts": {

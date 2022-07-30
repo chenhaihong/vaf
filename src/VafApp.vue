@@ -10,6 +10,7 @@ import VafGroundLayout from "@/common/layouts/VafGroundLayout.vue";
 export default {
   name: "VafApp",
   components: { VafGroundLayout },
+  // 卸载时, 移除VafApp\router\store\request等实例的显示引用
 };
 </script>
 
