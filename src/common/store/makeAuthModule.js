@@ -2,9 +2,7 @@
  * 构建鉴权相关的store模块
  */
 
-import { getAuthService } from "@/common/api/AuthService";
-
-export default function makeAuthModule(vafAppId) {
+export default function makeAuthModule(dataFuncConfig) {
   return {
     namespaced: true,
     state: {
@@ -38,8 +36,7 @@ export default function makeAuthModule(vafAppId) {
     actions: {
       async login({ commit }, payload) {
         const { username, password } = payload;
-        const AuthService = getAuthService(vafAppId);
-        const [err, data] = await AuthService.login({ username, password });
+        const [err, data] = await dataFuncConfig.login({ username, password });
         if (!err) {
           commit("setToken", data.token);
         }
@@ -47,9 +44,7 @@ export default function makeAuthModule(vafAppId) {
       },
       async getUserinfo({ commit }) {
         commit("setIsLoadingUserinfo", true);
-
-        const AuthService = getAuthService(vafAppId);
-        const [err, data] = await AuthService.getUserinfo();
+        const [err, data] = await dataFuncConfig.getUserinfo();
 
         // 1. 偷懒式等待路由跳往目标地址
         // 2. 让loading组件显示久一点
@@ -64,8 +59,7 @@ export default function makeAuthModule(vafAppId) {
         return [err, data];
       },
       async logout({ commit }) {
-        const AuthService = getAuthService(vafAppId);
-        const [err, data] = await AuthService.logout();
+        const [err, data] = await dataFuncConfig.logout();
         if (!err) {
           commit("clear");
         }

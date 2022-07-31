@@ -12,10 +12,10 @@ const stores = {};
 
 export const createMakeStore =
   (vafAppId) =>
-  (storeConfig = {}, leftmenuConfig = {}) => {
+  (storeConfig = {}, leftmenuConfig = {}, dataFuncConfig = {}) => {
     const { modules = {}, plugins = [], ...rest } = storeConfig;
 
-    const VafAuth = makeAuthModule(vafAppId);
+    const VafAuth = makeAuthModule(dataFuncConfig);
     const VafLeftmenu = makeLeftmenModule(vafAppId, leftmenuConfig);
     const VafRouteHistory = makeRouteHistoryModule(vafAppId);
 

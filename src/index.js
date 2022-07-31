@@ -6,7 +6,6 @@ import ElementPlus from "element-plus";
 import { createMakeStore } from "@/common/store";
 import { createMakeRouter } from "@/common/router";
 import { makeRequest } from "@/common/helpers/request";
-import { makeAuthService } from "@/common/api/AuthService";
 import installVafProComponents from "@/ProComponents";
 import installVafComponents from "@/components";
 
@@ -32,10 +31,11 @@ export const createVafApp = (vafAppConfig = {}) => {
   } = vafAppConfig;
 
   const app = createApp(VafApp);
-  const store = createMakeStore(vafAppId)(storeConfig, leftmenuConfig); // 先创建store
-  const router = createMakeRouter(vafAppId)(routeConfig, settingConfig); // 再创建router
+
+  const router = createMakeRouter(vafAppId)(routeConfig, settingConfig); // 创建router
+  const store = // 创建store
+    createMakeStore(vafAppId)(storeConfig, leftmenuConfig, dataFuncConfig);
   const request = makeRequest(vafAppId); // 再创建request
-  makeAuthService(vafAppId, dataFuncConfig); // 再创建AuthService
 
   app.config.globalProperties.$vafAppConfig = vafAppConfig;
   app.config.globalProperties.$vafAppId = vafAppId;
@@ -44,8 +44,8 @@ export const createVafApp = (vafAppConfig = {}) => {
   app.use(ElementPlus);
   app.use(installVafProComponents);
   app.use(installVafComponents);
-  app.use(store);
   app.use(router);
+  app.use(store);
 
   vafApps[vafAppId] = app;
   return { app, router, store, request };
@@ -58,7 +58,6 @@ export const getVafApp = (vafAppId) => {
 export { getStore } from "@/common/store";
 export { getRouter } from "@/common/router";
 export { getRequest } from "@/common/helpers/request";
-export { getAuthService } from "@/common/api/AuthService";
 export {
   default as installVafProComponents,
   VafProForm,
