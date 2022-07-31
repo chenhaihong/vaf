@@ -43,6 +43,9 @@ const { app } = createVafApp({
         path: '/home',
         title: "首页",
         children: [],
+        // 依赖这2个字段方式，来完成左侧菜单的角色过滤
+        authLevel: 2, // 0=>匿名 | 1=>登录(默认) | 2=>需鉴别角色
+        authRoles: ["super-admin"], // 当鉴权等级为2时，该字段才有效，默认为空数组
       },
       {
         type: "http-link", // 不可以有children，即不可以有子菜单

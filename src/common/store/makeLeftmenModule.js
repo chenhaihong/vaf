@@ -21,6 +21,7 @@ export default function makeLeftmenModule(vafAppId, leftmenuConfig = {}) {
     getters: {
       mainmenu(state) {
         const store = getStore(vafAppId);
+        const username = store.state.VafAuth?.userinfo?.username;
         const roles = store.state.VafAuth.roles;
 
         return state.menus
@@ -44,19 +45,20 @@ export default function makeLeftmenModule(vafAppId, leftmenuConfig = {}) {
             }
             return (
               authLevel === 0 || // 可匿名访问
-              (authLevel === 1 && roles.length) || // 登录即可访问
+              (authLevel === 1 && username) || // 登录即可访问
               hasIntersect(authRoles, roles) // 有访问权限
             );
           });
       },
       submenu(state) {
         const store = getStore(vafAppId);
+        const username = store.state.VafAuth?.userinfo?.username;
         const roles = store.state.VafAuth.roles;
         const hit = state.menus.find(
           (item) => item.id === state.selectedMainmenuId
         );
         const tree = hit ? hit.children : [];
-        return getPermittedSubmenu(tree, roles);
+        return getPermittedSubmenu(tree, username, roles);
       },
       selectedMainmenu(state, getters) {
         const selectedMainmenuId = state.selectedMainmenuId;
@@ -77,15 +79,15 @@ export default function makeLeftmenModule(vafAppId, leftmenuConfig = {}) {
 }
 
 // 取得有权限的子菜单
-function getPermittedSubmenu(tree, adminRoles) {
+function getPermittedSubmenu(tree, adminUsername, adminRoles) {
   return tree.filter((item) => {
     const { authLevel = 1, authRoles = [], children = [] } = item;
     if (children.length > 0) {
-      item.children = getPermittedSubmenu(children, adminRoles);
+      item.children = getPermittedSubmenu(children, adminUsername, adminRoles);
     }
     return (
       authLevel === 0 || // 可匿名访问
-      (authLevel === 1 && adminRoles.length) || // 登录即可访问
+      (authLevel === 1 && adminUsername) || // 登录即可访问
       hasIntersect(authRoles, adminRoles) // 有访问权限
     );
   });
