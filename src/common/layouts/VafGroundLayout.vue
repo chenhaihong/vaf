@@ -1,23 +1,24 @@
 <template>
-  <router-view v-show="!isLoadingUserinfo" v-slot="{ Component, route }">
+  <router-view v-slot="{ Component, route }">
     <transition :name="route.meta.VafTransition || 'vaf-fade'" mode="out-in">
-      <component :is="Component" />
+      <component :is="isLoadingUserinfo ? 'VafLoadingUserinfo' : Component" />
     </transition>
   </router-view>
-  <vaf-loading-view v-if="isLoadingUserinfo" />
 </template>
 
 <script>
-import VafLoadingView from "./VafLoadingView/VafLoadingView.vue";
+import { getUseAuthStore } from "@/common/stores";
+import VafLoadingUserinfo from "./VafLoadingUserinfo/VafLoadingUserinfo.vue";
 
 export default {
   name: "VafGroundLayout",
   components: {
-    VafLoadingView,
+    VafLoadingUserinfo,
   },
   computed: {
     isLoadingUserinfo() {
-      return this.$store.state.VafAuth.isLoadingUserinfo;
+      const store = getUseAuthStore(this.$vafAppId)();
+      return store.isLoadingUserinfo;
     },
   },
 };

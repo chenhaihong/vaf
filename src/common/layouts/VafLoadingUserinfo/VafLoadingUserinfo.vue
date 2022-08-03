@@ -1,10 +1,14 @@
 <template>
-  <div v-loading="true" :element-loading-text="text" class="vaf-loading-view" />
+  <div
+    v-loading="true"
+    :element-loading-text="text"
+    class="vaf-loading-userinfo"
+  />
 </template>
 
 <script>
 export default {
-  name: "VafLoadingView",
+  name: "VafLoadingUserinfo",
   props: {
     loadingText: { type: String },
   },
@@ -18,7 +22,7 @@ export default {
 </script>
 
 <style lang="scss">
-@include b(loading-view) {
+@include b(loading-userinfo) {
   position: absolute;
   width: 100%;
   height: 100%;

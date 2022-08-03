@@ -38,19 +38,23 @@
 </template>
 
 <script>
+import { getUseLeftMenuStore } from "@/common/stores";
 import confirmLink from "@/common/helpers/confirmLink.vue";
 
 export default {
   name: "VafSubMenuTree",
   computed: {
     selectedMainmenu() {
-      return this.$store.getters["VafLeftmenu/selectedMainmenu"];
+      const store = getUseLeftMenuStore(this.$vafAppId)();
+      return store.selectedMainmenu;
     },
     selectedSubmenuId() {
-      return this.$store.state.VafLeftmenu.selectedSubmenuId;
+      const store = getUseLeftMenuStore(this.$vafAppId)();
+      return store.selectedSubmenuId;
     },
     submenu() {
-      return this.$store.getters["VafLeftmenu/submenu"];
+      const store = getUseLeftMenuStore(this.$vafAppId)();
+      return store.submenu;
     },
   },
   watch: {

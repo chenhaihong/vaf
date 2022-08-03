@@ -21,7 +21,7 @@
         >
           <div class="vaf-history__item__trigger">
             <span class="vaf-history__item__text">{{ item.meta?.title }}</span>
-            <span v-if="list.length > 1">
+            <span v-show="list.length > 1">
               <el-icon
                 class="vaf-history__item__close"
                 @click.prevent="close(index)"
@@ -41,19 +41,24 @@ import { Close } from "@element-plus/icons-vue";
 </script>
 
 <script>
+import { getUsePageHistoryStore } from "@/common/stores";
+
 export default {
   name: "VafHistoryList",
   computed: {
     list() {
-      return this.$store.state.VafRouteHistory.list;
+      const store = getUsePageHistoryStore(this.$vafAppId)();
+      return store.list;
     },
     currentFullPath() {
-      return this.$store.state.VafRouteHistory.currentFullPath;
+      const store = getUsePageHistoryStore(this.$vafAppId)();
+      return store.currentFullPath;
     },
   },
   methods: {
     close(index) {
-      this.$store.dispatch("VafRouteHistory/removeRouteHistory", index);
+      const store = getUsePageHistoryStore(this.$vafAppId)();
+      store.removeRouteHistory(index);
     },
   },
 };

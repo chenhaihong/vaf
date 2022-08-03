@@ -8,7 +8,7 @@
 $ npm install @erye/vaf
 
 // 安装 peerDependencies
-$ npm install axios element-plus nprogress vue vue-router vuex vuex-persistedstate
+$ npm install axios element-plus nprogress pinia vue vue-router
 ```
 
 ## 使用
@@ -108,9 +108,6 @@ const { app } = createVafApp({
     // afterEach() {},// 如果设置了，会覆盖内置的afterEach守卫
     // beforeResolve() {},
     // onError() {},
-  },
-  storeConfig: {
-    // 传递给store的配置，与vuex的约束保持一致
   },
 });
 app.mount("#app");

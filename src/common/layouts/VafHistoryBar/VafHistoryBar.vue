@@ -1,4 +1,5 @@
 <script>
+import { getUsePageHistoryStore } from "@/common/stores";
 import VafHistoryList from "./VafHistoryList.vue";
 
 export default {
@@ -9,14 +10,20 @@ export default {
       handler(next) {
         // 当下个路由是PageRoute时, 才会加入到tab路由历史中
         if (next.meta?.VafIsPageRoute) {
+          const store = getUsePageHistoryStore(this.$vafAppId)();
+
           // 1. 高亮选项卡
-          this.$store.commit(
-            "VafRouteHistory/setCurrentFullPath",
-            next.fullPath
-          );
+          store.$patch({ currentFullPath: next.fullPath });
 
           // 2. 如果没加入这个路由记录，则加入路由历史记录
-          this.$store.commit("VafRouteHistory/add", next);
+          const index = store.list.findIndex(
+            (item) => item.fullPath === next.fullPath
+          );
+          if (index === -1) {
+            store.$patch((state) => {
+              state.list.push(next);
+            });
+          }
         }
       },
       immediate: true,

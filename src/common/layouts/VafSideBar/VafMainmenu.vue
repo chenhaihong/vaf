@@ -21,16 +21,19 @@
 </template>
 
 <script>
+import { getUseLeftMenuStore } from "@/common/stores";
 import confirmLink from "@/common/helpers/confirmLink.vue";
 
 export default {
   name: "VafMainmenu",
   computed: {
     mainmenu() {
-      return this.$store.getters["VafLeftmenu/mainmenu"];
+      const store = getUseLeftMenuStore(this.$vafAppId)();
+      return store.mainmenu;
     },
     selectedMainmenuId() {
-      return this.$store.state.VafLeftmenu.selectedMainmenuId;
+      const store = getUseLeftMenuStore(this.$vafAppId)();
+      return store.selectedMainmenuId;
     },
   },
   methods: {

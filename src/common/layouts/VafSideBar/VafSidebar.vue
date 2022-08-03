@@ -15,6 +15,8 @@ import VafLogo from "./VafLogo.vue";
 import VafMainmenu from "./VafMainmenu.vue";
 import VafSubMenuTree from "./VafSubMenuTree.vue";
 
+import { getUseLeftMenuStore } from "@/common/stores";
+
 export default {
   name: "VafSideBar",
   components: {
@@ -35,22 +37,22 @@ export default {
         const VafLeftmenuId = matched[matched.length - 1].meta.VafLeftmenuId;
         // console.log(VafLeftmenuId);
 
+        const vafAppId = this.$vafAppId;
+        const $leftmenuStore = getUseLeftMenuStore(vafAppId)();
+
         // 从leftmenu中找出选中的主菜单
         const mathedNodes = resolveMatchedNodes(
           VafLeftmenuId,
-          this.$store.state.VafLeftmenu.menus
+          $leftmenuStore.menus
         );
         // console.log(JSON.stringify(mathedNodes, null, 2));
 
         if (!mathedNodes.length) return;
 
-        this.$store.commit(
-          "VafLeftmenu/setSelectedMainmenuId",
-          mathedNodes[0].id
-        );
-        this.$store.commit("VafLeftmenu/setSelectedSubmenuId", VafLeftmenuId);
-
-        // console.log(mathedNodes[0].id, VafLeftmenuId);
+        $leftmenuStore.$patch({
+          selectedMainmenuId: mathedNodes[0].id, // 选中的主菜单的id
+          selectedSubmenuId: VafLeftmenuId, // 选中的子菜单的id
+        });
       },
     },
   },

@@ -44,14 +44,18 @@
 <script>
 import { ElMessageBox } from "element-plus";
 
+import { getUseAuthStore } from "@/common/stores";
+
 export default {
   name: "VafUserinfo",
   computed: {
     userinfo() {
-      return this.$store.state.VafAuth.userinfo;
+      const store = getUseAuthStore(this.$vafAppId)();
+      return store.userinfo;
     },
     roles() {
-      return this.$store.state.VafAuth.roles;
+      const store = getUseAuthStore(this.$vafAppId)();
+      return store.roles;
     },
   },
   methods: {
@@ -70,10 +74,10 @@ export default {
               instance.confirmButtonLoading = true;
               instance.confirmButtonText = "正在退出...";
 
-              const [err] = await this.$store.dispatch("VafAuth/logout");
+              const store = getUseAuthStore(this.$vafAppId)();
+              const [err] = await store.logout();
               if (!err) {
                 done();
-                this.$store.commit("VafRouteHistory/clear");
                 this.$router.push("/login");
               } else {
                 instance.showCancelButton = true;

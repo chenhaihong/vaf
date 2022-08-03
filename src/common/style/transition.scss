@@ -39,6 +39,8 @@
 }
 .#{$namespace}-slide-enter-active,
 .#{$namespace}-slide-leave-active {
+  position: absolute;
+  width: 100%;
   transition: opacity 0.2s, transform 0.2s;
 }
 .#{$namespace}-slide-enter-to,
@@ -53,6 +55,8 @@
   transform: translate(20px, 0);
 }
 .#{$namespace}-slide-left-enter-active {
+  position: absolute;
+  width: 100%;
   transition: opacity 0.3s cubic-bezier(0.55, 0, 0.1, 1),
     transform 0.3s cubic-bezier(0.55, 0, 0.1, 1);
 }
@@ -67,6 +71,8 @@
   transform: translate(-20px, 0);
 }
 .#{$namespace}-slide-right-enter-active {
+  position: absolute;
+  width: 100%;
   transition: opacity 0.3s cubic-bezier(0.55, 0, 0.1, 1),
     transform 0.3s cubic-bezier(0.55, 0, 0.1, 1);
 }

@@ -36,6 +36,8 @@
 </template>
 
 <script>
+import { getUseAuthStore } from "@/common/stores";
+
 export default {
   name: "Login",
   data: () => {
@@ -62,10 +64,10 @@ export default {
       if (this.disabled) return;
       this.isLoading = true;
       const { username, password } = this;
-      const [err] = await this.$store.dispatch("VafAuth/login", {
-        username,
-        password,
-      });
+
+      const vafAppId = this.$vafAppId;
+      const authStore = getUseAuthStore(vafAppId)();
+      const [err] = await authStore.login({ username, password });
       this.isLoading = false;
       if (err) return;
       this.$message({

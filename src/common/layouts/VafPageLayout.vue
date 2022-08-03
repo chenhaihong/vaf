@@ -39,6 +39,8 @@
 <script>
 import { h } from "vue";
 
+import { getUsePageHistoryStore } from "@/common/stores";
+
 import VafSidebar from "./VafSideBar/VafSidebar.vue";
 import VafNavbar from "./VafNavbar/VafNavbar.vue";
 import VafHistoryBar from "./VafHistoryBar/VafHistoryBar.vue";
@@ -57,8 +59,11 @@ export default {
     };
   },
   computed: {
+    // include用于VafPageLayout里的keep-alive组件, 作为keep-alive的inlcude属性.
+    // include更新后, keep-alive会自动删除缓存的包壳组件
     include() {
-      return this.$store.getters["VafRouteHistory/fullPathList"];
+      const store = getUsePageHistoryStore(this.$vafAppId)();
+      return store.list.map((item) => item.fullPath);
     },
   },
   methods: {
@@ -73,7 +78,7 @@ export default {
         wrapper = {
           name: wrapperName,
           render() {
-            return h("div", component);
+            return h("div", { className: "vaf-page-wrapper" }, component);
           },
         };
         wrapperMap.set(wrapperName, wrapper);

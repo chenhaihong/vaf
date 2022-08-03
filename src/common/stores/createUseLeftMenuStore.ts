@@ -1,28 +1,30 @@
-/**
- * 构建左侧菜单的store模块
- */
-
-import { getStore } from "./";
-
+import { defineStore } from "pinia";
+import { getUseAuthStore } from "./createUseAuthStore";
 import hasIntersect from "@/common/helpers/hasIntersect";
 
-export default function makeLeftmenModule(vafAppId, leftmenuConfig = {}) {
+const useStores = {};
+
+export const createUseLeftMenuStore = (
+  vafAppId: string,
+  leftmenuConfig: any = {}
+) => {
   const {
     menus = [], // 左侧菜单数据
   } = leftmenuConfig;
 
-  return {
-    namespaced: true,
-    state: {
-      menus,
-      selectedMainmenuId: "", // 选中的主菜单的id
-      selectedSubmenuId: "", // 选中的子菜单的id
+  const useLeftmenuStore = defineStore(`VafLeftMenuStore--${vafAppId}`, {
+    state(): State {
+      return {
+        menus,
+        selectedMainmenuId: "", // 选中的主菜单的id
+        selectedSubmenuId: "", // 选中的子菜单的id
+      };
     },
     getters: {
-      mainmenu(state) {
-        const store = getStore(vafAppId);
-        const username = store.state.VafAuth?.userinfo?.username;
-        const roles = store.state.VafAuth.roles;
+      mainmenu(state): Menu[] {
+        const authStore = getUseAuthStore(vafAppId)();
+        const username = authStore.userinfo?.username;
+        const roles = authStore.roles;
 
         return state.menus
           .map((item) => {
@@ -50,33 +52,31 @@ export default function makeLeftmenModule(vafAppId, leftmenuConfig = {}) {
             );
           });
       },
-      submenu(state) {
-        const store = getStore(vafAppId);
-        const username = store.state.VafAuth?.userinfo?.username;
-        const roles = store.state.VafAuth.roles;
+      submenu(state): Menu[] {
+        const authStore = getUseAuthStore(vafAppId)();
+        const username = authStore.userinfo?.username;
+        const roles = authStore.roles;
         const hit = state.menus.find(
           (item) => item.id === state.selectedMainmenuId
         );
         const tree = hit ? hit.children : [];
         return getPermittedSubmenu(tree, username, roles);
       },
-      selectedMainmenu(state, getters) {
+      selectedMainmenu(state): Menu | null {
         const selectedMainmenuId = state.selectedMainmenuId;
-        const mainmenu = getters.mainmenu;
+        const mainmenu = this.mainmenu;
 
         return mainmenu.find((item) => item.id === selectedMainmenuId) || null;
       },
     },
-    mutations: {
-      setSelectedMainmenuId(state, id) {
-        state.selectedMainmenuId = id;
-      },
-      setSelectedSubmenuId(state, id) {
-        state.selectedSubmenuId = id;
-      },
-    },
-  };
-}
+    actions: {},
+  });
+  useStores[vafAppId] = useLeftmenuStore;
+};
+
+export const getUseLeftMenuStore = (vafAppId: string) => {
+  return useStores[vafAppId];
+};
 
 // 取得有权限的子菜单
 function getPermittedSubmenu(tree, adminUsername, adminRoles) {
@@ -91,4 +91,31 @@ function getPermittedSubmenu(tree, adminUsername, adminRoles) {
       hasIntersect(authRoles, adminRoles) // 有访问权限
     );
   });
+}
+
+interface State {
+  menus: Menu[];
+  selectedMainmenuId: string;
+  selectedSubmenuId: string;
+}
+
+interface Menu {
+  type: MenuType;
+  id: string;
+  path: string;
+  title: string;
+  authLevel?: AuthLevel;
+  authRoles?: string[];
+  children?: undefined | null | Menu[];
+}
+
+enum MenuType {
+  RouterLink = "router-link",
+  HttpLink = "http-link",
+}
+
+enum AuthLevel {
+  Anonymous = 0, // 无需登录
+  LoggedIn = 1, // 已登录
+  SpecifiedRoles = 2, // 已登录并且需要拥有指定角色
 }

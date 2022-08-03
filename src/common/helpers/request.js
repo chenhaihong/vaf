@@ -1,14 +1,14 @@
 import axios from "axios";
 import { ElMessage, ElMessageBox } from "element-plus";
 
-import { getStore } from "@/common/store";
+import { getUseAuthStore } from "@/common/stores";
 import { getRouter } from "@/common/router";
 
 //请求实例池
 const instances = {};
 
 export const makeRequest = (vafAppId) => {
-  const $store = getStore(vafAppId);
+  const $store = getUseAuthStore(vafAppId)();
   const $router = getRouter(vafAppId);
 
   // create an axios instance
@@ -24,7 +24,7 @@ export const makeRequest = (vafAppId) => {
 
   // request interceptor
   instance.interceptors.request.use((config) => {
-    const token = $store.state.VafAuth?.token;
+    const token = $store.token;
     if (token) {
       config.headers.Authorization = token;
     }
@@ -45,7 +45,8 @@ export const makeRequest = (vafAppId) => {
         case 5010001: // 用户登录凭证已经失效
         case 5020001: // 该管理员账号不存在
         case 5020002: // 该管理员账号已暂停使用
-          $store.commit("VafAuth/clear");
+          // 清除用户信息
+          $store.$patch({ token: "", userinfo: {}, roles: [] });
           ElMessageBox.confirm(error.message || "登录失效", "请重新登录", {
             showClose: false,
             closeOnClickModal: false,

@@ -1,7 +1,7 @@
 import NProgress from "nprogress"; // progress bar
 import "nprogress/nprogress.css"; // progress bar style
 
-import { getStore } from "@/common/store";
+import { getUseAuthStore } from "@/common/stores";
 
 import hasIntersect from "@/common/helpers/hasIntersect";
 
@@ -18,8 +18,8 @@ const attachVafBeforeEach = (vafAppId) => ($router) => {
     // start progress bar
     NProgress.start();
 
-    const $store = getStore(vafAppId);
-    const token = $store.state.VafAuth?.token;
+    const $authStore = getUseAuthStore(vafAppId)();
+    const token = $authStore.token;
     const routeRoles = to.meta?.VafAuthRoles || [];
     let VafAuthLevel = to.meta?.VafAuthLevel; // 0=>可匿名访问 | 1=>需登录(默认) | 2=>需鉴别角色
     if (![0, 1, 2].includes(VafAuthLevel)) {
@@ -51,8 +51,8 @@ const attachVafBeforeEach = (vafAppId) => ($router) => {
       // 2.3 需登录才能访问 || 需鉴别权限后才能访问
       else if ([1, 2].includes(VafAuthLevel)) {
         // 2.3.1 未拉取用户信息，则拉取用户信息
-        if (!$store.state.VafAuth?.userinfo?.username) {
-          const [err, data] = await $store.dispatch("VafAuth/getUserinfo");
+        if (!$authStore.userinfo?.username) {
+          const [err] = await $authStore.getUserinfo();
 
           // 2.3.1.1 拉取信息失败
           if (err) {
@@ -69,7 +69,7 @@ const attachVafBeforeEach = (vafAppId) => ($router) => {
           // 2.3.2.1 登录可访问 || 有访问权限
           if (
             1 === VafAuthLevel || // 登录可访问
-            hasIntersect(routeRoles, $store.state.VafAuth?.roles) // 有访问权限，即用户角色与路由配置角色有交集
+            hasIntersect(routeRoles, $authStore.roles) // 有访问权限，即用户角色与路由配置角色有交集
           ) {
             next();
           }
