@@ -12,9 +12,12 @@ export { getUseAuthStore } from "./createUseAuthStore";
 export { getUseLeftMenuStore } from "./createUseLeftMenuStore";
 export { getUsePageHistoryStore } from "./createUseRouteHistoryStore";
 
-const pinia = createPinia();
+const pinias = {};
 export default function installUseStores(app: App, options: Options) {
   const { vafAppId, leftmenuConfig = {}, dataFuncConfig = {} } = options;
+
+  const pinia = createPinia();
+  pinias[vafAppId] = pinia;
 
   pinia.use(createPersistedTokenPlugin(vafAppId));
   app.use(pinia);
@@ -24,6 +27,10 @@ export default function installUseStores(app: App, options: Options) {
   createUseLeftMenuStore(vafAppId, leftmenuConfig);
   createUsePageHistoryStore(vafAppId);
 }
+
+export const getPinia = (vafAppId: string) => {
+  return pinias[vafAppId];
+};
 
 interface Options {
   vafAppId: string;

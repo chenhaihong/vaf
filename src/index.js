@@ -52,6 +52,7 @@ export const getVafApp = (vafAppId) => {
   return vafApps[vafAppId];
 };
 
+export { getPinia } from "@/common/stores";
 export { getRouter } from "@/common/router";
 export { getRequest } from "@/common/helpers/request";
 export {

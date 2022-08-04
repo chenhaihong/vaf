@@ -70,10 +70,7 @@ export default {
       const [err] = await authStore.login({ username, password });
       this.isLoading = false;
       if (err) return;
-      this.$message({
-        type: "success",
-        message: `登录成功`,
-      });
+      this.$message({ type: "success", message: `登录成功` });
       const { redirect } = this.$route.query;
       if (redirect) {
         const dec = decodeURIComponent(decodeURIComponent(redirect));
