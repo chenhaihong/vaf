@@ -9,6 +9,8 @@ import leftmenuConfig from "../demo/common/config/leftmenu";
 import routeConfig from "../demo/common/routes";
 import makeAuthService from "../demo/common/api/auth";
 
+import installDirectives from "../demo/common/directives";
+
 console.log(JSON.stringify(vaf, null, 2));
 
 const AuthService = makeAuthService(vafAppId, getRequest);
@@ -28,4 +30,5 @@ const { app } = createVafApp({
   leftmenuConfig,
   routeConfig,
 });
+app.use(installDirectives);
 app.mount("#app");

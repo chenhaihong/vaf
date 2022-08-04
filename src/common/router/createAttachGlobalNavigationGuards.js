@@ -6,7 +6,7 @@ import attachAfterEach from "./attachAfterEach";
 // 完整的导航解析流程，请阅读文档
 // https://router.vuejs.org/zh/guide/advanced/navigation-guards.html#%E5%AE%8C%E6%95%B4%E7%9A%84%E5%AF%BC%E8%88%AA%E8%A7%A3%E6%9E%90%E6%B5%81%E7%A8%8B
 
-const attachGlobalNavigationGuards =
+const createAttachGlobalNavigationGuards =
   (vafAppId) => ($router, guards, settingConfig) => {
     // beforeeach 文档
     // https://router.vuejs.org/zh/api/#beforeeach
@@ -65,4 +65,4 @@ const attachGlobalNavigationGuards =
     });
   };
 
-export default attachGlobalNavigationGuards;
+export default createAttachGlobalNavigationGuards;

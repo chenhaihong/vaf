@@ -6,12 +6,12 @@ export const createUseAuthStore = (vafAppId: string, dataFuncConfig: any) => {
   const useAuthStore = defineStore(`VafAuthStore--${vafAppId}`, {
     state(): State {
       return {
-        // 数据来自接口 apiConfog.loginUrl
+        // 数据来自 dataFuncConfig.login
         token: "",
 
         isLoadingUserinfo: false, // 是否正在加载用户信息
 
-        // 数据来自接口 apiConfog.getUserinfoUrl
+        // 数据来自 dataFuncConfig.getUserinfo
         userinfo: {},
         roles: [],
       };
@@ -26,15 +26,7 @@ export const createUseAuthStore = (vafAppId: string, dataFuncConfig: any) => {
         return [err, data];
       },
       async getUserinfo() {
-        this.isLoadingUserinfo = true;
         const [err, data] = await dataFuncConfig.getUserinfo();
-
-        // 1. 偷懒式等待路由跳往目标地址
-        // 2. 让loading组件显示久一点
-        setTimeout(() => {
-          this.isLoadingUserinfo = false;
-        }, 1000);
-
         if (!err) {
           const { userinfo, roles } = data;
           this.userinfo = userinfo;

@@ -28,7 +28,7 @@ export default function makeAuthService(vafAppId, getRequest) {
     static getUserinfo = async () => {
       // request, axios实例
       // const request = getRequest(vafAppId);
-      await sleep(1000);
+      await sleep(500);
       const [error, userinfo] = [
         null,
         {

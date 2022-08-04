@@ -5,9 +5,12 @@
   "author": "erye <erye@tiiit.cn>",
   "scripts": {
     "dev": "vite",
-    "dev:lib": "vite build && vite serve --mode development:lib",
+    "dev:lib": "vite serve --mode development:lib",
     "build": "rimraf ./dist/* && vite build && vite build --mode production:sourcemap",
+    "preview": "vite preview",
     "pub": "npm publish --access public --registry https://registry.npmjs.org/",
+    "predev:lib": "npm run build",
+    "prepreview": "npm run build && vite build --mode preview",
     "prepub": "npm run build"
   },
   "files": [

@@ -20,9 +20,15 @@ export default defineConfig(({ command, mode }) => {
 
   let commandConfig = {};
   if (command === "build") {
-    commandConfig = getBuildConfig(mode);
+    if (mode === "preview") {
+      commandConfig = getBuildPreviewConfig();
+    } else {
+      commandConfig = getBuildConfig(mode);
+    }
   } else if (command === "serve") {
     commandConfig = getServeConfig(mode);
+  } else if (command === "preivew") {
+    commandConfig = getPreviewConfig();
   }
 
   return { ...config, ...commandConfig };
@@ -103,6 +109,28 @@ function getBuildConfig(mode) {
           },
         },
       },
+    },
+  };
+  return config;
+}
+
+function getPreviewConfig() {
+  let config = {
+    preview: {
+      port: 3000,
+    },
+    root: path.resolve(__dirname, "./demoLib"),
+    base: "/",
+  };
+  return config;
+}
+
+function getBuildPreviewConfig() {
+  const config = {
+    root: path.resolve(__dirname, "./demoLib"),
+    base: "/",
+    build: {
+      outDir: path.resolve(__dirname, "./dist"),
     },
   };
   return config;
