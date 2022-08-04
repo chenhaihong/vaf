@@ -44,7 +44,7 @@
 <script>
 import { ElMessageBox } from "element-plus";
 
-import { getUseAuthStore } from "@/common/stores";
+import { getUseAuthStore, getUsePageHistoryStore } from "@/common/stores";
 
 export default {
   name: "VafUserinfo",
@@ -74,9 +74,13 @@ export default {
               instance.confirmButtonLoading = true;
               instance.confirmButtonText = "正在退出...";
 
-              const store = getUseAuthStore(this.$vafAppId)();
-              const [err] = await store.logout();
+              const authStore = getUseAuthStore(this.$vafAppId)();
+              const [err] = await authStore.logout();
               if (!err) {
+                // 清除tab的页面历史记录
+                const historyStore = getUsePageHistoryStore(this.$vafAppId)();
+                historyStore.$patch({ list: [], currentFullPath: "" });
+
                 done();
                 this.$router.push("/login");
               } else {
