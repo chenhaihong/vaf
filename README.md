@@ -1,5 +1,8 @@
 # @erye/vaf
 
+[![npm](https://img.shields.io/npm/v/@erye/vaf)](https://www.npmjs.com/package/@erye/vaf)
+[![npm (custom registry)](https://img.shields.io/npm/v/@erye/vaf/latest?label=npmmirror&logo=npmmirror&registry_uri=https%3A%2F%2Fregistry.npmmirror.com)](https://npmmirror.com/package/@erye/vaf)
+
 通用的管理后台框架。
 
 ## 安装
