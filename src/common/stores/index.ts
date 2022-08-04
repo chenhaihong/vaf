@@ -2,7 +2,7 @@ import { App } from "vue";
 
 import { createPinia } from "pinia";
 
-import persistedTokenPlugin from "./persistedTokenPlugin";
+import createPersistedTokenPlugin from "./createPersistedTokenPlugin";
 
 import { createUseAuthStore } from "./createUseAuthStore";
 import { createUseLeftMenuStore } from "./createUseLeftMenuStore";
@@ -13,15 +13,15 @@ export { getUseLeftMenuStore } from "./createUseLeftMenuStore";
 export { getUsePageHistoryStore } from "./createUseRouteHistoryStore";
 
 const pinia = createPinia();
-export default function installVafUseStores(app: App, options: Options) {
+export default function installUseStores(app: App, options: Options) {
   const { vafAppId, leftmenuConfig = {}, dataFuncConfig = {} } = options;
 
-  pinia.use(persistedTokenPlugin(vafAppId));
+  pinia.use(createPersistedTokenPlugin(vafAppId));
   app.use(pinia);
 
   // 创建所有useStore
-  createUseLeftMenuStore(vafAppId, leftmenuConfig);
   createUseAuthStore(vafAppId, dataFuncConfig);
+  createUseLeftMenuStore(vafAppId, leftmenuConfig);
   createUsePageHistoryStore(vafAppId);
 }
 

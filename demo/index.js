@@ -1,16 +1,18 @@
 import "element-plus/dist/index.css";
 import "./index.css";
 
-import vaf, { createVafApp } from "../src/index.js";
+import vaf, { createVafApp, getRequest } from "../src/index.js";
 
 import vafAppId from "./common/config/vafAppId";
 import leftmenuConfig from "./common/config/leftmenu";
 import routeConfig from "./common/routes";
-import AuthService from "./common/api/auth";
+import makeAuthService from "./common/api/auth";
 
 import installDirectives from "./common/directives";
 
 console.log(JSON.stringify(vaf, null, 2));
+
+const AuthService = makeAuthService(vafAppId, getRequest);
 
 const { app } = createVafApp({
   vafAppId,

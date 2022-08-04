@@ -2,12 +2,16 @@ import "element-plus/dist/index.css";
 import "../demo/index.css";
 
 import "../dist/index.css";
-import vaf, { createVafApp } from "../dist/vaf.es.js";
+import vaf, { createVafApp, getRequest } from "../dist/vaf.es.js";
 
+import vafAppId from "../demo/common/config/vafAppId";
 import leftmenuConfig from "../demo/common/config/leftmenu";
 import routeConfig from "../demo/common/routes";
+import makeAuthService from "../demo/common/api/auth";
 
 console.log(JSON.stringify(vaf, null, 2));
+
+const AuthService = makeAuthService(vafAppId, getRequest);
 
 const { app } = createVafApp({
   settingConfig: {
@@ -16,13 +20,12 @@ const { app } = createVafApp({
     logo: "https://map.tiiit.cn/deer.png",
     copyright: "本网站属于个人技术分享网站",
   },
-  apiConfig: {
-    loginUrl: "/vaf-auth/login",
-    getUserinfoUrl: "/vaf-auth/userinfo",
-    logoutUrl: "/vaf-auth/logout",
+  dataFuncConfig: {
+    login: AuthService.login,
+    getUserinfo: AuthService.getUserinfo,
+    logout: AuthService.logout,
   },
   leftmenuConfig,
   routeConfig,
-  storeConfig: {},
 });
 app.mount("#app");

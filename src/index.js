@@ -3,7 +3,7 @@ import "@/common/style/index.scss";
 import { createApp } from "vue";
 import ElementPlus from "element-plus";
 
-import installVafUseStores from "@/common/stores";
+import installUseStores from "@/common/stores";
 import { createMakeRouter } from "@/common/router";
 import { makeRequest } from "@/common/helpers/request";
 import installVafProComponents from "@/ProComponents";
@@ -30,7 +30,7 @@ export const createVafApp = (vafAppConfig = {}) => {
   } = vafAppConfig;
 
   const app = createApp(VafApp);
-  app.use(installVafUseStores, { vafAppId, leftmenuConfig, dataFuncConfig });
+  app.use(installUseStores, { vafAppId, leftmenuConfig, dataFuncConfig });
 
   const router = createMakeRouter(vafAppId)(routeConfig, settingConfig); // 创建router
   const request = makeRequest(vafAppId); // 再创建request
