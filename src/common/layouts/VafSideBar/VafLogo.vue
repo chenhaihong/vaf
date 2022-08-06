@@ -2,7 +2,7 @@
 export default {
   name: "VafLogo",
   render() {
-    const logo = this.$vafAppConfig.leftmenuConfig?.logo || "";
+    const logo = this.$vafAppConfig?.leftmenuConfig?.logo || "";
 
     const props = {
       alt: "logo",

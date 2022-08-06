@@ -1,6 +1,6 @@
 // 本地开发用来mock鉴权接口的vite插件
 
-export default VitePluginVafAuth = () => {
+const VitePluginMock = () => {
   return {
     name: "vite:mock",
     enforce: "pre",
@@ -29,3 +29,5 @@ export default VitePluginVafAuth = () => {
     },
   };
 };
+
+export default VitePluginMock;

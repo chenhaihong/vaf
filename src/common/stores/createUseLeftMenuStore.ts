@@ -62,11 +62,11 @@ export const createUseLeftMenuStore = (
         const tree = hit ? hit.children : [];
         return getPermittedSubmenu(tree, username, roles);
       },
-      selectedMainmenu(state): Menu | null {
+      selectedMainmenu(state): Menu | undefined {
         const selectedMainmenuId = state.selectedMainmenuId;
         const mainmenu = this.mainmenu;
 
-        return mainmenu.find((item) => item.id === selectedMainmenuId) || null;
+        return mainmenu.find((item: Menu) => item.id === selectedMainmenuId);
       },
     },
     actions: {},
@@ -79,7 +79,11 @@ export const getUseLeftMenuStore = (vafAppId: string) => {
 };
 
 // 取得有权限的子菜单
-function getPermittedSubmenu(tree, adminUsername, adminRoles) {
+function getPermittedSubmenu(
+  tree: Menu[],
+  adminUsername: string,
+  adminRoles: string[]
+) {
   return tree.filter((item) => {
     const { authLevel = 1, authRoles = [], children = [] } = item;
     if (children.length > 0) {

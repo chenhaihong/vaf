@@ -3,12 +3,12 @@ import path from "path";
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
-import VitePluginMock from "./vite-plugin-mock";
+import Mock from "./vite-plugin-mock";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
   const config = {
-    plugins: [vue(), vueJsx(), VitePluginMock()],
+    plugins: [vue(), vueJsx(), Mock()],
     css: {
       preprocessorOptions: {
         scss: { additionalData: `@import "@/common/scss/index.scss";` },
@@ -45,14 +45,14 @@ function getServeConfig(mode) {
     case "development":
       config = {
         ...config,
-        root: path.resolve(__dirname, "./demo"),
+        root: path.resolve(__dirname, "./demoDev"),
         base: "/",
       };
       break;
     case "development:lib":
       config = {
         ...config,
-        root: path.resolve(__dirname, "./demoLib"),
+        root: path.resolve(__dirname, "./demoPreview"),
         base: "/",
       };
       break;
@@ -62,20 +62,22 @@ function getServeConfig(mode) {
 }
 
 function getBuildConfig(mode) {
-  const isSourceMap = "production:sourcemap" === mode;
+  const isMinified = "production:minified" === mode;
   const config = {
     build: {
       lib: {
         entry: path.resolve(__dirname, "src/index.js"),
         name: "Vaf",
+        formats: ["es", "umd"],
         fileName: (format) => {
-          const withMin = isSourceMap ? "" : ".min";
+          const withMin = isMinified ? ".min" : "";
           return `vaf.${format + withMin}.js`;
         },
       },
-      polyfillModulePreload: false,
       emptyOutDir: false,
-      sourcemap: isSourceMap,
+      minify: isMinified,
+      polyfillModulePreload: false,
+      sourcemap: true,
       rollupOptions: {
         // 确保外部化处理那些你不想打包进库的依赖
         external: [
@@ -94,13 +96,13 @@ function getBuildConfig(mode) {
           // https://github.com/vitejs/vite/issues/8115
           assetFileNames: (chunkInfo) => {
             if (chunkInfo.name === "style.css") {
-              const withMin = isSourceMap ? "" : ".min";
+              const withMin = isMinified ? ".min" : "";
               return `index${withMin}.css`;
             }
           },
           // 在 UMD 构建模式下为这些外部化的依赖提供一个全局变量
           globals: {
-            axios: "Vue",
+            axios: "axios",
             "element-plus": "ElementPlus",
             nprogress: "NProgress",
             pinia: "Pinia",
@@ -127,7 +129,7 @@ function getPreviewConfig() {
 
 function getBuildPreviewConfig() {
   const config = {
-    root: path.resolve(__dirname, "./demoLib"),
+    root: path.resolve(__dirname, "./demoPreview"),
     base: "/",
     build: {
       outDir: path.resolve(__dirname, "./dist"),

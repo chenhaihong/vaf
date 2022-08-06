@@ -19,39 +19,32 @@ import { getUseLeftMenuStore } from "@/common/stores";
 
 export default {
   name: "VafSideBar",
-  components: {
-    VafLogo,
-    VafMainmenu,
-    VafSubMenuTree,
-  },
+  components: { VafLogo, VafMainmenu, VafSubMenuTree },
   watch: {
     "$route.matched": {
       immediate: true,
       handler(matched) {
-        // console.log(JSON.stringify(matched, null, 2));
-
-        // console.log(matched.map(item => item.path))
         if (!matched.length) return;
 
-        // 找到孙子路由的meta里的VafLeftmenuId
-        const VafLeftmenuId = matched[matched.length - 1].meta.VafLeftmenuId;
-        // console.log(VafLeftmenuId);
+        // 孙子路由的meta里的VafLeftmenuId,
+        // 即选中的子菜单的id
+        const selectedSubmenuId =
+          matched[matched.length - 1].meta?.VafLeftmenuId;
 
         const vafAppId = this.$vafAppId;
         const $leftmenuStore = getUseLeftMenuStore(vafAppId)();
 
-        // 从leftmenu中找出选中的主菜单
+        // 从leftmenu中回溯出出所有的父级菜单
         const mathedNodes = resolveMatchedNodes(
-          VafLeftmenuId,
+          selectedSubmenuId,
           $leftmenuStore.menus
         );
-        // console.log(JSON.stringify(mathedNodes, null, 2));
 
         if (!mathedNodes.length) return;
 
         $leftmenuStore.$patch({
           selectedMainmenuId: mathedNodes[0].id, // 选中的主菜单的id
-          selectedSubmenuId: VafLeftmenuId, // 选中的子菜单的id
+          selectedSubmenuId, // 选中的子菜单的id
         });
       },
     },

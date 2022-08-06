@@ -3,10 +3,11 @@
   "version": "0.0.11",
   "description": "Vue Admin Framework.",
   "author": "erye <erye@tiiit.cn>",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "dev:lib": "vite serve --mode development:lib",
-    "build": "rimraf ./dist/* && vite build && vite build --mode production:sourcemap",
+    "build": "rimraf ./dist/* && vite build && vite build --mode production:minified",
     "preview": "vite preview",
     "pub": "npm publish --access public --registry https://registry.npmjs.org/",
     "predev:lib": "npm run build",

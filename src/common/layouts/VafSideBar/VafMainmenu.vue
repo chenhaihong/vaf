@@ -9,10 +9,14 @@
         :class="{ 'is-active': selectedMainmenuId === item.id }"
         v-for="item in mainmenu"
         :key="item.path"
-        :title="item.label"
         @click="handleClick(item)"
       >
-        <a class="vaf-mainmenu__item__title" :href="item.path" @click.prevent>
+        <a
+          class="vaf-mainmenu__item__title"
+          :title="item.title"
+          :href="item.path"
+          @click.prevent
+        >
           {{ item.title }}
         </a>
       </li>
