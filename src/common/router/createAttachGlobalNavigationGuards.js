@@ -1,7 +1,7 @@
 import NProgress from "nprogress";
 
 import createAttachBeforeEach from "./createAttachBeforeEach";
-import attachAfterEach from "./attachAfterEach";
+import createAttachAfterEach from "./createAttachAfterEach";
 
 // 完整的导航解析流程，请阅读文档
 // https://router.vuejs.org/zh/guide/advanced/navigation-guards.html#%E5%AE%8C%E6%95%B4%E7%9A%84%E5%AF%BC%E8%88%AA%E8%A7%A3%E6%9E%90%E6%B5%81%E7%A8%8B
@@ -30,7 +30,7 @@ const createAttachGlobalNavigationGuards =
     // aftereach 文档
     // https://router.vuejs.org/zh/api/#aftereach
     if (!guards.afterEach) {
-      attachAfterEach($router, settingConfig);
+      createAttachAfterEach(vafAppId)($router, settingConfig);
     } else {
       // 如果用户自定义了守卫，则不添加内置的全局导航守卫，
       // 而是使用用户定义的导航守卫函数

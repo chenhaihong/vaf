@@ -26,7 +26,19 @@ export const createUseAuthStore = (vafAppId: string, dataFuncConfig: any) => {
         return [err, data];
       },
       async getUserinfo() {
+        this.isLoadingUserinfo = true;
         const [err, data] = await dataFuncConfig.getUserinfo();
+
+        // 问题:
+        // 因为使用的es模块加载, 所以首次打开应用执行登录操作, 做完登录操作后,
+        // 在跳往目标页面时, 会去import目标页面的es模块.
+        // 此时由于目标页面会加载完成, 而直接关闭loading组件, 会导致还在登录页停留.
+
+        // 处理方案:
+        // 需要监听路由变化, 如果已经加载并进入目标页面路由, 则关闭loading组件.
+        // 因为vue-router为提供解绑afterEach钩子的api,
+        // 所以在createAttachAfterEach文件里的afterEach钩子里面关闭loading.
+
         if (!err) {
           const { userinfo, roles } = data;
           this.userinfo = userinfo;

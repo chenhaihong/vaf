@@ -52,7 +52,6 @@ const createAttachBeforeEach = (vafAppId) => ($router) => {
       else if ([1, 2].includes(VafAuthLevel)) {
         // 2.3.1 未拉取用户信息，则拉取用户信息
         if (!$authStore.userinfo?.username) {
-          $authStore.isLoadingUserinfo = true;
           const [err] = await $authStore.getUserinfo();
 
           // 2.3.1.1 拉取信息失败
@@ -77,7 +76,6 @@ const createAttachBeforeEach = (vafAppId) => ($router) => {
           // 2.3.2.2 无访问权限
           else next("/403");
         }
-        $authStore.isLoadingUserinfo = false;
       }
       // 2.4 其他情况
       else {
