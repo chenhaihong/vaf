@@ -3,8 +3,8 @@ function renderTypeCheckbox(prop, typeProps = {}) {
     <el-checkbox
       v-model={this.model[prop]}
       onChange={(value) => this.handlePropChange(prop, value)}
-      {...typeProps}
-    ></el-checkbox>
+        {...typeProps}
+      ></el-checkbox>
   );
 }
 

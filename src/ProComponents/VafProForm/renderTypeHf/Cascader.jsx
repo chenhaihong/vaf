@@ -3,8 +3,8 @@ function renderTypeCascader(prop, typeProps = {}) {
     <el-cascader
       v-model={this.model[prop]}
       onChange={(value) => this.handlePropChange(prop, value)}
-      {...typeProps}
-    ></el-cascader>
+        {...typeProps}
+      ></el-cascader>
   );
 }
 

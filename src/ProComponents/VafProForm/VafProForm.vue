@@ -35,7 +35,7 @@ export default {
     // fields: 表单props. field类型参考表单的api
     fields: { type: Array, default: () => [] },
     // formProps: 可以传递给el-form的属性，参考el-form的API.
-    formProps: { type: Object, default: () => {} },
+    formProps: { type: Object, default: () => { } },
     // autoSubmit: 是否自动提交表单
     autoSubmit: { type: Boolean, default: false },
     // hideSubmit: 是否隐藏提交按钮

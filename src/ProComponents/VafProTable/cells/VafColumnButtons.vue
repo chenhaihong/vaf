@@ -9,18 +9,12 @@ export default {
       this.$emit("clickButton", command, row, index);
     },
     renderButtons(scope) {
-      const buttons = this.buttons.map((item, index) => {
+      const buttons = this.buttons.map((item) => {
         const { command, text, buttonProps } = item;
         const click = () => this.click(command, scope.row, scope.$index);
         return (
-          <el-button
-            key={command}
-            plain
-            size="small"
-            {...buttonProps}
-            onClick={click}
-          >
-            {item.text}
+          <el-button key={command} plain size="small"  {...buttonProps} onClick={click}>
+            {text}
           </el-button>
         );
       });
@@ -52,6 +46,7 @@ export default {
   .el-button-group {
     display: flex;
   }
+
   .el-button {
     flex: 1 1 100%;
   }

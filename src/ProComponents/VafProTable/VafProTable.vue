@@ -39,7 +39,7 @@ export default {
     // 表格的按钮列, 类型用户自定义
     buttons: { type: Array, default: () => [] },
     // 表格的按钮列的属性, 与element-plus的el-table-column属性保持一直, 参考https://element-plus.org/zh-CN/component/table.html#table-column-%E5%B1%9E%E6%80%A7
-    buttonsColumnProps: { type: Object, default: () => {} },
+    buttonsColumnProps: { type: Object, default: () => { } },
     // 表格的默认列表数据
     defaultData: { type: Array, default: () => [] },
     // 表格的默认分页数据

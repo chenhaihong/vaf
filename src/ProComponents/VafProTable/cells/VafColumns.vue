@@ -51,7 +51,7 @@ export default {
       // vue3 render+jsx 传递插槽
       // https://staging-cn.vuejs.org/guide/extras/render-function.html#passing-slots
       const slots = {
-        default: ({ row, $index }) => {
+        default: ({ $index }) => {
           return <span>{(pageIndex - 1) * pageSize + $index + 1}</span>;
         },
       };
@@ -85,9 +85,7 @@ export default {
     },
   },
   render() {
-    const cols = this.columns.map((item, index) => {
-      const pageIndex = this.pageIndex;
-      const pageSize = this.pageSize;
+    const cols = this.columns.map((item) => {
       const {
         /**
          * 列的类型,
@@ -124,13 +122,7 @@ export default {
          * vaf-pro-table 的自定义类型
          */
         case "any-slot":
-          const slotName = item.slot;
-          return this.renderTypeAnySlot(
-            prop,
-            label,
-            tableColumnProps,
-            slotName
-          );
+          return this.renderTypeAnySlot(prop, label, tableColumnProps, item.slot);
 
         /**
          * vaf-pro-table 的内置类型
@@ -153,4 +145,5 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+</style>
