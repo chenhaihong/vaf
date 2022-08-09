@@ -8,8 +8,6 @@ import { Search, Brush } from "@element-plus/icons-vue";
  * <vaf-pro-form :fields="fields" @submit="submit" />
  */
 
-import { ElMessage } from "element-plus";
-
 import renderAnySlot from "./renderAnySlot";
 import renderType from "./renderType";
 

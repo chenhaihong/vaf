@@ -17,11 +17,12 @@ export default defineConfig(({ command, mode }) => {
       vueJsx(),
       AutoImport({
         resolvers: [ElementPlusResolver()],
+        include: [/\.vue$/, /\.vue\?vue/, /\.jsx?$/, /\.tsx?$/],
       }),
       Components({
         dts: true,
         resolvers: [ElementPlusResolver()],
-        include: [/\.vue$/, /\.vue\?vue/, /\.jsx$/],
+        include: [/\.vue$/, /\.vue\?vue/, /\.jsx?$/, /\.tsx?$/],
       }),
       Mock(),
     ],

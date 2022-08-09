@@ -4,25 +4,9 @@
       <img v-if="logo" class="vaf-login__logo" :src="logo" alt="logo" />
       <p class="vaf-login__title">{{ name }}</p>
       <p class="vaf-login__slogan">{{ slogan }}</p>
-      <input
-        class="vaf-login__input"
-        type="text"
-        placeholder="用户名"
-        v-model="username"
-        @keyup.enter="login"
-      />
-      <input
-        class="vaf-login__input"
-        type="password"
-        placeholder="密码"
-        v-model="password"
-        @keyup.enter="login"
-      />
-      <button
-        class="vaf-login__btn"
-        :class="{ disabled: disabled }"
-        @click="login"
-      >
+      <input class="vaf-login__input" type="text" placeholder="用户名" v-model="username" @keyup.enter="login" />
+      <input class="vaf-login__input" type="password" placeholder="密码" v-model="password" @keyup.enter="login" />
+      <button class="vaf-login__btn" :class="{ disabled: disabled }" @click="login">
         <template v-if="isLoading">
           <i class="el-icon-loading"></i>
           <span>登陆中</span>
@@ -70,7 +54,7 @@ export default {
       const [err] = await authStore.login({ username, password });
       this.isLoading = false;
       if (err) return;
-      this.$message({ type: "success", message: `登录成功` });
+      ElMessage({ type: "success", message: `登录成功` });
       const { redirect } = this.$route.query;
       if (redirect) {
         const dec = decodeURIComponent(decodeURIComponent(redirect));
@@ -149,6 +133,7 @@ $glay: #ccc;
       border-color: #20a0ff;
     }
   }
+
   @include e(btn) {
     display: block;
     margin-bottom: 40px;
@@ -182,6 +167,7 @@ $glay: #ccc;
   :deep(a) {
     color: $glay;
     text-decoration: none;
+
     &:hover {
       text-decoration: underline;
     }
