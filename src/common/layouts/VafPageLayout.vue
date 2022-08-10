@@ -4,18 +4,9 @@
     <div class="vaf-page-layout__right">
       <VafNavbar class="vaf-page-layout__right__navbar" />
       <VafHistoryBar class="vaf-page-layout__right__history-bar" />
-      <el-scrollbar
-        ref="scrollbar"
-        :native="false"
-        always
-        :wrap-class="scrollbarWrapId"
-      >
+      <el-scrollbar ref="scrollbar" :native="false" always :wrap-class="scrollbarWrapId">
         <router-view v-slot="{ Component, route }">
-          <transition
-            :name="route.meta.VafTransition || 'vaf-slide-left'"
-            mode="out-in"
-            appear
-          >
+          <transition :name="route.meta.VafTransition || 'vaf-slide-left'" mode="out-in" appear>
             <!-- 
               keep-alive源码
               https://github.com/vuejs/core/blob/main/packages/runtime-core/src/components/KeepAlive.ts
@@ -24,10 +15,7 @@
               https://github.com/vuejs/core/blob/fb3bfde26468f3fc455d09599ae526c72dd053ee/packages/runtime-core/src/components/KeepAlive.ts#L228
              -->
             <keep-alive :include="include">
-              <component
-                :is="wrap(route.fullPath, Component)"
-                :key="route.fullPath"
-              />
+              <component :is="wrap(route.fullPath, Component)" :key="route.fullPath" />
             </keep-alive>
           </transition>
         </router-view>

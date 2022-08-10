@@ -1,4 +1,3 @@
-import "element-plus/dist/index.css";
 import "../demo/index.css";
 
 import vaf, { createVafApp, getRequest } from "../src/index.js";

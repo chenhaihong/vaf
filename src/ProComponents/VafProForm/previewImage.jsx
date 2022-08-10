@@ -4,7 +4,7 @@ import { ElImageViewer } from "element-plus";
 export default function previewImage(imageUrls, initialIndex = 0) {
   let app;
   const root = document.createElement("div");
-  const onClose = () => {
+  const close = () => {
     app.unmount();
   };
   app = createApp({
@@ -14,7 +14,7 @@ export default function previewImage(imageUrls, initialIndex = 0) {
           url-list={imageUrls}
           initialIndex={initialIndex}
           teleported={true}
-          onClose={onClose}
+          onClose={close}
         ></el-image-viewer>
       );
     },
@@ -28,5 +28,5 @@ export default function previewImage(imageUrls, initialIndex = 0) {
   app.use(ElImageViewer);
   app.mount(root);
 
-  return onClose;
+  return close;
 }

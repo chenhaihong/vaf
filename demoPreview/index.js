@@ -1,4 +1,3 @@
-import "element-plus/dist/index.css";
 import "../demo/index.css";
 
 import "../dist/index.css";

@@ -4,6 +4,8 @@
  * <vaf-pro-table :dataFunc="getList" :columns="cols" :buttons="oprts" :pagination="pagination" />
  */
 
+import { ElMessage } from 'element-plus';
+
 import VafColumnButtons from "./cells/VafColumnButtons.vue";
 import VafColumns from "./cells/VafColumns.vue";
 

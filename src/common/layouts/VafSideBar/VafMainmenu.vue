@@ -1,22 +1,9 @@
 <template>
-  <el-scrollbar
-    class="el-scrollbar--vaf-mainmenu"
-    wrap-class="el-scrollbar__wrap--vaf-mainmenu"
-  >
+  <el-scrollbar class="el-scrollbar--vaf-mainmenu" wrap-class="el-scrollbar__wrap--vaf-mainmenu">
     <ul class="vaf-mainmenu">
-      <li
-        class="vaf-mainmenu__item"
-        :class="{ 'is-active': selectedMainmenuId === item.id }"
-        v-for="item in mainmenu"
-        :key="item.path"
-        @click="handleClick(item)"
-      >
-        <a
-          class="vaf-mainmenu__item__title"
-          :title="item.title"
-          :href="item.path"
-          @click.prevent
-        >
+      <li class="vaf-mainmenu__item" :class="{ 'is-active': selectedMainmenuId === item.id }" v-for="item in mainmenu"
+        :key="item.path" @click="handleClick(item)">
+        <a class="vaf-mainmenu__item__title" :title="item.title" :href="item.path" @click.prevent>
           {{ item.title }}
         </a>
       </li>

@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import { ElMessage } from 'element-plus';
+
 import { getUseAuthStore } from "@/common/stores";
 
 export default {

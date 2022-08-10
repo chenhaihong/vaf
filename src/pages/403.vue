@@ -6,9 +6,7 @@
           <template #extra>
             <div class="extra--vaf">
               <span>{{ timeout }}秒后自动返回首页，</span>
-              <el-button type="primary" @click="$router.replace('/')"
-                >立即返回</el-button
-              >
+              <el-button type="primary" @click="$router.replace('/')">立即返回</el-button>
             </div>
           </template>
         </el-result>

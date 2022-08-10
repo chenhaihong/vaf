@@ -1,7 +1,8 @@
+import "element-plus/dist/index.css";
 import "@/common/style/index.scss";
 
 import { createApp } from "vue";
-import { vLoading } from "element-plus";
+import ElementPlus from "element-plus";
 
 import installUseStores from "@/common/stores";
 import { createMakeRouter } from "@/common/router";
@@ -33,7 +34,7 @@ export const createVafApp = (vafAppConfig = {}) => {
   app.config.globalProperties.$vafAppId = vafAppId;
   app.config.globalProperties.$vafRequest = request;
 
-  app.directive("loading", vLoading);
+  app.use(ElementPlus);
   app.use(installVafProComponents);
   app.use(installVafComponents);
   app.use(router);

@@ -3,29 +3,12 @@ import path from "path";
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
-import AutoImport from "unplugin-auto-import/vite";
-import Components from "unplugin-vue-components/vite";
-import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
-
 import Mock from "./vite-plugin-mock";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
   const config = {
-    plugins: [
-      vue(),
-      vueJsx(),
-      AutoImport({
-        resolvers: [ElementPlusResolver()],
-        include: [/\.vue$/, /\.vue\?vue/, /\.jsx?$/, /\.tsx?$/],
-      }),
-      Components({
-        dts: true,
-        resolvers: [ElementPlusResolver()],
-        include: [/\.vue$/, /\.vue\?vue/, /\.jsx?$/, /\.tsx?$/],
-      }),
-      Mock(),
-    ],
+    plugins: [vue(), vueJsx(), Mock()],
     css: {
       preprocessorOptions: {
         scss: { additionalData: `@import "@/common/scss/index.scss";` },
@@ -40,6 +23,7 @@ export default defineConfig(({ command, mode }) => {
     if (mode === "preview") {
       commandConfig = getBuildPreviewConfig();
     } else {
+      console.log(command, mode);
       commandConfig = getBuildConfig(mode);
     }
   } else if (command === "serve") {
@@ -80,6 +64,7 @@ function getServeConfig(mode) {
 
 function getBuildConfig(mode) {
   const isMinified = "production:minified" === mode;
+  const withMin = isMinified ? ".min" : "";
   const config = {
     build: {
       lib: {
@@ -87,7 +72,6 @@ function getBuildConfig(mode) {
         name: "Vaf",
         formats: ["es", "umd"],
         fileName: (format) => {
-          const withMin = isMinified ? ".min" : "";
           return `vaf.${format + withMin}.js`;
         },
       },
@@ -98,8 +82,10 @@ function getBuildConfig(mode) {
       rollupOptions: {
         // 确保外部化处理那些你不想打包进库的依赖
         external: [
+          "@element-plus/icons-vue",
           "axios",
           "element-plus",
+          "element-plus/dist/index.css",
           "nprogress",
           "pinia",
           "vue",
@@ -110,17 +96,19 @@ function getBuildConfig(mode) {
           exports: "named",
           dir: path.resolve(__dirname, "./dist"),
           // Library Mode: support custom output css file name #8115
-          // https://github.com/vitejs/vite/issues/8115
-          assetFileNames: (chunkInfo) => {
-            if (chunkInfo.name === "style.css") {
-              const withMin = isMinified ? ".min" : "";
+          // https://github.com/vitejs/vite/issues/8115#issuecomment-1124815005
+          assetFileNames: (assetInfo) => {
+            if (assetInfo.name === "style.css") {
               return `index${withMin}.css`;
             }
+            return assetInfo.name;
           },
           // 在 UMD 构建模式下为这些外部化的依赖提供一个全局变量
           globals: {
+            "@element-plus/icons-vue": "ElementPlusIconsVue",
             axios: "axios",
             "element-plus": "ElementPlus",
+            "element-plus/dist/index.css": "",
             nprogress: "NProgress",
             pinia: "Pinia",
             vue: "Vue",
@@ -150,6 +138,19 @@ function getBuildPreviewConfig() {
     base: "/",
     build: {
       outDir: path.resolve(__dirname, "./dist"),
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            ElementPlusIconsVue: ["@element-plus/icons-vue"],
+            ElementPlus: ["element-plus"],
+            ElementPlusStyle: ["element-plus/dist/index.css"],
+          },
+          globals: {
+            "@element-plus/icons-vue": "ElementPlusIconsVue",
+            "element-plus": "ElementPlus",
+          },
+        },
+      },
     },
   };
   return config;

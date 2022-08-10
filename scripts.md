@@ -10,11 +10,11 @@
 
 ## npm run build
 
-构建 vaf 包，包含 production 与 production:sourcemap 两种方式。
+构建 vaf 包，包含 `非压缩混淆版` 与 `压缩混淆版` 两种方式。
 
 ## npm run preview
 
-构建 vaf 包，构建预览代码，并开发预览服务器。
+构建 vaf 包，构建预览代码，并开启预览服务器。
 
 ## npm run pub
 
