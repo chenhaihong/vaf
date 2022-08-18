@@ -5,16 +5,19 @@
 
 通用的管理后台框架。
 
-## 安装
+## 搭建 vaf 项目
+
+执行下面命令生成代码模板，
 
 ```shell
-$ npm install @erye/vaf
+# 在当前工作空间下生成
+$ npm create @erye/vaf
 
-// 安装 peerDependencies
-$ npm install axios element-plus nprogress pinia vue vue-router
+# 或在当前工作空间的helloworld目录下生成
+$ npm create @erye/vaf helloworld
 ```
 
-## 使用
+## 使用示例
 
 <details>
   <summary>创建 VafApp 实例</summary>
@@ -23,7 +26,12 @@ $ npm install axios element-plus nprogress pinia vue vue-router
 import "element-plus/dist/index.css";
 import "@erye/vaf/dist/index.css";
 
-import { createVafApp } from "@erye/vaf";
+import {
+  createVafApp,
+  installVafComponents,
+  installVafProComponents,
+  getRequest,
+} from "@erye/vaf";
 
 const { app } = createVafApp({
   settingConfig: {
@@ -113,6 +121,9 @@ const { app } = createVafApp({
     // onError() {},
   },
 });
+app.use(ElementPlus);
+app.use(installVafProComponents);
+app.use(installVafComponents);
 app.mount("#app");
 ```
 
