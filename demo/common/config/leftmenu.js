@@ -1,6 +1,13 @@
-export default {
-  logo: "https://map.tiiit.cn/deer.png", // 侧边栏上的logo的地址
-  menus: [
+function sleep(timeout = 1000) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, timeout);
+  });
+}
+async function getMenus() {
+  await sleep();
+  const menus = [
     {
       // router-link示例
       type: "router-link",
@@ -93,12 +100,6 @@ export default {
       authLevel: 0,
     },
     {
-      type: "http-link",
-      path: "https://staging-cn.vuejs.org/",
-      title: "外链Vue",
-      authLevel: 0,
-    },
-    {
       // 菜单组示例
       // router-link + children
       type: "router-link",
@@ -123,5 +124,17 @@ export default {
         },
       ],
     },
-  ],
+    {
+      type: "http-link",
+      path: "https://staging-cn.vuejs.org/",
+      title: "外链Vue",
+      authLevel: 0,
+    },
+  ];
+  return [null, menus];
+}
+
+export default {
+  logo: "https://map.tiiit.cn/deer.png", // 侧边栏上的logo的地址
+  menus: getMenus,
 };

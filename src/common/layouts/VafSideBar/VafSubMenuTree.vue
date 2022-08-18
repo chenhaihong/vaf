@@ -1,28 +1,15 @@
 <template>
   <div class="vaf-submenu-tree-wrap">
     <div class="vaf-first-nav">
-      <div
-        v-if="selectedMainmenu"
-        class="vaf-first-nav__name"
-        @click.prevent="clickSelectedMainmenu(selectedMainmenu)"
-      >
+      <div v-if="selectedMainmenu" class="vaf-first-nav__name" @click.prevent="clickSelectedMainmenu(selectedMainmenu)">
         {{ selectedMainmenu ? selectedMainmenu.title : "" }}
       </div>
     </div>
     <div class="vaf-submenu-tree">
       <el-scrollbar always>
-        <el-tree
-          ref="subMenuTree"
-          :data="submenu"
-          empty-text="无子菜单"
-          node-key="id"
-          :props="{ children: 'children', label: 'title' }"
-          default-expand-all
-          highlight-current
-          :indent="8"
-          :current-node-key="selectedSubmenuId"
-          @node-click="clickTreeNode"
-        >
+        <el-tree ref="subMenuTree" :data="submenu" empty-text="无菜单" node-key="id"
+          :props="{ children: 'children', label: 'title' }" default-expand-all highlight-current :indent="8"
+          :current-node-key="selectedSubmenuId" @node-click="clickTreeNode">
           <template #default="{ data }">
             <a class="custom-label" :href="data.path" @click.prevent>
               <span class="custom-label__text">
@@ -184,17 +171,17 @@ export default {
       text-decoration: none;
       color: $subMenuContentColor;
 
-      & > .custom-label__text {
+      &>.custom-label__text {
         z-index: 1;
         display: inline;
       }
     }
   }
 
-  .el-tree-node.is-current > .el-tree-node__content {
+  .el-tree-node.is-current>.el-tree-node__content {
     background: $subMenuContentBgColorActive;
 
-    .custom-label > .custom-label__text {
+    .custom-label>.custom-label__text {
       color: $subMenuContentColorActive;
     }
   }

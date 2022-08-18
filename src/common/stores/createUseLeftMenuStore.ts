@@ -8,14 +8,15 @@ export const createUseLeftMenuStore = (
   vafAppId: string,
   leftmenuConfig: any = {}
 ) => {
-  const {
-    menus = [], // 左侧菜单数据
-  } = leftmenuConfig;
+  const menus: Menu[] | MenusFunc = leftmenuConfig?.menus || []; // 左侧菜单数据
+  const isArr = Array.isArray(menus);
 
   const useLeftmenuStore = defineStore(`VafLeftMenuStore--${vafAppId}`, {
     state(): State {
       return {
-        menus,
+        shouldLoadMenus: !isArr,
+        loadingMenus: false,
+        menus: isArr ? menus : [],
         selectedMainmenuId: "", // 选中的主菜单的id
         selectedSubmenuId: "", // 选中的子菜单的id
       };
@@ -25,7 +26,6 @@ export const createUseLeftMenuStore = (
         const authStore = getUseAuthStore(vafAppId)();
         const username = authStore.userinfo?.username;
         const roles = authStore.roles;
-
         return state.menus
           .map((item) => {
             // 取菜单的第一层
@@ -69,7 +69,19 @@ export const createUseLeftMenuStore = (
         return mainmenu.find((item: Menu) => item.id === selectedMainmenuId);
       },
     },
-    actions: {},
+    actions: {
+      async loadMenus() {
+        if (this.loadingMenus) return [null, null];
+        this.loadingMenus = true;
+        const [err, data] = await (menus as MenusFunc)();
+        this.loadingMenus = false;
+        if (!err) {
+          this.shouldLoadMenus = false;
+          this.menus = data;
+        }
+        return [err, data];
+      },
+    },
   });
 
   useStores[vafAppId] = useLeftmenuStore;
@@ -100,10 +112,18 @@ function getPermittedSubmenu(
 }
 
 interface State {
+  shouldLoadMenus: boolean;
+  loadingMenus: boolean;
   menus: Menu[];
   selectedMainmenuId: string;
   selectedSubmenuId: string;
 }
+
+interface MenusFunc {
+  (): MenusFuncResult | Promise<MenusFuncResult>;
+}
+
+type MenusFuncResult = [null | undefined | Error, Menu[]];
 
 interface Menu {
   type: MenuType;

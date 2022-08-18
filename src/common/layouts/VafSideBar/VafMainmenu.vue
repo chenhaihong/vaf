@@ -1,6 +1,12 @@
 <template>
   <el-scrollbar class="el-scrollbar--vaf-mainmenu" wrap-class="el-scrollbar__wrap--vaf-mainmenu">
-    <ul class="vaf-mainmenu">
+    <div v-if="loadingMenus" class="vaf-mainmenu--loading">
+      <span>加载中...</span>
+    </div>
+    <div v-else-if="shouldLoadMenus" class="vaf-mainmenu--load">
+      <el-button type="primary" size="small" plain @click="loadMenus">加载菜单</el-button>
+    </div>
+    <ul v-else class="vaf-mainmenu">
       <li class="vaf-mainmenu__item" :class="{ 'is-active': selectedMainmenuId === item.id }" v-for="item in mainmenu"
         :key="item.path" @click="handleClick(item)">
         <a class="vaf-mainmenu__item__title" :title="item.title" :href="item.path" @click.prevent>
@@ -18,6 +24,14 @@ import confirmLink from "@/common/helpers/confirmLink.vue";
 export default {
   name: "VafMainmenu",
   computed: {
+    loadingMenus() {
+      const store = getUseLeftMenuStore(this.$vafAppId)();
+      return store.loadingMenus;
+    },
+    shouldLoadMenus() {
+      const store = getUseLeftMenuStore(this.$vafAppId)();
+      return store.shouldLoadMenus;
+    },
     mainmenu() {
       const store = getUseLeftMenuStore(this.$vafAppId)();
       return store.mainmenu;
@@ -27,7 +41,17 @@ export default {
       return store.selectedMainmenuId;
     },
   },
+  created() {
+    this.loadMenus()
+  },
   methods: {
+    loadMenus() {
+      const store = getUseLeftMenuStore(this.$vafAppId)();
+      if (store.shouldLoadMenus) {
+        store.loadMenus();
+      }
+
+    },
     handleClick(item) {
       switch (item.type) {
         case "router-link": // (1) 如果是Router Link，进入下个路由
@@ -63,6 +87,18 @@ export default {
 }
 
 @include b(mainmenu) {
+  @include m(loading) {
+    @include flex(row, nowrap, center, center);
+    padding-top: 12px;
+    color: var(--el-text-color-secondary);
+    font-size: var(--el-font-size-base);
+  }
+
+  @include m(load) {
+    @include flex(row, nowrap, center, center);
+    padding-top: 12px;
+  }
+
   @include e(item) {
     & {
       cursor: pointer;
