@@ -1,14 +1,10 @@
-import "element-plus/dist/index.css";
 import "@/common/style/index.scss";
 
 import { createApp } from "vue";
-import ElementPlus from "element-plus";
 
 import installUseStores from "@/common/stores";
 import { createMakeRouter } from "@/common/router";
 import { makeRequest } from "@/common/helpers/request";
-import installVafProComponents from "@/ProComponents";
-import installVafComponents from "@/components";
 
 import VafApp from "./VafApp.vue";
 
@@ -25,21 +21,17 @@ export const createVafApp = (vafAppConfig = {}) => {
   } = vafAppConfig;
 
   const app = createApp(VafApp);
-  app.use(installUseStores, { vafAppId, leftmenuConfig, dataFuncConfig });
+  vafApps[vafAppId] = app;
 
-  const router = createMakeRouter(vafAppId)(routeConfig, settingConfig); // 创建router
+  app.use(installUseStores, { vafAppId, leftmenuConfig, dataFuncConfig }); // 先创建store
+  const router = createMakeRouter(vafAppId)(routeConfig, settingConfig); // 先创建router
   const request = makeRequest(vafAppId); // 再创建request
+  app.use(router);
 
   app.config.globalProperties.$vafAppConfig = vafAppConfig;
   app.config.globalProperties.$vafAppId = vafAppId;
   app.config.globalProperties.$vafRequest = request;
 
-  app.use(ElementPlus);
-  app.use(installVafProComponents);
-  app.use(installVafComponents);
-  app.use(router);
-
-  vafApps[vafAppId] = app;
   return { app, router, request };
 };
 

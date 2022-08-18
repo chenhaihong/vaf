@@ -71,7 +71,9 @@ export const createUseLeftMenuStore = (
     },
     actions: {},
   });
+
   useStores[vafAppId] = useLeftmenuStore;
+  return useLeftmenuStore;
 };
 
 export const getUseLeftMenuStore = (vafAppId: string) => {

@@ -59,6 +59,7 @@ export const createUseAuthStore = (vafAppId: string, dataFuncConfig: any) => {
   });
 
   useStores[vafAppId] = useAuthStore;
+  return useAuthStore;
 };
 
 export const getUseAuthStore = (vafAppId: string) => {

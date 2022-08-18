@@ -54,6 +54,7 @@ export const createUsePageHistoryStore = (vafAppId: string) => {
   });
 
   useStores[vafAppId] = useRouteHistoryStore;
+  return useRouteHistoryStore;
 };
 
 export const getUsePageHistoryStore = (vafAppId: string) => {

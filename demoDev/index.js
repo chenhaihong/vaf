@@ -1,6 +1,13 @@
+import "element-plus/dist/index.css";
 import "../demo/index.css";
 
-import vaf, { createVafApp, getRequest } from "../src/index.js";
+import ElementPlus from "element-plus";
+import vaf, {
+  createVafApp,
+  installVafComponents,
+  installVafProComponents,
+  getRequest,
+} from "../src/index.js";
 
 import vafAppId from "../demo/common/config/vafAppId";
 import leftmenuConfig from "../demo/common/config/leftmenu";
@@ -29,5 +36,8 @@ const { app } = createVafApp({
   leftmenuConfig,
   routeConfig,
 });
+app.use(ElementPlus);
+app.use(installVafProComponents);
+app.use(installVafComponents);
 app.use(installDirectives);
 app.mount("#app");

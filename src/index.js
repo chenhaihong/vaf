@@ -1,4 +1,8 @@
-export default { name: "@erye/vaf", author: "erye" };
+export default {
+  name: "@erye/vaf",
+  author: "erye",
+  url: "https://www.npmjs.com/package/@erye/vaf",
+};
 
 export { createVafApp, getVafApp } from "./createVafApp";
 export { getPinia } from "@/common/stores";
