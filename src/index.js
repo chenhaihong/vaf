@@ -5,7 +5,7 @@ export default {
 };
 
 export { createVafApp, getVafApp } from "./createVafApp";
-export { getPinia } from "@/common/stores";
+export { getPinia, getUseStores } from "@/common/stores";
 export { getRouter } from "@/common/router";
 export { getRequest } from "@/common/helpers/request";
 export {
