@@ -14,6 +14,7 @@ async function getMenus() {
       id: "/home",
       path: "/home",
       title: "首页",
+      icon: "House",
       authLevel: 1,
       children: [
         {
@@ -44,6 +45,7 @@ async function getMenus() {
       id: "/super-admin",
       path: "/super-admin/api/admin-api",
       title: "页面路由",
+      // icon: "DocumentCopy",
       authLevel: 0,
       children: [
         {
@@ -97,6 +99,7 @@ async function getMenus() {
       id: "/helloworld",
       path: "/helloworld",
       title: "原生路由",
+      // icon: "Document",
       authLevel: 0,
     },
     {
@@ -106,6 +109,7 @@ async function getMenus() {
       id: "/pro-components",
       path: "/pro-components/vaf-pro-form",
       title: "Pro组件",
+      // icon: "SetUp",
       authLevel: 0,
       children: [
         {
@@ -128,6 +132,7 @@ async function getMenus() {
       type: "http-link",
       path: "https://staging-cn.vuejs.org/",
       title: "外链Vue",
+      // icon: "Link",
       authLevel: 0,
     },
   ];

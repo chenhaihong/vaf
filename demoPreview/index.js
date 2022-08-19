@@ -3,6 +3,7 @@ import "../dist/index.css";
 import "../demo/index.css";
 
 import ElementPlus from "element-plus";
+import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import vaf, {
   createVafApp,
   installVafComponents,
@@ -37,6 +38,9 @@ const { app } = createVafApp({
   routeConfig,
 });
 app.use(ElementPlus);
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component);
+}
 app.use(installVafProComponents);
 app.use(installVafComponents);
 app.use(installDirectives);

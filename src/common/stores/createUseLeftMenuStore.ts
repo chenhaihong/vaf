@@ -39,6 +39,7 @@ export const createUseLeftMenuStore = (
               id: item.id,
               path: item.path,
               title: item.title,
+              icon: item.icon,
               authLevel: item.authLevel,
               authRoles: item.authRoles,
             };
@@ -156,6 +157,7 @@ interface Menu {
   id: string;
   path: string;
   title: string;
+  icon?: string;
   authLevel?: AuthLevel;
   authRoles?: string[];
   children?: undefined | null | Menu[];

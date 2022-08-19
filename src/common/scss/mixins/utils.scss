@@ -11,7 +11,7 @@
     #{$selector}::before,
     #{$selector}::after {
       display: table;
-      content: '';
+      content: "";
     }
     #{$selector}::after {
       clear: both;
@@ -25,7 +25,7 @@
   @at-root {
     #{$selector}::after {
       display: inline-block;
-      content: '';
+      content: "";
       height: 100%;
       vertical-align: middle;
     }
@@ -36,7 +36,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  // word-wrap: normal;
+  word-wrap: normal;
 }
 
 // 允许点击时的状态
@@ -64,7 +64,12 @@
 //----------------------------------------
 //----------------flex布局-----------------
 //----------------------------------------
-@mixin flex($direction: row, $wrap: nowrap, $mainAxisAlignment: center, $crossAxisAlignment: center) {
+@mixin flex(
+  $direction: row,
+  $wrap: nowrap,
+  $mainAxisAlignment: center,
+  $crossAxisAlignment: center
+) {
   display: flex;
 
   flex-direction: $direction;
@@ -73,7 +78,12 @@
   align-items: $crossAxisAlignment;
 }
 
-@mixin inline-flex($direction: row, $wrap: nowrap, $mainAxisAlignment: center, $crossAxisAlignment: center) {
+@mixin inline-flex(
+  $direction: row,
+  $wrap: nowrap,
+  $mainAxisAlignment: center,
+  $crossAxisAlignment: center
+) {
   display: inline-flex;
 
   flex-direction: $direction;

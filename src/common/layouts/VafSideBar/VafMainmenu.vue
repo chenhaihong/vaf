@@ -7,12 +7,17 @@
       <el-button type="primary" size="small" plain @click="loadMenus">加载菜单</el-button>
     </div>
     <ul v-else class="vaf-mainmenu">
-      <li class="vaf-mainmenu__item" :class="{ 'is-active': selectedMainmenuId === item.id }" v-for="item in mainmenu"
-        :key="item.path" @click="handleClick(item)">
-        <a class="vaf-mainmenu__item__title" :title="item.title" :href="item.path" @click.prevent>
-          {{ item.title }}
+      <template v-for="item in mainmenu" :key="item.path">
+        <a class="vaf-mainmenu__link" :title="item.title" :href="item.path" @click.prevent>
+          <li class="vaf-mainmenu__item" :class="{ 'is-active': selectedMainmenuId === item.id }"
+            @click="handleClick(item)">
+            <el-icon v-if="item.icon">
+              <component :is="item.icon" />
+            </el-icon>
+            <span class="vaf-mainmenu__item__title">{{ item.title }}</span>
+          </li>
         </a>
-      </li>
+      </template>
     </ul>
   </el-scrollbar>
 </template>
@@ -98,59 +103,49 @@ export default {
     padding-top: 12px;
   }
 
+  @include e(link) {
+    text-decoration: none;
+    color: $mainMenuTextColor;
+  }
+
   @include e(item) {
     & {
       cursor: pointer;
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
+      @include flex(row, nowrap, flex-start, center);
       padding: 0 $mainMenuPadding;
       height: $mainMenuHeight;
       line-height: $mainMenuHeight;
+      font-size: $mainMenuTextFontSize;
       font-weight: 700;
       color: $mainMenuTextColor;
+
+      .el-icon {
+        margin-right: $mainMenuTextMarginLeft;
+      }
     }
 
     &:hover {
       background: $mainMenuTextColorHover;
-      // .main-menu-icon {
-      //   color: $mainMenuIconColorHover;
-      // }
     }
 
     @include when(active) {
       color: $mainMenuTextColorActive;
-
-      @include e(item__title) {
-        color: $mainMenuTextColorActive;
-      }
-
-      // .main-menu-icon {
-      //   color: $mainMenuIconColorActive;
-      // }
     }
   }
 
   @include e(item__title) {
-    // margin-left: $mainMenuTextMarginLeft;
-    font-size: $mainMenuTextFontSize;
-    overflow: hidden;
-    word-wrap: normal;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    text-decoration: none;
-    color: $mainMenuTextColor;
+    @include utils-ellipsis;
   }
 }
 
-.hideSidebar {
-  .vaf-mainmenu__item {
-    padding: 0;
-    justify-content: center;
+// .hideSidebar {
+//   .vaf-mainmenu__item {
+//     padding: 0;
+//     justify-content: center;
 
-    .vaf-mainmenu__item__title {
-      display: none;
-    }
-  }
-}
+//     .vaf-mainmenu__item__title {
+//       display: none;
+//     }
+//   }
+// }
 </style>
