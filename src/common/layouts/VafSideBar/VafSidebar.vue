@@ -26,50 +26,13 @@ export default {
       handler(matched) {
         if (!matched.length) return;
 
-        // 孙子路由的meta里的VafLeftmenuId,
-        // 即选中的子菜单的id
-        const selectedSubmenuId =
-          matched[matched.length - 1].meta?.VafLeftmenuId;
-
         const vafAppId = this.$vafAppId;
         const $leftmenuStore = getUseLeftMenuStore(vafAppId)();
-
-        // 从leftmenu中回溯出出所有的父级菜单
-        const mathedNodes = resolveMatchedNodes(
-          selectedSubmenuId,
-          $leftmenuStore.menus
-        );
-
-        if (!mathedNodes.length) return;
-
-        $leftmenuStore.$patch({
-          selectedMainmenuId: mathedNodes[0].id, // 选中的主菜单的id
-          selectedSubmenuId, // 选中的子菜单的id
-        });
+        $leftmenuStore.updateSelectedId();
       },
     },
   },
 };
-
-// 从数组中查找出元素的所有父节点
-function resolveMatchedNodes(id, nodes) {
-  const result = [];
-  for (let i = 0; i < nodes.length; i++) {
-    const node = nodes[i];
-    if (node.id === id) {
-      const { children, ...self } = node;
-      result.push({ ...self });
-    } else if (node.children) {
-      const matched = resolveMatchedNodes(id, node.children);
-      if (matched.length) {
-        const { children, ...self } = node;
-        result.push({ ...self });
-        result.push(...matched);
-      }
-    }
-  }
-  return result;
-}
 </script>
 
 <style lang="scss">

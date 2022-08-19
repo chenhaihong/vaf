@@ -50,7 +50,6 @@ export default {
       if (store.shouldLoadMenus) {
         store.loadMenus();
       }
-
     },
     handleClick(item) {
       switch (item.type) {

@@ -1,6 +1,11 @@
+import { unref } from "vue";
 import { defineStore } from "pinia";
-import { getUseAuthStore } from "./createUseAuthStore";
+
+import { getRouter } from "@/common/router";
 import hasIntersect from "@/common/helpers/hasIntersect";
+import resolveMatchedParentNodes from "@/common/helpers/resolveMatchedParentNodes";
+
+import { getUseAuthStore } from "./createUseAuthStore";
 
 const useStores = {};
 
@@ -78,8 +83,29 @@ export const createUseLeftMenuStore = (
         if (!err) {
           this.shouldLoadMenus = false;
           this.menus = data;
+          this.updateSelectedId();
         }
         return [err, data];
+      },
+      updateSelectedId() {
+        const router = getRouter(vafAppId);
+        const matched = unref(router.currentRoute).matched;
+
+        // 孙子路由的meta里的VafLeftmenuId,
+        // 即选中的子菜单的id
+        const selectedSubmenuId =
+          matched[matched.length - 1].meta?.VafLeftmenuId;
+
+        // 从leftmenu中回溯出所有的父级菜单
+        const mathedNodes = resolveMatchedParentNodes(
+          selectedSubmenuId,
+          this.menus
+        );
+
+        if (!mathedNodes.length) return;
+
+        this.selectedMainmenuId = mathedNodes[0].id; // 选中的主菜单的id
+        this.selectedSubmenuId = selectedSubmenuId; // 选中的子菜单的id
       },
     },
   });
