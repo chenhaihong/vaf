@@ -1,9 +1,10 @@
 <template>
   <div class="vaf-submenu-tree-wrap">
     <div class="vaf-first-nav">
-      <div v-if="selectedMainmenu" class="vaf-first-nav__name" @click.prevent="clickSelectedMainmenu(selectedMainmenu)">
+      <a v-if="selectedMainmenu" class="vaf-first-nav__name" @click.prevent="clickSelectedMainmenu(selectedMainmenu)"
+        :href="resolveMenuHref(selectedMainmenu)">
         {{ selectedMainmenu ? selectedMainmenu.title : "" }}
-      </div>
+      </a>
     </div>
     <div class="vaf-submenu-tree">
       <el-scrollbar always>
@@ -11,7 +12,7 @@
           :props="{ children: 'children', label: 'title' }" default-expand-all highlight-current :indent="8"
           :current-node-key="selectedSubmenuId" @node-click="clickTreeNode">
           <template #default="{ data }">
-            <a class="custom-label" :href="data.path" @click.prevent>
+            <a class="custom-label" :href="resolveMenuHref(data)" @click.prevent>
               <span class="custom-label__text">
                 {{ data.title }}
               </span>
@@ -56,6 +57,9 @@ export default {
   methods: {
     clickSelectedMainmenu(menu) {
       this.$router.push(menu.path);
+    },
+    resolveMenuHref(menu) {
+      return this.$router.resolve(menu.path)?.href || menu.path;
     },
     async clickTreeNode(item) {
       // (1) 如果item包含children，则直接展开
@@ -122,6 +126,8 @@ export default {
     word-wrap: normal;
     white-space: nowrap;
     text-overflow: ellipsis;
+    text-decoration: none;
+    color: $subMenuContentColor;
 
     &:hover {
       cursor: pointer;

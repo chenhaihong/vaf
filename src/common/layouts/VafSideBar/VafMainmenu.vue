@@ -8,7 +8,7 @@
     </div>
     <ul v-else class="vaf-mainmenu">
       <template v-for="item in mainmenu" :key="item.path">
-        <a class="vaf-mainmenu__link" :title="item.title" :href="item.path" @click.prevent>
+        <a class="vaf-mainmenu__link" :title="item.title" :href="resolveMenuHref(item)" @click.prevent>
           <li class="vaf-mainmenu__item" :class="{ 'is-active': selectedMainmenuId === item.id }"
             @click="handleClick(item)">
             <el-icon v-if="item.icon">
@@ -55,6 +55,9 @@ export default {
       if (store.shouldLoadMenus) {
         store.loadMenus();
       }
+    },
+    resolveMenuHref(menu) {
+      return this.$router.resolve(menu.path)?.href || menu.path;
     },
     handleClick(item) {
       switch (item.type) {
