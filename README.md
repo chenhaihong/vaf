@@ -7,7 +7,7 @@
 
 ## 快速搭建 vaf 项目
 
-执行下面命令生成代码模板，
+执行下面命令，使用 [`@erye/create-vaf`](https://www.npmjs.com/package/@erye/create-vaf) 生成代码模板，
 
 ```shell
 # 在当前工作空间下生成
@@ -26,6 +26,8 @@ $ npm create @erye/vaf helloworld
 import "element-plus/dist/index.css";
 import "@erye/vaf/dist/index.css";
 
+import ElementPlus from "element-plus";
+import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import {
   createVafApp,
   installVafComponents,
@@ -122,6 +124,9 @@ const { app } = createVafApp({
   },
 });
 app.use(ElementPlus);
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component);
+}
 app.use(installVafProComponents);
 app.use(installVafComponents);
 app.mount("#app");
