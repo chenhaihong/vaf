@@ -117,10 +117,12 @@ const { app } = createVafApp({
       },
     ],
     // 路由守卫函数参数与VueRouter的保持一致 https://router.vuejs.org/zh/api/#aftereach
-    // beforeEach() {}, // 如果设置了，会覆盖内置的beforeEach守卫
-    // afterEach() {},// 如果设置了，会覆盖内置的afterEach守卫
-    // beforeResolve() {},
-    // onError() {},
+    globalNavigationGuards: {
+      // beforeEach() {}, // 如果设置了，会覆盖内置的beforeEach守卫
+      // afterEach() {},// 如果设置了，会覆盖内置的afterEach守卫
+      // beforeResolve() {},
+      // onError() {},
+    },
   },
 });
 app.use(ElementPlus);
