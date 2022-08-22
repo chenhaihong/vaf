@@ -13,6 +13,7 @@ import vaf, {
 
 import vafAppId from "../demo/common/config/vafAppId";
 import leftmenuConfig from "../demo/common/config/leftmenu";
+import navbarConfig from "../demo/common/config/navbar";
 import routeConfig from "../demo/common/routes";
 import makeAuthService from "../demo/common/api/auth";
 
@@ -35,6 +36,7 @@ const { app } = createVafApp({
     logout: AuthService.logout,
   },
   leftmenuConfig,
+  navbarConfig,
   routeConfig,
 });
 app.use(ElementPlus);

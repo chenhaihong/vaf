@@ -17,13 +17,19 @@ export const createVafApp = (vafAppConfig = {}) => {
     settingConfig = {},
     dataFuncConfig = {},
     leftmenuConfig = {},
+    navbarConfig = {},
     routeConfig = {},
   } = vafAppConfig;
 
   const app = createApp(VafApp);
   vafApps[vafAppId] = app;
 
-  app.use(installUseStores, { vafAppId, leftmenuConfig, dataFuncConfig }); // 先创建store
+  app.use(installUseStores, {
+    vafAppId,
+    leftmenuConfig,
+    dataFuncConfig,
+    navbarConfig,
+  }); // 先创建store
   const router = createMakeRouter(vafAppId)(routeConfig, settingConfig); // 先创建router
   const request = makeRequest(vafAppId); // 再创建request
   app.use(router);

@@ -57,6 +57,9 @@ export default {
       }
     },
     resolveMenuHref(menu) {
+      if (menu.type === 'http-link') {
+        return menu.path;
+      }
       return this.$router.resolve(menu.path)?.href || menu.path;
     },
     handleClick(item) {

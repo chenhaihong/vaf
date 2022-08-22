@@ -5,8 +5,8 @@ import { getRouter } from "@/common/router";
 
 const useStores = {};
 
-export const createUsePageHistoryStore = (vafAppId: string) => {
-  const useRouteHistoryStore = defineStore(`VafPageHistoryStore--${vafAppId}`, {
+export const createUseHistoryBarStore = (vafAppId: string) => {
+  const useRouteHistoryStore = defineStore(`VafHistoryBarStore--${vafAppId}`, {
     state(): State {
       return {
         list: [],
@@ -57,7 +57,7 @@ export const createUsePageHistoryStore = (vafAppId: string) => {
   return useRouteHistoryStore;
 };
 
-export const getUsePageHistoryStore = (vafAppId: string) => {
+export const getUseHistoryBarStore = (vafAppId: string) => {
   return useStores[vafAppId];
 };
 

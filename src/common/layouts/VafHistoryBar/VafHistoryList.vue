@@ -1,31 +1,19 @@
 <template>
   <el-scrollbar always :native="false">
     <div class="vaf-history">
-      <router-link
-        v-for="(item, index) in list"
-        class="vaf-history__item"
-        :class="{ 'is-active': currentFullPath === item.fullPath }"
-        :to="{
+      <router-link v-for="(item, index) in list" class="vaf-history__item"
+        :class="{ 'is-active': currentFullPath === item.fullPath }" :to="{
           name: item.name,
           path: item.path,
           query: item.query,
           params: item.params,
           hash: item.hash,
-        }"
-        :key="item.fullPath"
-      >
-        <el-tooltip
-          :content="item.fullPath"
-          placement="top-end"
-          :hide-after="0"
-        >
+        }" :key="item.fullPath">
+        <el-tooltip :content="item.fullPath" placement="top-end" :hide-after="0">
           <div class="vaf-history__item__trigger">
             <span class="vaf-history__item__text">{{ item.meta?.title }}</span>
             <span v-show="list.length > 1">
-              <el-icon
-                class="vaf-history__item__close"
-                @click.prevent="close(index)"
-              >
+              <el-icon class="vaf-history__item__close" @click.prevent="close(index)">
                 <Close />
               </el-icon>
             </span>
@@ -41,23 +29,23 @@ import { Close } from "@element-plus/icons-vue";
 </script>
 
 <script>
-import { getUsePageHistoryStore } from "@/common/stores";
+import { getUseHistoryBarStore } from "@/common/stores";
 
 export default {
   name: "VafHistoryList",
   computed: {
     list() {
-      const store = getUsePageHistoryStore(this.$vafAppId)();
+      const store = getUseHistoryBarStore(this.$vafAppId)();
       return store.list;
     },
     currentFullPath() {
-      const store = getUsePageHistoryStore(this.$vafAppId)();
+      const store = getUseHistoryBarStore(this.$vafAppId)();
       return store.currentFullPath;
     },
   },
   methods: {
     close(index) {
-      const store = getUsePageHistoryStore(this.$vafAppId)();
+      const store = getUseHistoryBarStore(this.$vafAppId)();
       store.removeRouteHistory(index);
     },
   },

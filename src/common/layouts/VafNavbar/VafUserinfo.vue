@@ -1,36 +1,23 @@
 <template>
   <div class="vaf-userinfo">
-    <el-popover
-      title
-      :width="200"
-      trigger="hover"
-      content="this is content, this is content, this is content"
-    >
+    <el-divider v-if="ifPrefixDivider" direction="vertical" />
+    <el-popover title :width="200" trigger="hover" content="this is content, this is content, this is content">
       <template #reference>
         <el-avatar :size="40" :src="userinfo.avatar"></el-avatar>
       </template>
       <template #default>
         <div class="vaf-userinfo-popover">
           <div class="vaf-userinfo-popover__left">
-            <el-avatar
-              class="vaf-userinfo-popover__avatar"
-              :size="60"
-              shape="square"
-              :src="userinfo.avatar"
-            ></el-avatar>
+            <el-avatar class="vaf-userinfo-popover__avatar" :size="60" shape="square" :src="userinfo.avatar">
+            </el-avatar>
           </div>
           <div class="vaf-userinfo-popover__right">
             <div class="vaf-userinfo-popover__nickname">
               {{ userinfo.nickname }}
             </div>
             <div v-if="roles.length" class="vaf-userinfo-popover__roles">
-              <el-tag
-                v-for="role in roles"
-                :key="role"
-                class="vaf-userinfo-popover__role"
-                type="success"
-                >{{ role }}</el-tag
-              >
+              <el-tag v-for="role in roles" :key="role" class="vaf-userinfo-popover__role" type="success">{{ role }}
+              </el-tag>
             </div>
           </div>
         </div>
@@ -44,11 +31,15 @@
 <script>
 import { ElMessageBox } from "element-plus";
 
-import { getUseAuthStore, getUsePageHistoryStore } from "@/common/stores";
+import { getUseAuthStore, getUseHistoryBarStore, getUseNavbarStore } from "@/common/stores";
 
 export default {
   name: "VafUserinfo",
   computed: {
+    ifPrefixDivider() {
+      const store = getUseNavbarStore(this.$vafAppId)();
+      return store.menus.length && store.ifUserinfo;
+    },
     userinfo() {
       const store = getUseAuthStore(this.$vafAppId)();
       return store.userinfo;
@@ -78,7 +69,7 @@ export default {
               const [err] = await authStore.logout();
               if (!err) {
                 // 清除tab的页面历史记录
-                const historyStore = getUsePageHistoryStore(this.$vafAppId)();
+                const historyStore = getUseHistoryBarStore(this.$vafAppId)();
                 historyStore.$patch({ list: [], currentFullPath: "" });
 
                 done();
@@ -93,7 +84,7 @@ export default {
             }
           },
         }
-      ).catch(() => {});
+      ).catch(() => { });
     },
   },
 };
@@ -129,6 +120,7 @@ export default {
   @include e(roles) {
     margin-top: 6px;
   }
+
   @include e(role) {
     margin-right: 4px;
     margin-bottom: 4px;

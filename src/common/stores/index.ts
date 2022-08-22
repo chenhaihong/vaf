@@ -6,17 +6,24 @@ import createPersistedTokenPlugin from "./createPersistedTokenPlugin";
 
 import { createUseAuthStore } from "./createUseAuthStore";
 import { createUseLeftMenuStore } from "./createUseLeftMenuStore";
-import { createUsePageHistoryStore } from "./createUseRouteHistoryStore";
+import { createUseHistoryBarStore } from "./createUseHistoryBarStore";
+import { createUseNavbarStore } from "./createUseNavbarStore";
 
 export { getUseAuthStore } from "./createUseAuthStore";
 export { getUseLeftMenuStore } from "./createUseLeftMenuStore";
-export { getUsePageHistoryStore } from "./createUseRouteHistoryStore";
+export { getUseHistoryBarStore } from "./createUseHistoryBarStore";
+export { getUseNavbarStore } from "./createUseNavbarStore";
 
 const pinias = {};
 const useStores = {};
 
 export default function installUseStores(app: App, options: Options) {
-  const { vafAppId, leftmenuConfig = {}, dataFuncConfig = {} } = options;
+  const {
+    vafAppId,
+    dataFuncConfig = {},
+    leftmenuConfig = {},
+    navbarConfig = {},
+  } = options;
 
   const pinia = createPinia();
   pinias[vafAppId] = pinia;
@@ -27,11 +34,13 @@ export default function installUseStores(app: App, options: Options) {
   // 创建所有useStore, 并放进池子
   const useAuthStore = createUseAuthStore(vafAppId, dataFuncConfig);
   const useLeftmenuStore = createUseLeftMenuStore(vafAppId, leftmenuConfig);
-  const useRouteHistoryStore = createUsePageHistoryStore(vafAppId);
+  const useNavbarStore = createUseNavbarStore(vafAppId, navbarConfig);
+  const useHistoryBarStore = createUseHistoryBarStore(vafAppId);
   useStores[vafAppId] = {
     [UseStoreNames.auth]: useAuthStore,
     [UseStoreNames.leftmenu]: useLeftmenuStore,
-    [UseStoreNames.routerPageHistory]: useRouteHistoryStore,
+    [UseStoreNames.navbar]: useNavbarStore,
+    [UseStoreNames.historyBar]: useHistoryBarStore,
   };
 }
 
@@ -48,12 +57,14 @@ export const getUseStores = (
 
 interface Options {
   vafAppId: string;
-  leftmenuConfig: any;
   dataFuncConfig: any;
+  leftmenuConfig: any;
+  navbarConfig: any;
 }
 
 enum UseStoreNames {
   auth = "auth",
   leftmenu = "leftmenu",
-  routerPageHistory = "routerPageHistory",
+  navbar = "navbar",
+  historyBar = "historyBar",
 }

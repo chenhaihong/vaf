@@ -1,5 +1,5 @@
 <script>
-import { getUsePageHistoryStore } from "@/common/stores";
+import { getUseHistoryBarStore } from "@/common/stores";
 import VafHistoryList from "./VafHistoryList.vue";
 
 export default {
@@ -10,7 +10,7 @@ export default {
       handler(next) {
         // 当下个路由是PageRoute时, 才会加入到tab路由历史中
         if (next.meta?.VafIsPageRoute) {
-          const store = getUsePageHistoryStore(this.$vafAppId)();
+          const store = getUseHistoryBarStore(this.$vafAppId)();
 
           // 1. 高亮选项卡
           store.$patch({ currentFullPath: next.fullPath });

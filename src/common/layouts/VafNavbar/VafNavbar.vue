@@ -1,23 +1,27 @@
 <template>
   <div class="vaf-navbar">
-    <VafUserinfo />
-    <!-- <component :is="VafNavBarRight"></component> -->
+    <VafNav />
+    <VafUserinfo v-if="ifUserinfo" />
   </div>
 </template>
 
 <script>
+import { getUseNavbarStore } from "@/common/stores";
+
+import VafNav from "./VafNav.vue";
 import VafUserinfo from "./VafUserinfo.vue";
 
 export default {
   name: "VafNavbar",
   components: {
-    VafUserinfo,
+    VafUserinfo, VafNav,
   },
-  // data() {
-  //   return {
-  //     VafNavBarRight: "VafNavBarRight",
-  //   };
-  // },
+  computed: {
+    ifUserinfo() {
+      const store = getUseNavbarStore(this.$vafAppId)();
+      return store.ifUserinfo;
+    },
+  },
 };
 </script>
 

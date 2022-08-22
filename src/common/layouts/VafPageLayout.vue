@@ -27,7 +27,7 @@
 <script>
 import { h } from "vue";
 
-import { getUsePageHistoryStore } from "@/common/stores";
+import { getUseHistoryBarStore } from "@/common/stores";
 
 import VafSidebar from "./VafSideBar/VafSidebar.vue";
 import VafNavbar from "./VafNavbar/VafNavbar.vue";
@@ -50,7 +50,7 @@ export default {
     // include用于VafPageLayout里的keep-alive组件, 作为keep-alive的inlcude属性.
     // include更新后, keep-alive会自动删除缓存的包壳组件
     include() {
-      const store = getUsePageHistoryStore(this.$vafAppId)();
+      const store = getUseHistoryBarStore(this.$vafAppId)();
       return store.list.map((item) => item.fullPath);
     },
   },

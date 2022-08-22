@@ -59,6 +59,9 @@ export default {
       this.$router.push(menu.path);
     },
     resolveMenuHref(menu) {
+      if (menu.type === 'http-link') {
+        return menu.path;
+      }
       return this.$router.resolve(menu.path)?.href || menu.path;
     },
     async clickTreeNode(item) {
