@@ -4,6 +4,7 @@
     <div class="vaf-page-layout__right">
       <VafNavbar class="vaf-page-layout__right__navbar" />
       <VafHistoryBar class="vaf-page-layout__right__history-bar" />
+      <el-backtop :target="'.' + scrollbarWrapId" />
       <el-scrollbar ref="scrollbar" :native="false" always :wrap-class="scrollbarWrapId">
         <router-view v-slot="{ Component, route }">
           <transition :name="route.meta.VafTransition || 'vaf-slide-left'" mode="out-in" appear>
