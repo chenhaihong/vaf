@@ -35,13 +35,13 @@
 .#{$namespace}-slide-enter-from,
 .#{$namespace}-slide-leave-to {
   opacity: 0;
-  transform: translate(-40px, 0);
+  transform: translate(-10px, 0);
 }
 .#{$namespace}-slide-enter-active,
 .#{$namespace}-slide-leave-active {
   position: absolute;
   width: 100%;
-  transition: opacity 0.2s, transform 0.2s;
+  transition: opacity 0.3s, transform 0.3s;
 }
 .#{$namespace}-slide-enter-to,
 .#{$namespace}-slide-leave-from {

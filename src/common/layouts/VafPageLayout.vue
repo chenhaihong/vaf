@@ -90,6 +90,7 @@ export default {
 }
 
 @include e(left) {
+  z-index: $sidebarZIndex;
   flex-shrink: 0;
   @include flex(row, nowrap, flex-start, stretch);
 }
@@ -97,6 +98,7 @@ export default {
 @include e(right) {
   @include flex(column, nowrap, flex-start, stretch);
 
+  z-index: $sidebarZIndex - 1;
   position: relative;
   width: 100%;
   height: 100%;

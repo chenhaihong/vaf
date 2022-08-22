@@ -10,7 +10,7 @@
       <template v-for="item in mainmenu" :key="item.path">
         <a class="vaf-mainmenu__link" :title="item.title" :href="resolveMenuHref(item)" @click.prevent>
           <li class="vaf-mainmenu__item" :class="{ 'is-active': selectedMainmenuId === item.id }"
-            @click="handleClick(item)">
+            @click="handleClick(item)" @mouseenter="$emit('enter', item)" @mouseleave="$emit('leave', item)">
             <el-icon v-if="item.icon">
               <component :is="item.icon" />
             </el-icon>
@@ -28,6 +28,7 @@ import confirmLink from "@/common/helpers/confirmLink.vue";
 
 export default {
   name: "VafMainmenu",
+  emits: ["enter", "leave"],
   computed: {
     loadingMenus() {
       const store = getUseLeftMenuStore(this.$vafAppId)();
@@ -47,7 +48,7 @@ export default {
     },
   },
   created() {
-    this.loadMenus()
+    this.loadMenus();
   },
   methods: {
     loadMenus() {

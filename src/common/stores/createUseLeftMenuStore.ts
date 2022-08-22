@@ -120,10 +120,10 @@ export const getUseLeftMenuStore = (vafAppId: string) => {
 };
 
 // 取得有权限的子菜单
-function getPermittedSubmenu(
-  tree: Menu[],
+export function getPermittedSubmenu(
+  tree: Menu[] = [],
   adminUsername: string,
-  adminRoles: string[]
+  adminRoles: string[] = []
 ) {
   return tree.filter((item) => {
     const { authLevel = 1, authRoles = [], children = [] } = item;

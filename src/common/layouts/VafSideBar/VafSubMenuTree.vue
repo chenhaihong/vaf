@@ -11,10 +11,10 @@
         <el-tree ref="subMenuTree" :data="submenu" empty-text="无菜单" node-key="id"
           :props="{ children: 'children', label: 'title' }" default-expand-all highlight-current :indent="8"
           :current-node-key="selectedSubmenuId" @node-click="clickTreeNode">
-          <template #default="{ data }">
-            <a class="custom-label" :href="resolveMenuHref(data)" @click.prevent>
+          <template #default="scope">
+            <a class="custom-label" :href="resolveMenuHref(scope.data)" @click.prevent>
               <span class="custom-label__text">
-                {{ data.title }}
+                {{ scope.data?.title }}
               </span>
             </a>
           </template>
@@ -25,24 +25,14 @@
 </template>
 
 <script>
-import { getUseLeftMenuStore } from "@/common/stores";
 import confirmLink from "@/common/helpers/confirmLink.vue";
 
 export default {
   name: "VafSubMenuTree",
-  computed: {
-    selectedMainmenu() {
-      const store = getUseLeftMenuStore(this.$vafAppId)();
-      return store.selectedMainmenu;
-    },
-    selectedSubmenuId() {
-      const store = getUseLeftMenuStore(this.$vafAppId)();
-      return store.selectedSubmenuId;
-    },
-    submenu() {
-      const store = getUseLeftMenuStore(this.$vafAppId)();
-      return store.submenu;
-    },
+  props: {
+    selectedMainmenu: { type: Object },
+    selectedSubmenuId: { type: String, default: '' },
+    submenu: { type: Array, default: () => [] },
   },
   watch: {
     selectedSubmenuId(next) {
@@ -53,12 +43,18 @@ export default {
         this.$refs["subMenuTree"]?.setCurrentKey(next);
       });
     },
+    submenu() {
+      // 帮助hover出来的子菜单高亮目标tree-node.
+      this.$nextTick(() => {
+        this.$refs["subMenuTree"]?.setCurrentKey(this.selectedSubmenuId);
+      });
+    },
   },
   methods: {
     clickSelectedMainmenu(menu) {
       this.$router.push(menu.path);
     },
-    resolveMenuHref(menu) {
+    resolveMenuHref(menu = {}) {
       if (menu.type === 'http-link') {
         return menu.path;
       }
