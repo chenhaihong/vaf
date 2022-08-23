@@ -24,6 +24,7 @@ export const createUseLeftMenuStore = (
         menus: isArr ? menus : [],
         selectedMainmenuId: "", // 选中的主菜单的id
         selectedSubmenuId: "", // 选中的子菜单的id
+        hideSubmenu: false, // 是否隐藏子菜单
         hideFloatingSubmenu: !!leftmenuConfig.hideFloatingSubmenu, // 是否隐藏浮动子菜单
       };
     },
@@ -145,6 +146,7 @@ interface State {
   menus: Menu[];
   selectedMainmenuId: string;
   selectedSubmenuId: string;
+  hideSubmenu: boolean;
   hideFloatingSubmenu: boolean;
 }
 

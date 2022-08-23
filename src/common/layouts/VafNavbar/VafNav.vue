@@ -51,7 +51,8 @@ export default {
 
 <style lang="scss" scoped>
 @include b(nav) {
-  @include flex(row, nowrap, center, center);
+  @include flex(row, nowrap, flex-end, center);
+  flex: 1;
 
   @include e(link) {
     text-decoration: none;

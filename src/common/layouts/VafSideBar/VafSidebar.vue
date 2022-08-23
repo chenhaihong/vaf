@@ -1,17 +1,21 @@
 <template>
   <div class="vaf-sidebar">
-    <div class="vaf-sidebar__left">
+    <div class="vaf-sidebar__left" :class="{ 'is-hide-submenu': hideSubmenu }">
       <VafLogo ref="logo" />
       <VafMainmenu @enter="enterMainmenu" @leave="delayhidingHoverSubmenu" />
       <transition v-if="!hideFloatingSubmenu" name="vaf-slide">
-        <VafSubMenuTree class="vaf-submenu-tree-wrap--hover" :style="{ top: hoverSubmenuTop }" v-show="showHoverSubmenu"
-          hideFirstNav :submenu="hoverSubmenu" :selectedMainmenu="hoverMainmenu" :selectedSubmenuId="selectedSubmenuId"
-          @mouseenter="enterHoverSubmenu" @mouseleave="delayhidingHoverSubmenu" />
+        <VafSubMenuTree class="vaf-submenu-tree-wrap--hover" :style="{ left: hoverSubmenuLeft, top: hoverSubmenuTop }"
+          v-show="showHoverSubmenu" hideFirstNav :submenu="hoverSubmenu" :selectedMainmenu="hoverMainmenu"
+          :selectedSubmenuId="selectedSubmenuId" @mouseenter="enterHoverSubmenu"
+          @mouseleave="delayhidingHoverSubmenu" />
       </transition>
     </div>
-    <div class="vaf-sidebar__right">
-      <VafSubMenuTree :submenu="submenu" :selectedMainmenu="selectedMainmenu" :selectedSubmenuId="selectedSubmenuId" />
-    </div>
+    <transition>
+      <div class="vaf-sidebar__right" v-show="!hideSubmenu">
+        <VafSubMenuTree :submenu="submenu" :selectedMainmenu="selectedMainmenu"
+          :selectedSubmenuId="selectedSubmenuId" />
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -32,9 +36,14 @@ export default {
       hoverMainmenu: null,
       hoverSubmenu: [],
       hoverSubmenuTop: '0px',
+      hoverSubmenuLeft: '0px',
     };
   },
   computed: {
+    hideSubmenu() {
+      const store = getUseLeftMenuStore(this.$vafAppId)();
+      return store.hideSubmenu;
+    },
     hideFloatingSubmenu() {
       const store = getUseLeftMenuStore(this.$vafAppId)();
       return store.hideFloatingSubmenu;
@@ -73,7 +82,9 @@ export default {
       this.showHoverSubmenu = true;
       this.hoverMainmenu = item;
       const logoHeight = this.$refs.logo?.$el.offsetHeight || 0;
+      const logoWidth = this.$refs.logo?.$el.offsetWidth || 0;
       this.hoverSubmenuTop = (logoHeight + mainmenuItemTop) + 'px';
+      this.hoverSubmenuLeft = (logoWidth - 1) + 'px'
 
       if (item?.type === 'router-link') {
         this.hoverSubmenu = this.getHoverSubmenu(item);
@@ -127,6 +138,19 @@ export default {
     background-color: $mainMenuBgColor;
     border-right: 1px solid $borderColor;
     box-sizing: border-box;
+
+    @include when(hide-submenu) {
+      width: 60px;
+
+      .vaf-mainmenu__item {
+        justify-content: center;
+
+        .el-icon {
+          margin-right: 0;
+          font-size: 16px;
+        }
+      }
+    }
 
     .vaf-submenu-tree-wrap--hover {
       position: absolute;

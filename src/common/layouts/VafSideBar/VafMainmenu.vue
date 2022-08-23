@@ -4,7 +4,9 @@
       <span>加载中...</span>
     </div>
     <div v-else-if="shouldLoadMenus" class="vaf-mainmenu--load">
-      <el-button type="primary" size="small" plain @click="loadMenus">加载菜单</el-button>
+      <el-button type="primary" size="small" plain @click="loadMenus">
+        {{ hideSubmenu ? '加载' : '加载菜单' }}
+      </el-button>
     </div>
     <ul v-else class="vaf-mainmenu">
       <template v-for="item in mainmenu" :key="item.path">
@@ -15,7 +17,7 @@
             <el-icon v-if="item.icon">
               <component :is="item.icon" />
             </el-icon>
-            <span class="vaf-mainmenu__item__title">{{ item.title }}</span>
+            <span v-show="!hideSubmenu" class="vaf-mainmenu__item__title">{{ item.title }}</span>
           </li>
         </a>
       </template>
@@ -31,6 +33,10 @@ export default {
   name: "VafMainmenu",
   emits: ["enter", "leave"],
   computed: {
+    hideSubmenu() {
+      const store = getUseLeftMenuStore(this.$vafAppId)();
+      return store.hideSubmenu;
+    },
     loadingMenus() {
       const store = getUseLeftMenuStore(this.$vafAppId)();
       return store.loadingMenus;
