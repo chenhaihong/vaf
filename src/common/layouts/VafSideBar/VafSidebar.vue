@@ -1,16 +1,16 @@
 <template>
   <div class="vaf-sidebar">
     <div class="vaf-sidebar__left">
-      <VafLogo />
-      <VafMainmenu @enter="enterMainmenu" @leave="hideHoverSubmenu" />
+      <VafLogo ref="logo" />
+      <VafMainmenu @enter="enterMainmenu" @leave="delayhidingHoverSubmenu" />
+      <transition name="vaf-slide">
+        <VafSubMenuTree class="vaf-submenu-tree-wrap--hover" :style="{ top: hoverSubmenuTop }" v-show="showHoverSubmenu"
+          hideFirstNav :submenu="hoverSubmenu" :selectedMainmenu="hoverMainmenu" :selectedSubmenuId="selectedSubmenuId"
+          @mouseenter="enterHoverSubmenu" @mouseleave="delayhidingHoverSubmenu" />
+      </transition>
     </div>
     <div class="vaf-sidebar__right">
       <VafSubMenuTree :submenu="submenu" :selectedMainmenu="selectedMainmenu" :selectedSubmenuId="selectedSubmenuId" />
-      <transition name="vaf-slide">
-        <VafSubMenuTree class="vaf-submenu-tree-wrap--hover" v-show="!!hoverMainmenu" :submenu="hoverSubmenu"
-          :selectedMainmenu="hoverMainmenu" :selectedSubmenuId="selectedSubmenuId" @mouseenter="enterHoverSubmenu"
-          @mouseleave="hideHoverSubmenu" />
-      </transition>
     </div>
   </div>
 </template>
@@ -28,7 +28,10 @@ export default {
   components: { VafLogo, VafMainmenu, VafSubMenuTree },
   data() {
     return {
+      showHoverSubmenu: false,
       hoverMainmenu: null,
+      hoverSubmenu: [],
+      hoverSubmenuTop: '0px',
     };
   },
   computed: {
@@ -44,22 +47,6 @@ export default {
       const store = getUseLeftMenuStore(this.$vafAppId)();
       return store.submenu;
     },
-    hoverSubmenu() {
-      const hoverMainmenu = this.hoverMainmenu;
-      if (hoverMainmenu) {
-        const authStore = getUseAuthStore(this.$vafAppId)();
-        const leftmenuStore = getUseLeftMenuStore(this.$vafAppId)();
-
-        const username = authStore.userinfo?.username;
-        const roles = authStore.roles;
-        const hit = leftmenuStore.menus.find(
-          (item) => item.id === hoverMainmenu.id
-        );
-        const tree = hit ? hit.children : [];
-        return getPermittedSubmenu(tree, username, roles);
-      };
-      return [];
-    },
   },
   watch: {
     "$route.matched": {
@@ -73,14 +60,20 @@ export default {
     },
   },
   methods: {
-    enterMainmenu(item) {
+    enterMainmenu(item, mainmenuItemTop) {
       if (this.outId) {
         clearTimeout(this.outId);
       }
+
+      this.showHoverSubmenu = true;
+      this.hoverMainmenu = item;
+      const logoHeight = this.$refs.logo?.$el.offsetHeight || 0;
+      this.hoverSubmenuTop = (logoHeight + mainmenuItemTop) + 'px';
+
       if (item?.type === 'router-link') {
-        this.hoverMainmenu = item;
+        this.hoverSubmenu = this.getHoverSubmenu(item);
       } else {
-        this.hideHoverSubmenu();
+        this.hoverSubmenu = [];
       }
     },
     enterHoverSubmenu() {
@@ -88,13 +81,28 @@ export default {
         clearTimeout(this.outId);
       }
     },
-    hideHoverSubmenu() {
+    delayhidingHoverSubmenu() {
       if (this.outId) {
         clearTimeout(this.outId);
       }
       this.outId = setTimeout(() => {
-        this.hoverMainmenu = null;
-      }, 300);
+        this.showHoverSubmenu = false;
+      }, 200);
+    },
+    getHoverSubmenu(mainmenu) {
+      if (mainmenu) {
+        const authStore = getUseAuthStore(this.$vafAppId)();
+        const leftmenuStore = getUseLeftMenuStore(this.$vafAppId)();
+
+        const username = authStore.userinfo?.username;
+        const roles = authStore.roles;
+        const hit = leftmenuStore.menus.find(
+          (item) => item.id === mainmenu.id
+        );
+        const tree = hit ? hit.children : [];
+        return getPermittedSubmenu(tree, username, roles);
+      }
+      return [];
     },
   },
 };
@@ -106,11 +114,24 @@ export default {
   background-color: white;
 
   @include e(left) {
+    z-index: 2;
     width: $mainMenuWidth;
     height: 100%;
     background-color: $mainMenuBgColor;
     border-right: 1px solid $borderColor;
     box-sizing: border-box;
+
+    .vaf-submenu-tree-wrap--hover {
+      position: absolute;
+      top: $navbarHeight;
+      left: $mainMenuWidth - 1;
+      width: $subMenuWidth;
+      height: auto;
+      max-height: calc(100% - $navbarHeight - 10px);
+      background: $subMenuBgColor;
+      box-shadow: 0px 0px 12px rgba(200, 200, 200, 0.6);
+      border-radius: 8px;
+    }
   }
 
   @include e(right) {
@@ -121,17 +142,6 @@ export default {
     background-color: $subMenuBgColor;
     border-right: 1px solid $borderColor;
     box-sizing: border-box;
-
-    .vaf-submenu-tree-wrap--hover {
-      z-index: 1;
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: $subMenuBgColor;
-      box-shadow: 0px 0px 12px rgba(200, 200, 200, 0.6);
-    }
   }
 }
 </style>

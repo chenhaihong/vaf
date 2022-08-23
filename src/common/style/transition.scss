@@ -41,7 +41,7 @@
 .#{$namespace}-slide-leave-active {
   position: absolute;
   width: 100%;
-  transition: opacity 0.3s, transform 0.3s;
+  transition: opacity 0.3s ease-in, transform 0.3s ease-in;
 }
 .#{$namespace}-slide-enter-to,
 .#{$namespace}-slide-leave-from {

@@ -1,6 +1,6 @@
 <template>
   <div class="vaf-submenu-tree-wrap">
-    <div class="vaf-first-nav">
+    <div v-if="!hideFirstNav" class="vaf-first-nav">
       <a v-if="selectedMainmenu" class="vaf-first-nav__name" @click.prevent="clickSelectedMainmenu(selectedMainmenu)"
         :href="resolveMenuHref(selectedMainmenu)">
         {{ selectedMainmenu ? selectedMainmenu.title : "" }}
@@ -30,6 +30,7 @@ import confirmLink from "@/common/helpers/confirmLink.vue";
 export default {
   name: "VafSubMenuTree",
   props: {
+    hideFirstNav: { type: Boolean, default: false },
     selectedMainmenu: { type: Object },
     selectedSubmenuId: { type: String, default: '' },
     submenu: { type: Array, default: () => [] },
@@ -39,18 +40,17 @@ export default {
       // 非点击submenu的tree-node方式切换路由时,
       // submenu的无法自动正常高亮目标tree-node,
       // 需要手动调api来高亮目标tree-node.
-      this.$nextTick(() => {
-        this.$refs["subMenuTree"]?.setCurrentKey(next);
-      });
+      this.$nextTick(this.setCurrentKey);
     },
     submenu() {
       // 帮助hover出来的子菜单高亮目标tree-node.
-      this.$nextTick(() => {
-        this.$refs["subMenuTree"]?.setCurrentKey(this.selectedSubmenuId);
-      });
+      this.$nextTick(this.setCurrentKey);
     },
   },
   methods: {
+    setCurrentKey() {
+      this.$refs["subMenuTree"]?.setCurrentKey(this.selectedSubmenuId);
+    },
     clickSelectedMainmenu(menu) {
       this.$router.push(menu.path);
     },

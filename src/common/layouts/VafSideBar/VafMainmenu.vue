@@ -8,9 +8,10 @@
     </div>
     <ul v-else class="vaf-mainmenu">
       <template v-for="item in mainmenu" :key="item.path">
-        <a class="vaf-mainmenu__link" :title="item.title" :href="resolveMenuHref(item)" @click.prevent>
+        <a class="vaf-mainmenu__link" :title="item.title" :href="resolveMenuHref(item)" @click.prevent
+          @mouseenter.self="enterMenu(item, $event)" @mouseleave.self="$emit('leave', item)">
           <li class="vaf-mainmenu__item" :class="{ 'is-active': selectedMainmenuId === item.id }"
-            @click="handleClick(item)" @mouseenter="$emit('enter', item)" @mouseleave="$emit('leave', item)">
+            @click="handleClick(item)">
             <el-icon v-if="item.icon">
               <component :is="item.icon" />
             </el-icon>
@@ -62,6 +63,9 @@ export default {
         return menu.path;
       }
       return this.$router.resolve(menu.path)?.href || menu.path;
+    },
+    enterMenu(item, event) {
+      this.$emit('enter', item, event.target.offsetTop);
     },
     handleClick(item) {
       switch (item.type) {
