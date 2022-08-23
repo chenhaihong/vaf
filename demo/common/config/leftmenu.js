@@ -142,4 +142,5 @@ async function getMenus() {
 export default {
   logo: "https://map.tiiit.cn/deer.png", // 侧边栏上的logo的地址
   menus: getMenus,
+  hideFloatingSubmenu: false,
 };

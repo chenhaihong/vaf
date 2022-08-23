@@ -3,7 +3,7 @@
     <div class="vaf-sidebar__left">
       <VafLogo ref="logo" />
       <VafMainmenu @enter="enterMainmenu" @leave="delayhidingHoverSubmenu" />
-      <transition name="vaf-slide">
+      <transition v-if="!hideFloatingSubmenu" name="vaf-slide">
         <VafSubMenuTree class="vaf-submenu-tree-wrap--hover" :style="{ top: hoverSubmenuTop }" v-show="showHoverSubmenu"
           hideFirstNav :submenu="hoverSubmenu" :selectedMainmenu="hoverMainmenu" :selectedSubmenuId="selectedSubmenuId"
           @mouseenter="enterHoverSubmenu" @mouseleave="delayhidingHoverSubmenu" />
@@ -35,6 +35,10 @@ export default {
     };
   },
   computed: {
+    hideFloatingSubmenu() {
+      const store = getUseLeftMenuStore(this.$vafAppId)();
+      return store.hideFloatingSubmenu;
+    },
     selectedMainmenu() {
       const store = getUseLeftMenuStore(this.$vafAppId)();
       return store.selectedMainmenu;
@@ -61,6 +65,7 @@ export default {
   },
   methods: {
     enterMainmenu(item, mainmenuItemTop) {
+      if (this.hideFloatingSubmenu) return;
       if (this.outId) {
         clearTimeout(this.outId);
       }
@@ -77,11 +82,13 @@ export default {
       }
     },
     enterHoverSubmenu() {
+      if (this.hideFloatingSubmenu) return;
       if (this.outId) {
         clearTimeout(this.outId);
       }
     },
     delayhidingHoverSubmenu() {
+      if (this.hideFloatingSubmenu) return;
       if (this.outId) {
         clearTimeout(this.outId);
       }
