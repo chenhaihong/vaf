@@ -1,7 +1,7 @@
 <template>
   <div class="vaf-submenu-tree-wrap">
     <div v-if="!hideFirstNav" class="vaf-first-nav">
-      <a v-if="selectedMainmenu" class="vaf-first-nav__name" @click.prevent="clickSelectedMainmenu(selectedMainmenu)"
+      <a v-if="selectedMainmenu" class="vaf-first-nav__name" @click.prevent="clickMenu(selectedMainmenu)"
         :href="resolveMenuHref(selectedMainmenu)">
         {{ selectedMainmenu ? selectedMainmenu.title : "" }}
       </a>
@@ -10,7 +10,7 @@
       <el-scrollbar always>
         <el-tree ref="subMenuTree" :data="submenu" empty-text="无菜单" node-key="id"
           :props="{ children: 'children', label: 'title' }" default-expand-all highlight-current :indent="8"
-          :current-node-key="selectedSubmenuId" @node-click="clickTreeNode">
+          :current-node-key="selectedSubmenuId" @node-click="clickMenu">
           <template #default="scope">
             <a class="custom-label" :href="resolveMenuHref(scope.data)" @click.prevent>
               <span class="custom-label__text">
@@ -51,16 +51,13 @@ export default {
     setCurrentKey() {
       this.$refs["subMenuTree"]?.setCurrentKey(this.selectedSubmenuId);
     },
-    clickSelectedMainmenu(menu) {
-      this.$router.push(menu.path);
-    },
     resolveMenuHref(menu = {}) {
       if (menu.type === 'http-link') {
         return menu.path;
       }
       return this.$router.resolve(menu.path)?.href || menu.path;
     },
-    async clickTreeNode(item) {
+    async clickMenu(item) {
       // (1) 如果item包含children，则直接展开
       if (item.children) return;
 
