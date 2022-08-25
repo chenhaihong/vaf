@@ -17,7 +17,9 @@
             <el-icon v-if="item.icon">
               <component :is="item.icon" />
             </el-icon>
-            <span v-show="!hideSubmenu" class="vaf-mainmenu__item__title">{{ item.title }}</span>
+            <span v-show="!hideSubmenu || hideSubmenu && !item.icon" class="vaf-mainmenu__item__title">
+              {{ item.title }}
+            </span>
           </li>
         </a>
       </template>

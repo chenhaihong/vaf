@@ -5,7 +5,7 @@
       <VafMainmenu @enter="enterMainmenu" @leave="delayhidingHoverSubmenu" />
       <transition v-if="!hideFloatingSubmenu" name="vaf-slide">
         <VafSubMenuTree class="vaf-submenu-tree-wrap--hover" :style="{ left: hoverSubmenuLeft, top: hoverSubmenuTop }"
-          v-show="showHoverSubmenu" hideFirstNav :submenu="hoverSubmenu" :selectedMainmenu="hoverMainmenu"
+          v-show="showHoverSubmenu" :submenu="hoverSubmenu" :selectedMainmenu="hoverMainmenu"
           :selectedSubmenuId="selectedSubmenuId" @mouseenter="enterHoverSubmenu"
           @mouseleave="delayhidingHoverSubmenu" />
       </transition>
@@ -83,8 +83,8 @@ export default {
       this.hoverMainmenu = item;
       const logoHeight = this.$refs.logo?.$el.offsetHeight || 0;
       const logoWidth = this.$refs.logo?.$el.offsetWidth || 0;
-      this.hoverSubmenuTop = (logoHeight + mainmenuItemTop) + 'px';
-      this.hoverSubmenuLeft = (logoWidth - 1) + 'px'
+      this.hoverSubmenuTop = (logoHeight + mainmenuItemTop - 6) + 'px'; // 减掉6像素
+      this.hoverSubmenuLeft = (logoWidth - 1) + 'px'; // 减掉1个像素，便于移入浮动子菜单
 
       if (item?.type === 'router-link') {
         this.hoverSubmenu = this.getHoverSubmenu(item);
@@ -158,10 +158,37 @@ export default {
       left: $mainMenuWidth - 1;
       width: $subMenuWidth;
       height: auto;
-      max-height: calc(100% - $navbarHeight - 10px);
+      // max-height: calc(100% - $navbarHeight - 10px);
       background: $subMenuBgColor;
       box-shadow: 0px 0px 12px rgba(200, 200, 200, 0.6);
       border-radius: 8px;
+      overflow: visible;
+
+      .vaf-submenu-tree {
+        border-bottom-right-radius: 8px;
+        border-bottom-left-radius: 8px;
+      }
+
+      &::before,
+      &::after {
+        content: '';
+        position: absolute;
+        top: calc($navbarHeight / 2);
+        left: 0;
+        display: block;
+        width: 20px;
+        height: 20px;
+        border: 10px solid transparent;
+        border-right: 10px solid white;
+        box-sizing: border-box;
+        transform: translateX(-100%) translateY(-50%);
+      }
+
+      &::before {
+        z-index: -1;
+        border-right: 11px solid rgba(200, 200, 200, 0.6);
+        transform: translateX(-100%) translateY(-50%) scale(1.1);
+      }
     }
   }
 
