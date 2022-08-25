@@ -172,6 +172,7 @@ export default {
 
       &::before,
       &::after {
+        pointer-events: none; // 点击穿透
         content: '';
         position: absolute;
         top: calc($navbarHeight / 2);

@@ -68,6 +68,7 @@ export default {
       line-height: $mainMenuHeight;
       font-size: $mainMenuTextFontSize;
       color: $mainMenuTextColor;
+      border-radius: 4px;
 
       .el-icon {
         margin-right: 4px;
