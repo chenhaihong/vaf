@@ -10,7 +10,7 @@
           @mouseleave="delayhidingHoverSubmenu" />
       </transition>
     </div>
-    <transition>
+    <transition name="vaf-toggle-sidemenu">
       <div class="vaf-sidebar__right" v-show="!hideSubmenu">
         <VafSubMenuTree :submenu="submenu" :selectedMainmenu="selectedMainmenu"
           :selectedSubmenuId="selectedSubmenuId" />
@@ -138,6 +138,7 @@ export default {
     background-color: $mainMenuBgColor;
     border-right: 1px solid $borderColor;
     box-sizing: border-box;
+    transition: width 0.3s ease-in-out;
 
     @include when(hide-submenu) {
       width: 60px;
@@ -201,5 +202,16 @@ export default {
     border-right: 1px solid $borderColor;
     box-sizing: border-box;
   }
+}
+
+// transition name="vaf-toggle-sidemenu"
+.#{$namespace}-toggle-sidemenu-enter-from,
+.#{$namespace}-toggle-sidemenu-leave-to {
+  width: 0px;
+}
+
+.#{$namespace}-toggle-sidemenu-enter-active,
+.#{$namespace}-toggle-sidemenu-leave-active {
+  transition: width 0.3s ease-in-out;
 }
 </style>
