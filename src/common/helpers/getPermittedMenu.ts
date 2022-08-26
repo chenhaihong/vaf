@@ -42,7 +42,7 @@ export function getPermittedMainmenu(
 
 // 获取当前角色拥有的子菜单
 export function getPermittedSubmenu(
-  menus: Menu[], // 用户传递进来的全部菜单
+  menus: Menu[] = [], // 用户传递进来的全部菜单
   mainmenu: Menu, // 用户选中的主菜单
   vafAppId: string
 ): Menu[] {
@@ -50,7 +50,7 @@ export function getPermittedSubmenu(
   const adminUsername = authStore.userinfo?.username;
   const roles = authStore.roles;
 
-  const hit = menus.find((item) => item.id === mainmenu.id);
+  const hit = menus.find((item) => item.id === mainmenu?.id);
   const tree = hit ? hit.children : [];
   return filter(tree, adminUsername, roles);
 }
