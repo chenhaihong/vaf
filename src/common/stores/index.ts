@@ -5,12 +5,12 @@ import { createPinia } from "pinia";
 import createPersistedTokenPlugin from "./createPersistedTokenPlugin";
 
 import { createUseAuthStore } from "./createUseAuthStore";
-import { createUseLeftMenuStore } from "./createUseLeftMenuStore";
+import { createUseSidebarStore } from "./createUseSidebarStore";
 import { createUseHistoryBarStore } from "./createUseHistoryBarStore";
 import { createUseNavbarStore } from "./createUseNavbarStore";
 
 export { getUseAuthStore } from "./createUseAuthStore";
-export { getUseLeftMenuStore } from "./createUseLeftMenuStore";
+export { getUseSidebarStore } from "./createUseSidebarStore";
 export { getUseHistoryBarStore } from "./createUseHistoryBarStore";
 export { getUseNavbarStore } from "./createUseNavbarStore";
 
@@ -33,12 +33,12 @@ export default function installUseStores(app: App, options: Options) {
 
   // 创建所有useStore, 并放进池子
   const useAuthStore = createUseAuthStore(vafAppId, dataFuncConfig);
-  const useLeftmenuStore = createUseLeftMenuStore(vafAppId, sidebarConfig);
+  const useSidebarStore = createUseSidebarStore(vafAppId, sidebarConfig);
   const useNavbarStore = createUseNavbarStore(vafAppId, navbarConfig);
   const useHistoryBarStore = createUseHistoryBarStore(vafAppId);
   useStores[vafAppId] = {
     [UseStoreNames.auth]: useAuthStore,
-    [UseStoreNames.leftmenu]: useLeftmenuStore,
+    [UseStoreNames.sidebar]: useSidebarStore,
     [UseStoreNames.navbar]: useNavbarStore,
     [UseStoreNames.historyBar]: useHistoryBarStore,
   };
@@ -64,7 +64,7 @@ interface Options {
 
 enum UseStoreNames {
   auth = "auth",
-  leftmenu = "leftmenu",
+  sidebar = "sidebar",
   navbar = "navbar",
   historyBar = "historyBar",
 }

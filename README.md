@@ -47,11 +47,14 @@ const { app } = createVafApp({
     getUserinfo: AuthService.getUserinfo,
     logout: AuthService.logout,
   },
-  leftmenuConfig: {
+  sidebarConfig: {
     logo: "/logo.png", // 左侧菜单的logo
     menus: [
       {
         type: "router-link", // 可以有children，即可以有子菜单
+        // id与路由配置的VafId相互对应,
+        // 当切换路由时, 程序内部根据id与VafId来找到匹配的菜单,
+        // 将它们加上高亮样式.
         id: "/home",
         path: '/home',
         title: "首页",
@@ -76,7 +79,7 @@ const { app } = createVafApp({
       {
         path: "/home",
         meta: {
-          VafLeftmenuId: "/home",
+          VafId: "/home",
           VafAuthLevel: 1,
           title: "首页",
         },
@@ -85,7 +88,7 @@ const { app } = createVafApp({
       {
         path: "/super-admin/admin",
         meta: {
-          VafLeftmenuId: "/super-admin/admin",
+          VafId: "/super-admin/admin",
           // 依赖这2个字段方式，来完成路由的鉴权
           VafAuthLevel: 2, // 0=>匿名 | 1=>登录(默认) | 2=>需鉴别角色
           VafAuthRoles: ["super-admin"], // 当鉴权等级为2时，该字段才有效，默认为空数组
@@ -105,7 +108,10 @@ const { app } = createVafApp({
         path: "/helloworld",
         name: "/helloworld",
         meta: {
-          VafLeftmenuId: "/helloworld", // 与leftmenu匹配的id
+          // VafId与sidebarConfig.menus里的菜单的id相互对应,
+          // 当切换路由时, 程序内部根据VafId来找到sidebarConfig.menus里对应的菜单,
+          // 将它们加上高亮样式.
+          VafId: "/helloworld",
 
           // 依赖这2个字段方式，来完成路由的鉴权
           VafAuthLevel: 0, // 0=>匿名 | 1=>登录(默认) | 2=>需鉴别角色

@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { getUseLeftMenuStore } from "@/common/stores";
+import { getUseSidebarStore } from "@/common/stores";
 import { getPermittedSubmenu } from "@/common/helpers/getPermittedMenu";
 
 import VafLogo from "./VafLogo.vue";
@@ -41,23 +41,23 @@ export default {
   },
   computed: {
     hideSubmenu() {
-      const store = getUseLeftMenuStore(this.$vafAppId)();
+      const store = getUseSidebarStore(this.$vafAppId)();
       return store.hideSubmenu;
     },
     hideFloatingSubmenu() {
-      const store = getUseLeftMenuStore(this.$vafAppId)();
+      const store = getUseSidebarStore(this.$vafAppId)();
       return store.hideFloatingSubmenu;
     },
     selectedMainmenu() {
-      const store = getUseLeftMenuStore(this.$vafAppId)();
+      const store = getUseSidebarStore(this.$vafAppId)();
       return store.selectedMainmenu;
     },
     selectedSubmenuId() {
-      const store = getUseLeftMenuStore(this.$vafAppId)();
+      const store = getUseSidebarStore(this.$vafAppId)();
       return store.selectedSubmenuId;
     },
     submenu() {
-      const store = getUseLeftMenuStore(this.$vafAppId)();
+      const store = getUseSidebarStore(this.$vafAppId)();
       return store.submenu;
     },
   },
@@ -67,8 +67,8 @@ export default {
       handler(matched) {
         if (!matched.length) return;
 
-        const $leftmenuStore = getUseLeftMenuStore(this.$vafAppId)();
-        $leftmenuStore.updateSelectedId();
+        const $sidebarStore = getUseSidebarStore(this.$vafAppId)();
+        $sidebarStore.updateSelectedId();
       },
     },
   },
@@ -109,8 +109,8 @@ export default {
     },
     getHoverSubmenu(mainmenu) {
       if (mainmenu) {
-        const leftmenuStore = getUseLeftMenuStore(this.$vafAppId)();
-        return getPermittedSubmenu(leftmenuStore.menus, mainmenu, this.$vafAppId);
+        const sidebarStore = getUseSidebarStore(this.$vafAppId)();
+        return getPermittedSubmenu(sidebarStore.menus, mainmenu, this.$vafAppId);
       }
       return [];
     },

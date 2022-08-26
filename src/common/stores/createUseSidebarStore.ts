@@ -12,14 +12,14 @@ import resolveMatchedParentNodes from "@/common/helpers/resolveMatchedParentNode
 
 const useStores = {};
 
-export const createUseLeftMenuStore = (
+export const createUseSidebarStore = (
   vafAppId: string,
   sidebarConfig: any = {}
 ) => {
   const menus: Menu[] | MenusFunc = sidebarConfig?.menus || []; // 左侧菜单数据
   const isArr = Array.isArray(menus);
 
-  const useLeftmenuStore = defineStore(`VafLeftMenuStore--${vafAppId}`, {
+  const useSidebarStore = defineStore(`VafSidebarStore--${vafAppId}`, {
     state(): State {
       return {
         shouldLoadMenus: !isArr,
@@ -66,12 +66,11 @@ export const createUseLeftMenuStore = (
         const router = getRouter(vafAppId);
         const matched = unref(router.currentRoute).matched;
 
-        // 孙子路由的meta里的VafLeftmenuId,
+        // 孙子路由的meta里的VafId,
         // 即选中的子菜单的id
-        const selectedSubmenuId =
-          matched[matched.length - 1].meta?.VafLeftmenuId;
+        const selectedSubmenuId = matched[matched.length - 1].meta?.VafId;
 
-        // 从leftmenu中回溯出所有的父级菜单
+        // 从sidebar.menus中回溯出所有的父级菜单
         const mathedNodes = resolveMatchedParentNodes(
           selectedSubmenuId,
           this.menus
@@ -85,11 +84,11 @@ export const createUseLeftMenuStore = (
     },
   });
 
-  useStores[vafAppId] = useLeftmenuStore;
-  return useLeftmenuStore;
+  useStores[vafAppId] = useSidebarStore;
+  return useSidebarStore;
 };
 
-export const getUseLeftMenuStore = (vafAppId: string) => {
+export const getUseSidebarStore = (vafAppId: string) => {
   return useStores[vafAppId];
 };
 

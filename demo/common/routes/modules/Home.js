@@ -3,7 +3,7 @@ export default [
   {
     path: "/home",
     meta: {
-      VafLeftmenuId: "/home",
+      VafId: "/home",
       VafAuthLevel: 1,
       title: "首页",
     },

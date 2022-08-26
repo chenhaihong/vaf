@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { getUseLeftMenuStore } from "@/common/stores";
+import { getUseSidebarStore } from "@/common/stores";
 import confirmLink from "@/common/helpers/confirmLink.vue";
 
 export default {
@@ -36,23 +36,23 @@ export default {
   emits: ["enter", "leave"],
   computed: {
     hideSubmenu() {
-      const store = getUseLeftMenuStore(this.$vafAppId)();
+      const store = getUseSidebarStore(this.$vafAppId)();
       return store.hideSubmenu;
     },
     loadingMenus() {
-      const store = getUseLeftMenuStore(this.$vafAppId)();
+      const store = getUseSidebarStore(this.$vafAppId)();
       return store.loadingMenus;
     },
     shouldLoadMenus() {
-      const store = getUseLeftMenuStore(this.$vafAppId)();
+      const store = getUseSidebarStore(this.$vafAppId)();
       return store.shouldLoadMenus;
     },
     mainmenu() {
-      const store = getUseLeftMenuStore(this.$vafAppId)();
+      const store = getUseSidebarStore(this.$vafAppId)();
       return store.mainmenu;
     },
     selectedMainmenuId() {
-      const store = getUseLeftMenuStore(this.$vafAppId)();
+      const store = getUseSidebarStore(this.$vafAppId)();
       return store.selectedMainmenuId;
     },
   },
@@ -61,7 +61,7 @@ export default {
   },
   methods: {
     loadMenus() {
-      const store = getUseLeftMenuStore(this.$vafAppId)();
+      const store = getUseSidebarStore(this.$vafAppId)();
       if (store.shouldLoadMenus) {
         store.loadMenus();
       }

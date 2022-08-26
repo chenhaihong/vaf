@@ -14,7 +14,7 @@
 <script>
 import { Expand, Fold } from '@element-plus/icons-vue'
 
-import { getUseNavbarStore, getUseLeftMenuStore } from "@/common/stores";
+import { getUseNavbarStore, getUseSidebarStore } from "@/common/stores";
 
 import VafNav from "./VafNav.vue";
 import VafUserinfo from "./VafUserinfo.vue";
@@ -26,7 +26,7 @@ export default {
   },
   computed: {
     hideSubmenu() {
-      const store = getUseLeftMenuStore(this.$vafAppId)();
+      const store = getUseSidebarStore(this.$vafAppId)();
       return store.hideSubmenu;
     },
     ifUserinfo() {
@@ -36,7 +36,7 @@ export default {
   },
   methods: {
     toggleSubmenu() {
-      const store = getUseLeftMenuStore(this.$vafAppId)();
+      const store = getUseSidebarStore(this.$vafAppId)();
       store.hideSubmenu = !store.hideSubmenu;
     },
   }

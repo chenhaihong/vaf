@@ -9,7 +9,7 @@ const defaultRoutesMap = {
   "/login": {
     path: "/login",
     meta: {
-      VafLeftmenuId: "/login",
+      VafId: "/login",
       VafAuthLevel: 0,
       title: "Login",
     },
@@ -18,7 +18,7 @@ const defaultRoutesMap = {
   "/403": {
     path: "/403",
     meta: {
-      VafLeftmenuId: "/403",
+      VafId: "/403",
       VafAuthLevel: 0,
       title: "404",
     },
@@ -27,7 +27,7 @@ const defaultRoutesMap = {
   "/404": {
     path: "/404",
     meta: {
-      VafLeftmenuId: "/404",
+      VafId: "/404",
       VafAuthLevel: 0,
       title: "404",
     },
@@ -36,7 +36,7 @@ const defaultRoutesMap = {
   "/500": {
     path: "/500",
     meta: {
-      VafLeftmenuId: "/500",
+      VafId: "/500",
       VafAuthLevel: 0,
       title: "500",
     },
@@ -45,7 +45,7 @@ const defaultRoutesMap = {
   "/:pathMatch(.*)*": {
     path: "/:pathMatch(.*)*",
     meta: {
-      VafLeftmenuId: "/:pathMatch(.*)*",
+      VafId: "/:pathMatch(.*)*",
       VafAuthLevel: 0,
       title: "404",
     },
