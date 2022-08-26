@@ -43,11 +43,11 @@ $sidebarZIndex: 2;
 
 // navbar
 $navbarHeight: 56px; // 顶部导航高度
-$navbarZIndex: 1; // 顶部导航高度
+$navbarZIndex: 3; // 顶部导航高度
 
 // history bar
 $historyBarHeight: 56px; // 顶部导航高度
-$historyBarZIndex: $navbarZIndex + 1; // 顶部导航高度
+$historyBarZIndex: $navbarZIndex - 1; // 顶部导航高度
 $historyBarTextFontSize: 14px;
 $historyBarContentHeight: 30px;
 $historyBarContentColorHover: #448aff;

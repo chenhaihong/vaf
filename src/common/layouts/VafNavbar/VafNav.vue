@@ -1,8 +1,8 @@
 <template>
-  <ul class="vaf-nav">
+  <ul ref="nav" class=" vaf-nav">
     <template v-for="item in menus" :key="item.path">
       <a class="vaf-nav__link" :title="item.title" :href="resolveMenuHref(item)" @click.prevent
-        @mouseenter.self="enterLink(item, $event)" @mouseleave.self="leaveLink">
+        @mouseenter.self="enterMainnav(item, $event)" @mouseleave.self="delayHidingHoverSubnav">
         <li class="vaf-nav__item" @click="clickNav(item)">
           <el-icon v-if="item.icon">
             <component :is="item.icon" />
@@ -12,26 +12,35 @@
       </a>
     </template>
   </ul>
-  <Subnav v-show="showSubnav" class="vaf-submenu-tree-wrap--subnav" />
+  <transition name="vaf-slide-vertical">
+    <VafSubnavTree class="vaf-subnav-tree-wrap--hover" :style="{ left: hoverSubnavLeft, top: hoverSubnavTop }"
+      v-show="showHoverSubnav" hideFirstNav :submenu="hoverSubnav" :selectedMainmenu="hoverMainnav"
+      @mouseenter="enterHoverSubnav" @mouseleave="delayHidingHoverSubnav" />
+  </transition>
 </template>
 
 <script>
+import { getPermittedSubmenu } from '@/common/helpers/getPermittedMenu';
 import { getUseNavbarStore } from "@/common/stores";
 import confirmLink from "@/common/helpers/confirmLink.vue";
-import Subnav from '../VafSideBar/VafSubMenuTree.vue';
+import VafSubnavTree from '../VafSideBar/VafSubMenuTree.vue';
 
 export default {
   name: 'VafNav',
-  components: { Subnav },
+  components: { VafSubnavTree },
   data() {
     return {
-      showSubnav: false,
+      showHoverSubnav: false,
+      hoverMainnav: null,
+      hoverSubnav: [],
+      hoverSubnavTop: '0px',
+      hoverSubnavLeft: '0px',
     };
   },
   computed: {
     menus() {
       const store = getUseNavbarStore(this.$vafAppId)();
-      return store.menus;
+      return store.mainnav;
     },
   },
   methods: {
@@ -55,24 +64,57 @@ export default {
           break;
       }
     },
-    enterLink(item, event) {
+    enterMainnav(item, event) {
+      const subnav = this.getHoverSubnav(item);
+      if (!subnav.length) {
+        return;
+      }
+
+
+      if (this.outId) {
+        clearTimeout(this.outId);
+      }
+
+      this.showHoverSubnav = true;
+      this.hoverMainnav = item;
+      const navTop = this.$refs.nav?.offsetTop || 0;
+      const navHeight = this.$refs.nav?.offsetHeight || 0;
+      const itemLeft = event.target?.offsetLeft || 0;
+      const itemWidth = event.target?.offsetWidth || 0;
+      this.hoverSubnavTop = (navTop + navHeight + 10) + 'px'; // 加上4个像素，好看一点
+      this.hoverSubnavLeft = (itemLeft + itemWidth / 2 - 64) + 'px';
+
+      if (item?.type === 'router-link') {
+        this.hoverSubnav = subnav;
+      } else {
+        this.hoverSubnav = [];
+      }
+    },
+    enterHoverSubnav() {
       if (this.outId) {
         clearTimeout(this.outId);
       }
     },
-    leaveLink() {
+    delayHidingHoverSubnav() {
       if (this.outId) {
         clearTimeout(this.outId);
       }
       this.outId = setTimeout(() => {
-        this.showSubnav = false;
-      }, 300);
+        this.showHoverSubnav = false;
+      }, 200);
+    },
+    getHoverSubnav(mainnav) {
+      if (mainnav) {
+        const store = getUseNavbarStore(this.$vafAppId)();
+        return getPermittedSubmenu(store.menus, mainnav, this.$vafAppId);
+      }
+      return [];
     },
   },
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @include b(nav) {
   @include flex(row, nowrap, flex-end, center);
   flex: 1;
@@ -110,5 +152,67 @@ export default {
   @include e(item__title) {
     @include utils-ellipsis;
   }
+}
+
+
+@include b(subnav-tree-wrap) {
+  @include m(hover) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: $subMenuWidth;
+    height: auto;
+    background: $subMenuBgColor;
+    box-shadow: 0px 0px 12px rgba(200, 200, 200, 0.6);
+    border-radius: 8px;
+    overflow: visible;
+
+    .vaf-submenu-tree {
+      border-radius: 8px;
+    }
+
+    &::before,
+    &::after {
+      pointer-events: none; // 点击穿透
+      content: '';
+      position: absolute;
+      top: 1px;
+      left: calc($subMenuWidth / 2);
+      display: block;
+      width: 20px;
+      height: 20px;
+      border: 10px solid transparent;
+      border-bottom: 10px solid white;
+      box-sizing: border-box;
+      transform: translateX(-50%) translateY(-100%);
+    }
+
+    &::before {
+      z-index: -1;
+      border-bottom: 12px solid rgba(200, 200, 200, 0.6);
+      transform: translateX(-50%) translateY(-100%) scale(1.1);
+    }
+  }
+}
+
+// transition name="vaf-slide-vertical"
+.#{$namespace}-slide-vertical-enter-from,
+.#{$namespace}-slide-vertical-leave-to {
+  opacity: 0;
+  transform: translate(0, -10px);
+}
+
+.#{$namespace}-slide-vertical-enter-active {
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.#{$namespace}-slide-vertical-leave-active {
+  transition: opacity 0.1s ease-in-out, transform 0.1s ease-in-out;
+}
+
+.#{$namespace}-slide-vertical-enter-to,
+.#{$namespace}-slide-vertical-leave-from {
+  opacity: 1;
+  transform: translate(0, 0);
 }
 </style>

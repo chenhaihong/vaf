@@ -1,4 +1,7 @@
+import type { Menu } from "@/common/helpers/getPermittedMenu";
+
 import { defineStore } from "pinia";
+import { getPermittedMainmenu } from "@/common/helpers/getPermittedMenu";
 
 const useStores = {};
 
@@ -17,6 +20,11 @@ export const createUseNavbarStore = (
         ifUserinfo: !hideUserinfo,
         menus: Array.isArray(menus) ? menus : [],
       };
+    },
+    getters: {
+      mainnav() {
+        return getPermittedMainmenu(this.menus, vafAppId);
+      },
     },
     actions: {
       hideUserinfo() {
@@ -39,24 +47,4 @@ export const getUseNavbarStore = (vafAppId: string) => {
 interface State {
   ifUserinfo: boolean; // 是否展示用户信息
   menus: Menu[]; // 导航菜单列表
-}
-
-interface Menu {
-  type: MenuType;
-  path: string;
-  title: string;
-  icon?: string;
-  authLevel?: AuthLevel;
-  authRoles?: string[];
-}
-
-enum MenuType {
-  RouterLink = "router-link",
-  HttpLink = "http-link",
-}
-
-enum AuthLevel {
-  Anonymous = 0, // 无需登录
-  LoggedIn = 1, // 已登录
-  SpecifiedRoles = 2, // 已登录并且需要拥有指定角色
 }

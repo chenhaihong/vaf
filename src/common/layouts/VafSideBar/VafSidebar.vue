@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import { getUseAuthStore, getUseLeftMenuStore } from "@/common/stores";
-import { getPermittedSubmenu } from "@/common/stores/createUseLeftMenuStore";
+import { getUseLeftMenuStore } from "@/common/stores";
+import { getPermittedSubmenu } from "@/common/helpers/getPermittedMenu";
 
 import VafLogo from "./VafLogo.vue";
 import VafMainmenu from "./VafMainmenu.vue";
@@ -109,16 +109,8 @@ export default {
     },
     getHoverSubmenu(mainmenu) {
       if (mainmenu) {
-        const authStore = getUseAuthStore(this.$vafAppId)();
         const leftmenuStore = getUseLeftMenuStore(this.$vafAppId)();
-
-        const username = authStore.userinfo?.username;
-        const roles = authStore.roles;
-        const hit = leftmenuStore.menus.find(
-          (item) => item.id === mainmenu.id
-        );
-        const tree = hit ? hit.children : [];
-        return getPermittedSubmenu(tree, username, roles);
+        return getPermittedSubmenu(leftmenuStore.menus, mainmenu, this.$vafAppId);
       }
       return [];
     },
@@ -203,6 +195,28 @@ export default {
     border-right: 1px solid $borderColor;
     box-sizing: border-box;
   }
+}
+
+// transition name="slide"
+.#{$namespace}-slide-enter-from,
+.#{$namespace}-slide-leave-to {
+  opacity: 0;
+  transform: translate(-10px, 0);
+}
+
+.#{$namespace}-slide-enter-active {
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.#{$namespace}-slide-leave-active {
+  transition: opacity 0.1s ease-in-out, transform 0.1s ease-in-out;
+}
+
+
+.#{$namespace}-slide-enter-to,
+.#{$namespace}-slide-leave-from {
+  opacity: 1;
+  transform: translate(0, 0);
 }
 
 // transition name="vaf-toggle-sidemenu"
