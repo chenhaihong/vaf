@@ -21,7 +21,7 @@ export default function installUseStores(app: App, options: Options) {
   const {
     vafAppId,
     dataFuncConfig = {},
-    leftmenuConfig = {},
+    sidebarConfig = {},
     navbarConfig = {},
   } = options;
 
@@ -33,7 +33,7 @@ export default function installUseStores(app: App, options: Options) {
 
   // 创建所有useStore, 并放进池子
   const useAuthStore = createUseAuthStore(vafAppId, dataFuncConfig);
-  const useLeftmenuStore = createUseLeftMenuStore(vafAppId, leftmenuConfig);
+  const useLeftmenuStore = createUseLeftMenuStore(vafAppId, sidebarConfig);
   const useNavbarStore = createUseNavbarStore(vafAppId, navbarConfig);
   const useHistoryBarStore = createUseHistoryBarStore(vafAppId);
   useStores[vafAppId] = {
@@ -58,7 +58,7 @@ export const getUseStores = (
 interface Options {
   vafAppId: string;
   dataFuncConfig: any;
-  leftmenuConfig: any;
+  sidebarConfig: any;
   navbarConfig: any;
 }
 

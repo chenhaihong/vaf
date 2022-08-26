@@ -12,7 +12,7 @@ import vaf, {
 } from "../dist/vaf.es.js";
 
 import vafAppId from "../demo/common/config/vafAppId";
-import leftmenuConfig from "../demo/common/config/leftmenu";
+import sidebarConfig from "../demo/common/config/sidebar";
 import navbarConfig from "../demo/common/config/navbar";
 import routeConfig from "../demo/common/routes";
 import makeAuthService from "../demo/common/api/auth";
@@ -35,7 +35,7 @@ const { app } = createVafApp({
     getUserinfo: AuthService.getUserinfo,
     logout: AuthService.logout,
   },
-  leftmenuConfig,
+  sidebarConfig,
   navbarConfig,
   routeConfig,
 });

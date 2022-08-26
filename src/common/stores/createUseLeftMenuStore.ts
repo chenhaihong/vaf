@@ -11,9 +11,9 @@ const useStores = {};
 
 export const createUseLeftMenuStore = (
   vafAppId: string,
-  leftmenuConfig: any = {}
+  sidebarConfig: any = {}
 ) => {
-  const menus: Menu[] | MenusFunc = leftmenuConfig?.menus || []; // 左侧菜单数据
+  const menus: Menu[] | MenusFunc = sidebarConfig?.menus || []; // 左侧菜单数据
   const isArr = Array.isArray(menus);
 
   const useLeftmenuStore = defineStore(`VafLeftMenuStore--${vafAppId}`, {
@@ -25,7 +25,7 @@ export const createUseLeftMenuStore = (
         selectedMainmenuId: "", // 选中的主菜单的id
         selectedSubmenuId: "", // 选中的子菜单的id
         hideSubmenu: false, // 是否隐藏子菜单
-        hideFloatingSubmenu: !!leftmenuConfig.hideFloatingSubmenu, // 是否隐藏浮动子菜单
+        hideFloatingSubmenu: !!sidebarConfig.hideFloatingSubmenu, // 是否隐藏浮动子菜单
       };
     },
     getters: {

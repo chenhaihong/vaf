@@ -1,8 +1,9 @@
 <template>
   <ul class="vaf-nav">
     <template v-for="item in menus" :key="item.path">
-      <a class="vaf-nav__link" :title="item.title" :href="resolveMenuHref(item)" @click.prevent>
-        <li class="vaf-nav__item" @click="handleClick(item)">
+      <a class="vaf-nav__link" :title="item.title" :href="resolveMenuHref(item)" @click.prevent
+        @mouseenter.self="enterLink(item, $event)" @mouseleave.self="leaveLink">
+        <li class="vaf-nav__item" @click="clickNav(item)">
           <el-icon v-if="item.icon">
             <component :is="item.icon" />
           </el-icon>
@@ -11,13 +12,22 @@
       </a>
     </template>
   </ul>
+  <Subnav v-show="showSubnav" class="vaf-submenu-tree-wrap--subnav" />
 </template>
 
 <script>
 import { getUseNavbarStore } from "@/common/stores";
 import confirmLink from "@/common/helpers/confirmLink.vue";
+import Subnav from '../VafSideBar/VafSubMenuTree.vue';
 
 export default {
+  name: 'VafNav',
+  components: { Subnav },
+  data() {
+    return {
+      showSubnav: false,
+    };
+  },
   computed: {
     menus() {
       const store = getUseNavbarStore(this.$vafAppId)();
@@ -31,7 +41,7 @@ export default {
       }
       return this.$router.resolve(menu.path)?.href || menu.path;
     },
-    handleClick(item) {
+    clickNav(item) {
       switch (item.type) {
         case "router-link": // (1) 如果是Router Link，进入下个路由
           this.$router.push(item.path);
@@ -41,9 +51,22 @@ export default {
           break;
         default:
           // (3) 提示不存在的类型
-          this.$message.info(`${item.type} 不是有效的菜单类型`);
+          this.$message.info(`${item.type} 不是有效的导航菜单类型`);
           break;
       }
+    },
+    enterLink(item, event) {
+      if (this.outId) {
+        clearTimeout(this.outId);
+      }
+    },
+    leaveLink() {
+      if (this.outId) {
+        clearTimeout(this.outId);
+      }
+      this.outId = setTimeout(() => {
+        this.showSubnav = false;
+      }, 300);
     },
   },
 }

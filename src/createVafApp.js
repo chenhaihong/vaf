@@ -16,7 +16,7 @@ export const createVafApp = (vafAppConfig = {}) => {
     vafAppId = "vaf-app", // 用来标记应用的唯一id，可以帮助拿到vafapp\store\router\request
     settingConfig = {},
     dataFuncConfig = {},
-    leftmenuConfig = {},
+    sidebarConfig = {},
     navbarConfig = {},
     routeConfig = {},
   } = vafAppConfig;
@@ -26,7 +26,7 @@ export const createVafApp = (vafAppConfig = {}) => {
 
   app.use(installUseStores, {
     vafAppId,
-    leftmenuConfig,
+    sidebarConfig,
     dataFuncConfig,
     navbarConfig,
   }); // 先创建store

@@ -4,7 +4,7 @@ import { withModifiers } from 'vue';
 export default {
   name: "VafLogo",
   render() {
-    const logo = this.$vafAppConfig?.leftmenuConfig?.logo || "";
+    const logo = this.$vafAppConfig?.sidebarConfig?.logo || "";
 
     const props = {
       alt: "logo",
