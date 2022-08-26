@@ -81,16 +81,12 @@ export default {
 
       this.showHoverSubmenu = true;
       this.hoverMainmenu = item;
+      this.hoverSubmenu = this.getHoverSubmenu(item);
+
       const logoHeight = this.$refs.logo?.$el.offsetHeight || 0;
       const logoWidth = this.$refs.logo?.$el.offsetWidth || 0;
       this.hoverSubmenuTop = (logoHeight + mainmenuItemTop - 6) + 'px'; // 减掉6像素
       this.hoverSubmenuLeft = (logoWidth - 1) + 'px'; // 减掉1个像素，便于移入浮动子菜单
-
-      if (item?.type === 'router-link') {
-        this.hoverSubmenu = this.getHoverSubmenu(item);
-      } else {
-        this.hoverSubmenu = [];
-      }
     },
     enterHoverSubmenu() {
       if (this.hideFloatingSubmenu) return;

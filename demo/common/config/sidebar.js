@@ -132,8 +132,24 @@ async function getMenus() {
       type: "http-link",
       path: "https://staging-cn.vuejs.org/",
       title: "外链Vue",
-      // icon: "Link",
+      icon: "Link",
       authLevel: 0,
+      children: [
+        {
+          type: "router-link",
+          id: "/super-admin/api/admin-api",
+          path: "/super-admin/api/admin-api",
+          title: "管理员Api",
+          authLevel: 0,
+        },
+        {
+          type: "router-link",
+          id: "/super-admin/api/client-api",
+          path: "/super-admin/api/client-api",
+          title: "客户端Api",
+          authLevel: 0,
+        },
+      ],
     },
   ];
   return [null, menus];

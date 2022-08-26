@@ -70,25 +70,20 @@ export default {
         return;
       }
 
-
       if (this.outId) {
         clearTimeout(this.outId);
       }
 
       this.showHoverSubnav = true;
       this.hoverMainnav = item;
+      this.hoverSubnav = subnav;
+
       const navTop = this.$refs.nav?.offsetTop || 0;
       const navHeight = this.$refs.nav?.offsetHeight || 0;
       const itemLeft = event.target?.offsetLeft || 0;
       const itemWidth = event.target?.offsetWidth || 0;
-      this.hoverSubnavTop = (navTop + navHeight + 10) + 'px'; // 加上4个像素，好看一点
+      this.hoverSubnavTop = (navTop + navHeight + 10) + 'px'; // 加上10个像素，好看一点
       this.hoverSubnavLeft = (itemLeft + itemWidth / 2 - 64) + 'px';
-
-      if (item?.type === 'router-link') {
-        this.hoverSubnav = subnav;
-      } else {
-        this.hoverSubnav = [];
-      }
     },
     enterHoverSubnav() {
       if (this.outId) {

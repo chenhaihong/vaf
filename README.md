@@ -51,7 +51,9 @@ const { app } = createVafApp({
     logo: "/logo.png", // 左侧菜单的logo
     menus: [
       {
-        type: "router-link", // 可以有children，即可以有子菜单
+        // type: router-link => 路由, http-link => 超链接目标的 URL
+        // 可以有children，即可以有子菜单
+        type: "router-link",
         // id与路由配置的VafId相互对应,
         // 当切换路由时, 程序内部根据id与VafId来找到匹配的菜单,
         // 将它们加上高亮样式.
@@ -64,7 +66,7 @@ const { app } = createVafApp({
         authRoles: ["super-admin"], // 当鉴权等级为2时，该字段才有效，默认为空数组
       },
       {
-        type: "http-link", // 不可以有children，即不可以有子菜单
+        type: "http-link",
         path: "https://staging-cn.vuejs.org/",
         title: "Vue3",
       },
