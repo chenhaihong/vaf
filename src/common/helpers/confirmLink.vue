@@ -4,7 +4,7 @@ import { ElButton, ElDialog, ElLink, ElResult } from "element-plus";
 
 const confirmLink = (link) => {
   let root = document.createElement("div");
-  let hideApp = null;
+  let close = null;
   let app = createApp({
     components: { ElButton, ElDialog, ElLink, ElResult },
     data() {
@@ -14,11 +14,13 @@ const confirmLink = (link) => {
     },
     methods: {
       hide() {
+        // visible设置为false后，
+        // el-dialog会执行onClosed方法。
         this.visible = false;
       },
       unmount() {
+        // onClosed调用这个方法，卸载应用。
         app.unmount();
-        app = null;
       },
     },
     render() {
@@ -53,16 +55,17 @@ const confirmLink = (link) => {
     },
     mounted() {
       document.body.appendChild(root);
-      hideApp = this.hide;
+      close = this.hide;
     },
     unmounted() {
       root.remove();
       root = null;
-      hideApp = null;
+      app = null;
+      close = null;
     },
   });
   app.mount(root);
-  return hideApp;
+  return close;
 };
 
 export default confirmLink;
@@ -73,6 +76,7 @@ export default confirmLink;
   .el-dialog__header {
     display: none;
   }
+
   .el-dialog__body .el-result {
     padding: 0;
   }
