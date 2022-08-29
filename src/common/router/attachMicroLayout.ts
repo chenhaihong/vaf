@@ -1,6 +1,6 @@
 import type { ComponentOptions } from "vue";
 
-import { defineAsyncComponent, h } from "vue";
+import { h } from "vue";
 import VafPageLayout from "@/common/layouts/VafPageLayout.vue";
 
 // 植入了VafPageLayout和微前端外壳的路由
@@ -71,19 +71,15 @@ attachMicroShell.count = 0;
 // 通过这种方式 component: import('xxx.js') 引入的 MicroPageConfig，
 // 先异步取到配置，再去包壳。
 async function attachPendingMicroShell(pending: ViteModulePromise) {
-  return defineAsyncComponent(async () => {
-    const module = await Promise.resolve(pending);
-    return attachMicroShell(module.default);
-  });
+  const module = await Promise.resolve(pending);
+  return attachMicroShell(module.default);
 }
 
 // 通过这种方式 component: ()=> import('xxx.js') 引入的 MicroPageConfig，
 // 先异步取到配置，再去包壳。
 async function attachAsyncMicroShell(asynFunc: ViteModuleAsyncFunc) {
-  return defineAsyncComponent(async () => {
-    const module = await asynFunc();
-    return attachMicroShell(module.default);
-  });
+  const module = await asynFunc();
+  return attachMicroShell(module.default);
 }
 
 interface MicroPageConfig {

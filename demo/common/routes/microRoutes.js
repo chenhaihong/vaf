@@ -19,7 +19,7 @@ export default [
       title: "Hello Micro",
     },
     // console.log(component, typeof component, component instanceof Promise);
-    component: import("../../pages/HelloMicro"), // Promise {<pending>}, object, true
-    // component: () => import("../../pages/HelloMicro"), // ()=>{}, function, false
+    // component: import("../../pages/HelloMicro"), // Promise {<pending>}, object, true
+    component: () => import("../../pages/HelloMicro"), // ()=>{}, function, false
   },
 ];
