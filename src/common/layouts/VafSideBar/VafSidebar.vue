@@ -1,10 +1,11 @@
 <template>
-  <div class="vaf-sidebar">
+  <div ref="sidebar" class="vaf-sidebar">
     <div class="vaf-sidebar__left" :class="{ 'is-hide-submenu': hideSubmenu }">
       <VafLogo ref="logo" />
       <VafMainmenu @enter="enterMainmenu" @leave="delayhidingHoverSubmenu" />
       <transition v-if="!hideFloatingSubmenu" name="vaf-slide">
-        <VafSubMenuTree class="vaf-submenu-tree-wrap--hover" :style="{ left: hoverSubmenuLeft, top: hoverSubmenuTop }"
+        <VafSubMenuTree ref="hoverSubmenu" class="vaf-submenu-tree-wrap--hover"
+          :style="{ left: hoverSubmenuLeft, top: hoverSubmenuTop, height: hoverSubmenuHeight }"
           v-show="showHoverSubmenu" :submenu="hoverSubmenu" :selectedMainmenu="hoverMainmenu"
           :selectedSubmenuId="selectedSubmenuId" @mouseenter="enterHoverSubmenu"
           @mouseleave="delayhidingHoverSubmenu" />
@@ -37,6 +38,7 @@ export default {
       hoverSubmenu: [],
       hoverSubmenuTop: '0px',
       hoverSubmenuLeft: '0px',
+      hoverSubmenuHeight: 'auto',
     };
   },
   computed: {
@@ -83,10 +85,23 @@ export default {
       this.hoverMainmenu = item;
       this.hoverSubmenu = this.getHoverSubmenu(item);
 
+      // 设置悬浮子菜单的位置
       const logoHeight = this.$refs.logo?.$el.offsetHeight || 0;
       const logoWidth = this.$refs.logo?.$el.offsetWidth || 0;
-      this.hoverSubmenuTop = (logoHeight + mainmenuItemTop - 6) + 'px'; // 减掉6像素
+      const hoverSubmenuTop = (logoHeight + mainmenuItemTop - 6); // 减掉6像素
+      this.hoverSubmenuTop = hoverSubmenuTop + 'px';
       this.hoverSubmenuLeft = (logoWidth - 1) + 'px'; // 减掉1个像素，便于移入浮动子菜单
+
+      // 限制高度，不让超度可视区域
+      this.$nextTick(() => {
+        const sidebarHeight = this.$refs.sidebar?.offsetHeight || 0;
+        const hoverSubmenuHeight = this.$refs.hoverSubmenu?.$el.offsetHeight || 0;
+        if (hoverSubmenuHeight + hoverSubmenuTop > sidebarHeight - 10) { // 超出了可视区域
+          this.hoverSubmenuHeight = sidebarHeight - hoverSubmenuTop - 10 + 'px';
+        } else {
+          this.hoverSubmenuHeight = 'auto';
+        }
+      });
     },
     enterHoverSubmenu() {
       if (this.hideFloatingSubmenu) return;
