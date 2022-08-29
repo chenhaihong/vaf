@@ -96,60 +96,27 @@ async function getMenus() {
     {
       // router-link示例
       type: "router-link",
-      id: "/helloworld",
-      path: "/helloworld",
+      id: "/hello-vanilla",
+      path: "/hello-vanilla",
       title: "原生路由",
       // icon: "Document",
       authLevel: 0,
     },
     {
-      // 菜单组示例
-      // router-link + children
+      // router-link示例
       type: "router-link",
-      id: "/pro-components",
-      path: "/pro-components/vaf-pro-form",
-      title: "Pro组件",
-      // icon: "SetUp",
+      id: "/hello-micro",
+      path: "/hello-micro",
+      title: "微路由",
+      // icon: "Document",
       authLevel: 0,
-      children: [
-        {
-          type: "router-link",
-          id: "/pro-components/vaf-pro-form",
-          path: "/pro-components/vaf-pro-form",
-          title: "Pro表单",
-          authLevel: 0,
-        },
-        {
-          type: "router-link",
-          id: "/pro-components/vaf-pro-table",
-          path: "/pro-components/vaf-pro-table",
-          title: "Pro表格",
-          authLevel: 0,
-        },
-      ],
     },
     {
       type: "http-link",
-      path: "https://staging-cn.vuejs.org/",
-      title: "外链Vue",
+      path: "https://cn.vuejs.org/",
+      title: "Vue3",
       icon: "Link",
       authLevel: 0,
-      children: [
-        {
-          type: "router-link",
-          id: "/super-admin/api/admin-api",
-          path: "/super-admin/api/admin-api",
-          title: "管理员Api",
-          authLevel: 0,
-        },
-        {
-          type: "router-link",
-          id: "/super-admin/api/client-api",
-          path: "/super-admin/api/client-api",
-          title: "客户端Api",
-          authLevel: 0,
-        },
-      ],
     },
   ];
   return [null, menus];

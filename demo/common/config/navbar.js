@@ -37,26 +37,10 @@ export default {
     },
     {
       type: "http-link",
-      id: "https://element-plus.gitee.io/zh-CN/",
-      path: "https://element-plus.gitee.io/zh-CN/",
+      id: "https://element-plus.org/zh-CN/",
+      path: "https://element-plus.org/zh-CN/",
       title: "饿了么",
       authLevel: 0,
-      children: [
-        {
-          type: "router-link",
-          id: "/super-admin/api/admin-api",
-          path: "/super-admin/api/admin-api",
-          title: "管理员Api",
-          authLevel: 0,
-        },
-        {
-          type: "router-link",
-          id: "/super-admin/api/client-api",
-          path: "/super-admin/api/client-api",
-          title: "客户端Api",
-          authLevel: 0,
-        },
-      ],
     },
   ],
 };

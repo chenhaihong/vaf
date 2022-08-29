@@ -6,6 +6,7 @@ import {
 } from "vue-router";
 
 import attachPageLayout from "./attachPageLayout";
+import attachMicroLayout from "./attachMicroLayout";
 import attachDefaultRoutes from "./attachDefaultRoutes";
 import createAttachGlobalNavigationGuards from "./createAttachGlobalNavigationGuards";
 
@@ -21,11 +22,13 @@ export const createMakeRouter =
       base = "/",
       pageRoutes = [],
       vanillaRoutes = [],
+      microRoutes = [],
       globalNavigationGuards = {}, // 符合VueRouter约束的全局导航配置
     } = routeConfig;
 
     const attachedRoutes = attachDefaultRoutes([
       ...attachPageLayout(pageRoutes), // 植入了VafPageLayout的路由
+      ...attachMicroLayout(microRoutes), // 植入了VafPageLayout和微前端外壳的路由
       ...vanillaRoutes, // 原生的VueRouter的路由配置，不做额外处理
     ]);
 
