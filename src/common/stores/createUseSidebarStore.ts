@@ -76,10 +76,13 @@ export const createUseSidebarStore = (
           this.menus
         );
 
-        if (!mathedNodes.length) return;
-
-        this.selectedMainmenuId = mathedNodes[0].id; // 选中的主菜单的id
-        this.selectedSubmenuId = selectedSubmenuId; // 选中的子菜单的id
+        if (mathedNodes.length) {
+          this.selectedMainmenuId = mathedNodes[0].id; // 选中的主菜单的id
+          this.selectedSubmenuId = selectedSubmenuId; // 选中的子菜单的id
+        } else {
+          this.selectedMainmenuId = null;
+          this.selectedMainmenuId = null;
+        }
       },
     },
   });
