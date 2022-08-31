@@ -91,9 +91,13 @@ export default {
 }
 
 @include e(left) {
-  z-index: $sidebarZIndex;
+  z-index: 0;
   flex-shrink: 0;
   @include flex(row, nowrap, flex-start, stretch);
+
+  &:hover {
+    z-index: $sidebarZIndex;
+  }
 }
 
 @include e(right) {
