@@ -1,6 +1,7 @@
 <template>
   <div class="vaf-page-layout">
-    <VafSidebar class="vaf-page-layout__left" />
+    <VafSidebar ref="sidebar" class="vaf-page-layout__left" @mouseenter="enterLayoutLeft"
+      @mouseleave="leaveLayoutLeft" />
     <div class="vaf-page-layout__right">
       <VafNavbar class="vaf-page-layout__right__navbar" />
       <VafHistoryBar class="vaf-page-layout__right__history-bar" />
@@ -75,6 +76,27 @@ export default {
 
       return h(wrapper);
     },
+    // 更新左layout与右layout的z-index值，enter左layout时才去提升左layout的z-index层级，
+    // 不让业务开发考虑将弹出框插到body里，来避免z-index层级的思考问题
+    enterLayoutLeft() {
+      this.outId && clearTimeout(this.outId);
+      this.$refs.sidebar?.$el.classList.add('is-enter');
+    },
+    leaveLayoutLeft() {
+      this.outId && clearTimeout(this.outId);
+
+      // 如果sidebar的浮动子菜单显示的话，延迟到浮动子菜单关闭，才移除is-enter样式
+      if (this.$refs.sidebar?.showHoverSubmenu) {
+        this.outId = setTimeout(() => {
+          this.$refs.sidebar?.$el.classList.remove('is-enter');
+        }, 200);
+      } else {
+        this.$refs.sidebar?.$el.classList.remove('is-enter');
+      }
+    },
+  },
+  mounted() {
+    this.outId && clearTimeout(this.outId);
   },
 };
 </script>
@@ -95,7 +117,7 @@ export default {
   flex-shrink: 0;
   @include flex(row, nowrap, flex-start, stretch);
 
-  &:hover {
+  @include when(enter) {
     z-index: $sidebarZIndex;
   }
 }

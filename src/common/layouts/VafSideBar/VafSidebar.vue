@@ -126,6 +126,11 @@ export default {
       return [];
     },
   },
+  mounted() {
+    if (this.outId) {
+      clearTimeout(this.outId);
+    }
+  },
 };
 </script>
 
