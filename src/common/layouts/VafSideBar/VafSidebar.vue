@@ -4,7 +4,7 @@
       <VafLogo ref="logo" />
       <VafMainmenu @enter="enterMainmenu" @leave="delayhidingHoverSubmenu" />
       <transition v-if="!hideFloatingSubmenu" name="vaf-slide">
-        <VafSubMenuTree ref="hoverSubmenu" class="vaf-submenu-tree-wrap--hover" v-show="showHoverSubmenu"
+        <VafSubMenuTree ref="hoverSubmenu" class="vaf-submenu-tree-wrap--hover" v-show="showHoverSubmenu" hideFirstNav
           :submenu="hoverSubmenu" :selectedMainmenu="hoverMainmenu" :selectedSubmenuId="selectedSubmenuId"
           @mouseenter="enterHoverSubmenu" @mouseleave="delayhidingHoverSubmenu" />
       </transition>
@@ -170,8 +170,7 @@ export default {
       overflow: visible;
 
       .vaf-submenu-tree {
-        border-bottom-right-radius: 8px;
-        border-bottom-left-radius: 8px;
+        border-radius: 8px;
       }
 
       &::before,
