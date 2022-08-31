@@ -4,11 +4,9 @@
       <VafLogo ref="logo" />
       <VafMainmenu @enter="enterMainmenu" @leave="delayhidingHoverSubmenu" />
       <transition v-if="!hideFloatingSubmenu" name="vaf-slide">
-        <VafSubMenuTree ref="hoverSubmenu" class="vaf-submenu-tree-wrap--hover"
-          :style="{ left: hoverSubmenuLeft, top: hoverSubmenuTop, height: hoverSubmenuHeight }"
-          v-show="showHoverSubmenu" :submenu="hoverSubmenu" :selectedMainmenu="hoverMainmenu"
-          :selectedSubmenuId="selectedSubmenuId" @mouseenter="enterHoverSubmenu"
-          @mouseleave="delayhidingHoverSubmenu" />
+        <VafSubMenuTree ref="hoverSubmenu" class="vaf-submenu-tree-wrap--hover" v-show="showHoverSubmenu"
+          :submenu="hoverSubmenu" :selectedMainmenu="hoverMainmenu" :selectedSubmenuId="selectedSubmenuId"
+          @mouseenter="enterHoverSubmenu" @mouseleave="delayhidingHoverSubmenu" />
       </transition>
     </div>
     <transition name="vaf-toggle-sidemenu">
@@ -36,9 +34,6 @@ export default {
       showHoverSubmenu: false,
       hoverMainmenu: null,
       hoverSubmenu: [],
-      hoverSubmenuTop: '0px',
-      hoverSubmenuLeft: '0px',
-      hoverSubmenuHeight: 'auto',
     };
   },
   computed: {
@@ -77,46 +72,49 @@ export default {
   methods: {
     enterMainmenu(item, mainmenuItemTop) {
       if (this.hideFloatingSubmenu) return;
-      if (this.outId) {
-        clearTimeout(this.outId);
+      const submenu = this.getHoverSubmenu(item);
+      if (!submenu.length) {
+        return;
       }
+      this.outId && clearTimeout(this.outId);
 
       this.showHoverSubmenu = true;
       this.hoverMainmenu = item;
-      this.hoverSubmenu = this.getHoverSubmenu(item);
+      this.hoverSubmenu = submenu;
 
       // 设置悬浮子菜单的位置
       const logoHeight = this.$refs.logo?.$el.offsetHeight || 0;
       const logoWidth = this.$refs.logo?.$el.offsetWidth || 0;
       const hoverSubmenuTop = (logoHeight + mainmenuItemTop - 6); // 减掉6像素
-      this.hoverSubmenuTop = hoverSubmenuTop + 'px';
-      this.hoverSubmenuLeft = (logoWidth - 1) + 'px'; // 减掉1个像素，便于移入浮动子菜单
+
+      const $el = this.$refs.hoverSubmenu?.$el;
+      if ($el) {
+        $el.style.top = hoverSubmenuTop + 'px';
+        $el.style.left = (logoWidth - 1) + 'px'; // 减掉1个像素，便于移入浮动子菜单
+      }
 
       // 限制高度，不让超度可视区域
       this.$nextTick(() => {
         const sidebarHeight = this.$refs.sidebar?.offsetHeight || 0;
         const hoverSubmenuHeight = this.$refs.hoverSubmenu?.$el.offsetHeight || 0;
+        const $el = this.$refs.hoverSubmenu.$el;
         if (hoverSubmenuHeight + hoverSubmenuTop > sidebarHeight - 10) { // 超出了可视区域
-          this.hoverSubmenuHeight = sidebarHeight - hoverSubmenuTop - 10 + 'px';
+          $el && ($el.style.height = sidebarHeight - hoverSubmenuTop - 10 + 'px');
         } else {
-          this.hoverSubmenuHeight = 'auto';
+          $el && ($el.style.height = 'auto');
         }
       });
     },
     enterHoverSubmenu() {
       if (this.hideFloatingSubmenu) return;
-      if (this.outId) {
-        clearTimeout(this.outId);
-      }
+      this.outId && clearTimeout(this.outId);
     },
     delayhidingHoverSubmenu() {
       if (this.hideFloatingSubmenu) return;
-      if (this.outId) {
-        clearTimeout(this.outId);
-      }
+      this.outId && clearTimeout(this.outId);
       this.outId = setTimeout(() => {
         this.showHoverSubmenu = false;
-      }, 200);
+      }, 50);
     },
     getHoverSubmenu(mainmenu) {
       if (mainmenu) {
@@ -126,10 +124,8 @@ export default {
       return [];
     },
   },
-  mounted() {
-    if (this.outId) {
-      clearTimeout(this.outId);
-    }
+  unmounted() {
+    this.outId && clearTimeout(this.outId);
   },
 };
 </script>

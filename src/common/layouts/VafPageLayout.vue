@@ -95,7 +95,7 @@ export default {
       }
     },
   },
-  mounted() {
+  unmounted() {
     this.outId && clearTimeout(this.outId);
   },
 };

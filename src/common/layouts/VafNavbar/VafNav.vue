@@ -7,15 +7,15 @@
           <el-icon v-if="item.icon">
             <component :is="item.icon" />
           </el-icon>
-          <span class="vaf-nav__item__title">{{ item.title }}</span>
+          <span class="vaf-nav__item__title">{{  item.title  }}</span>
         </li>
       </a>
     </template>
   </ul>
   <transition name="vaf-slide-vertical">
-    <VafSubnavTree class="vaf-subnav-tree-wrap--hover" :style="{ left: hoverSubnavLeft, top: hoverSubnavTop }"
-      v-show="showHoverSubnav" hideFirstNav :submenu="hoverSubnav" :selectedMainmenu="hoverMainnav"
-      @mouseenter="enterHoverSubnav" @mouseleave="delayHidingHoverSubnav" />
+    <VafSubnavTree ref="subnav" class="vaf-subnav-tree-wrap--hover" v-show="showHoverSubnav" hideFirstNav
+      :submenu="hoverSubnav" :selectedMainmenu="hoverMainnav" @mouseenter="enterHoverSubnav"
+      @mouseleave="delayHidingHoverSubnav" />
   </transition>
 </template>
 
@@ -33,8 +33,8 @@ export default {
       showHoverSubnav: false,
       hoverMainnav: null,
       hoverSubnav: [],
-      hoverSubnavTop: '0px',
-      hoverSubnavLeft: '0px',
+      // hoverSubnavTop: '0px',
+      // hoverSubnavLeft: '0px',
     };
   },
   computed: {
@@ -69,10 +69,7 @@ export default {
       if (!subnav.length) {
         return;
       }
-
-      if (this.outId) {
-        clearTimeout(this.outId);
-      }
+      this.outId && clearTimeout(this.outId);
 
       this.showHoverSubnav = true;
       this.hoverMainnav = item;
@@ -82,18 +79,18 @@ export default {
       const navHeight = this.$refs.nav?.offsetHeight || 0;
       const itemLeft = event.target?.offsetLeft || 0;
       const itemWidth = event.target?.offsetWidth || 0;
-      this.hoverSubnavTop = (navTop + navHeight + 10) + 'px'; // 加上10个像素，好看一点
-      this.hoverSubnavLeft = (itemLeft + itemWidth / 2 - 64) + 'px';
+
+      const $el = this.$refs.subnav?.$el;
+      if ($el) {
+        $el.style.top = (navTop + navHeight + 10) + 'px'; // 加上10个像素，好看一点
+        $el.style.left = (itemLeft + itemWidth / 2 - 64) + 'px';
+      }
     },
     enterHoverSubnav() {
-      if (this.outId) {
-        clearTimeout(this.outId);
-      }
+      this.outId && clearTimeout(this.outId);
     },
     delayHidingHoverSubnav() {
-      if (this.outId) {
-        clearTimeout(this.outId);
-      }
+      this.outId && clearTimeout(this.outId);
       this.outId = setTimeout(() => {
         this.showHoverSubnav = false;
       }, 200);
@@ -105,6 +102,9 @@ export default {
       }
       return [];
     },
+  },
+  unmounted() {
+    this.outId && clearTimeout(this.outId);
   },
 }
 </script>
