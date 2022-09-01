@@ -7,6 +7,11 @@
       </a>
     </div>
     <div class="vaf-submenu-tree">
+      <div v-if="ifToggle" class="vaf-submenu-tree-toggle" :class="{ 'is-collapsed': !expandedAll }">
+        <el-icon class="vaf-submenu-tree-toggle__icon" @click="toggle">
+          <ArrowUpBold />
+        </el-icon>
+      </div>
       <el-scrollbar always>
         <el-tree ref="subMenuTree" :data="submenu" empty-text="无菜单" node-key="id"
           :props="{ children: 'children', label: 'title' }" default-expand-all highlight-current :indent="8"
@@ -25,15 +30,33 @@
 </template>
 
 <script>
+import { ArrowUpBold } from "@element-plus/icons-vue";
 import confirmLink from "@/common/helpers/confirmLink.vue";
 
 export default {
   name: "VafSubMenuTree",
+  components: { ArrowUpBold },
+  data() {
+    return {
+      expandedAll: true,
+    };
+  },
   props: {
+    hideToggle: { type: Boolean, default: false },
     hideFirstNav: { type: Boolean, default: false },
     selectedMainmenu: { type: Object },
-    selectedSubmenuId: { type: String, default: '' },
+    selectedSubmenuId: { type: String, default: "" },
     submenu: { type: Array, default: () => [] },
+  },
+  computed: {
+    // 当外部不关闭切换器，且子菜单的任意一个拥有子菜单时，才开启切换器
+    ifToggle() {
+      if (this.hideToggle) return false;
+      const index = this.submenu?.findIndex(item => {
+        return item.children?.length;
+      });
+      return index !== -1;
+    },
   },
   watch: {
     selectedSubmenuId(next) {
@@ -45,6 +68,11 @@ export default {
     submenu() {
       // 帮助hover出来的子菜单高亮目标tree-node.
       this.$nextTick(this.setCurrentKey);
+
+      if (this.ifToggle) {
+        // 当子菜单发生改变时，因为默认展开所有子菜单，需要重置这个值为真
+        this.expandedAll = true;
+      }
     },
   },
   methods: {
@@ -52,7 +80,7 @@ export default {
       this.$refs["subMenuTree"]?.setCurrentKey(this.selectedSubmenuId);
     },
     resolveMenuHref(menu = {}) {
-      if (menu.type === 'http-link') {
+      if (menu.type === "http-link") {
         return menu.path;
       }
       return this.$router.resolve(menu.path)?.href || menu.path;
@@ -81,6 +109,31 @@ export default {
           break;
       }
     },
+    // element-plus@2.2.15 展开全部节点与收起全部节点
+    toggle() {
+      const expandedAll = this.expandedAll;
+      this.submenu.forEach((item) => {
+        const node = this.$refs.subMenuTree?.store.getNode(item.id);
+        expandedAll ? this.collapseAll(node) : this.expandAll(node);
+      });
+      this.expandedAll = !expandedAll;
+    },
+    // 展开全部节点
+    expandAll(node) {
+      if (!node || node?.isLeaf) return;
+      !node.expanded && node.expand();
+      node.childNodes?.forEach((node) => {
+        this.expandAll(node);
+      });
+    },
+    // 收起全部节点
+    collapseAll(node) {
+      if (!node || node?.isLeaf) return;
+      node.expanded && node.collapse();
+      node.childNodes?.forEach((node) => {
+        this.collapseAll(node);
+      });
+    },
   },
 };
 </script>
@@ -96,6 +149,7 @@ export default {
 }
 
 @include b(submenu-tree) {
+  position: relative;
   // width: $subMenuWidth;
   height: calc(100% - $navbarHeight);
   border-top: 1px solid $borderColor;
@@ -185,6 +239,36 @@ export default {
 
     .custom-label>.custom-label__text {
       color: $subMenuContentColorActive;
+    }
+  }
+}
+
+@include b(submenu-tree-toggle) {
+  z-index: 2;
+  position: absolute;
+  top: 14px;
+  right: 0;
+  background: $mainMenuTextColorHover;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  transform: translateX(80%);
+  transition: transform 0.3s ease-in-out;
+
+  &:hover {
+    transform: translateX(0);
+    box-shadow: 0px 0px 4px rgba(200, 200, 200, 0.6);
+  }
+
+  @include e(icon) {
+    cursor: pointer;
+    padding: 6px 8px;
+    border-radius: 4px;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  @include when(collapsed) {
+    @include e(icon) {
+      transform: rotate(180deg);
     }
   }
 }

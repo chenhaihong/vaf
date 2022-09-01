@@ -7,13 +7,13 @@
           <el-icon v-if="item.icon">
             <component :is="item.icon" />
           </el-icon>
-          <span class="vaf-nav__item__title">{{  item.title  }}</span>
+          <span class="vaf-nav__item__title">{{ item.title }}</span>
         </li>
       </a>
     </template>
   </ul>
   <transition name="vaf-slide-vertical">
-    <VafSubnavTree ref="subnav" class="vaf-subnav-tree-wrap--hover" v-show="showHoverSubnav" hideFirstNav
+    <VafSubnavTree ref="subnav" class="vaf-subnav-tree-wrap--hover" v-show="showHoverSubnav" hideFirstNav hideToggle
       :submenu="hoverSubnav" :selectedMainmenu="hoverMainnav" @mouseenter="enterHoverSubnav"
       @mouseleave="delayHidingHoverSubnav" />
   </transition>
@@ -152,6 +152,7 @@ export default {
 
 @include b(subnav-tree-wrap) {
   @include m(hover) {
+    z-index: 1;
     position: absolute;
     top: 0;
     left: 0;
@@ -163,6 +164,7 @@ export default {
     overflow: visible;
 
     .vaf-submenu-tree {
+      height: calc(100%);
       border-radius: 8px;
     }
 

@@ -158,18 +158,19 @@ export default {
     }
 
     .vaf-submenu-tree-wrap--hover {
+      z-index: 1;
       position: absolute;
       top: $navbarHeight;
       left: $mainMenuWidth - 1;
       width: $subMenuWidth;
       height: auto;
-      // max-height: calc(100% - $navbarHeight - 10px);
       background: $subMenuBgColor;
       box-shadow: 0px 0px 12px rgba(200, 200, 200, 0.6);
       border-radius: 8px;
       overflow: visible;
 
       .vaf-submenu-tree {
+        height: calc(100%);
         border-radius: 8px;
       }
 
