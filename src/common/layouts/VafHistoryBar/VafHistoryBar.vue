@@ -9,7 +9,7 @@ export default {
     $route: {
       handler(next) {
         // 当下个路由是PageRoute时, 才会加入到tab路由历史中
-        if (next.meta?.VafIsPageRoute) {
+        if (next.meta?.VafIsPageRoute || next.meta?.VafIsMicroRoute) {
           const store = getUseHistoryBarStore(this.$vafAppId)();
 
           // 1. 高亮选项卡

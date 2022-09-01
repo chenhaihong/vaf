@@ -13,7 +13,7 @@ export default function attachMicroLayout(microRoutes = []) {
     .map((item) => {
       // console.log(JSON.stringify(item, null, 2));
       const { beforeEnter, component, meta: sourceMeta = {}, ...rest } = item;
-      const meta = { ...sourceMeta, VafIsPageRoute: true };
+      const meta = { ...sourceMeta, VafIsMicroRoute: true };
       return {
         ...rest,
         component: VafPageLayout,
@@ -70,14 +70,14 @@ attachMicroShell.count = 0;
 
 // 通过这种方式 component: import('xxx.js') 引入的 MicroPageConfig，
 // 先异步取到配置，再去包壳。
-async function attachPendingMicroShell(pending: ViteModulePromise) {
+async function attachPendingMicroShell(pending: ModuleImport) {
   const module = await Promise.resolve(pending);
   return attachMicroShell(module.default);
 }
 
 // 通过这种方式 component: ()=> import('xxx.js') 引入的 MicroPageConfig，
 // 先异步取到配置，再去包壳。
-async function attachAsyncMicroShell(asynFunc: ViteModuleAsyncFunc) {
+async function attachAsyncMicroShell(asynFunc: ModuleDynamicImport) {
   const module = await asynFunc();
   return attachMicroShell(module.default);
 }
@@ -89,10 +89,10 @@ interface MicroPageConfig {
   beforeUnmount?: () => void;
   unmounted?: () => void;
 }
-interface ViteModule {
+interface MicroPageModule {
   default: MicroPageConfig;
 }
-type ViteModulePromise = Promise<ViteModule>;
-interface ViteModuleAsyncFunc {
-  (): ViteModulePromise;
+type ModuleImport = Promise<MicroPageModule>;
+interface ModuleDynamicImport {
+  (): ModuleImport;
 }
