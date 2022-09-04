@@ -124,7 +124,7 @@ export default {
     getHoverSubmenu(mainmenu) {
       if (mainmenu) {
         const sidebarStore = getUseSidebarStore(this.$vafAppId)();
-        return getPermittedSubmenu(sidebarStore.menus, mainmenu, this.$vafAppId);
+        return getPermittedSubmenu(sidebarStore.menus, mainmenu, this.$vafAppId, sidebarStore.enableFilter);
       }
       return [];
     },

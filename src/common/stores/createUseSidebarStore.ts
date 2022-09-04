@@ -24,6 +24,7 @@ export const createUseSidebarStore = (
       return {
         shouldLoadMenus: !isArr,
         loadingMenus: false,
+        enableFilter: sidebarConfig.enableFilter || true, // 启用过滤器，启用时才根据内置规则进行过滤
         menus: isArr ? menus : [],
         selectedMainmenuId: "", // 选中的主菜单的id
         selectedSubmenuId: "", // 选中的子菜单的id
@@ -33,19 +34,19 @@ export const createUseSidebarStore = (
     },
     getters: {
       mainmenu(state): Menu[] {
-        return getPermittedMainmenu(state.menus, vafAppId);
+        return getPermittedMainmenu(state.menus, vafAppId, this.enableFilter);
       },
       submenu(state): Menu[] {
         return getPermittedSubmenu(
           state.menus,
           this.selectedMainmenu,
-          vafAppId
+          vafAppId,
+          this.enableFilter
         );
       },
       selectedMainmenu(state): Menu | undefined {
         const selectedMainmenuId = state.selectedMainmenuId;
         const mainmenu = this.mainmenu;
-
         return mainmenu.find((item: Menu) => item.id === selectedMainmenuId);
       },
     },
@@ -98,6 +99,7 @@ export const getUseSidebarStore = (vafAppId: string) => {
 interface State {
   shouldLoadMenus: boolean;
   loadingMenus: boolean;
+  enableFilter: boolean;
   menus: Menu[];
   selectedMainmenuId: string;
   selectedSubmenuId: string;

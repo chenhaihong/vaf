@@ -14,6 +14,7 @@ export const createUseNavbarStore = (
 ) => {
   const {
     hideUserinfo = false, // 是否隐藏用户信息
+    enableFilter = true, // 启用过滤器，启用时才根据内置规则进行过滤
     menus = [], // 菜单配置
   } = navbarConfig;
 
@@ -21,14 +22,24 @@ export const createUseNavbarStore = (
     state(): State {
       return {
         ifUserinfo: !hideUserinfo,
+        enableFilter,
         menus: Array.isArray(menus) ? menus : [],
       };
     },
     getters: {
       mainnav() {
-        const list = getPermittedMainmenu(this.menus, vafAppId);
+        const list = getPermittedMainmenu(
+          this.menus,
+          vafAppId,
+          this.enableFilter
+        );
         list.forEach((item) => {
-          const submenu = getPermittedSubmenu(this.menus, item, vafAppId);
+          const submenu = getPermittedSubmenu(
+            this.menus,
+            item,
+            vafAppId,
+            this.enableFilter
+          );
           item.hasChildren = submenu.length > 0;
         });
         return list;
@@ -54,5 +65,6 @@ export const getUseNavbarStore = (vafAppId: string) => {
 
 interface State {
   ifUserinfo: boolean; // 是否展示用户信息
+  enableFilter: boolean; // 启用过滤器，启用时才根据内置规则进行过滤
   menus: Menu[]; // 导航菜单列表
 }

@@ -1,5 +1,6 @@
 export default {
   hideUserinfo: false,
+  enableFilter: false,
   menus: [
     {
       // 菜单组示例
@@ -40,7 +41,7 @@ export default {
       id: "https://element-plus.org/zh-CN/",
       path: "https://element-plus.org/zh-CN/",
       title: "饿了么",
-      authLevel: 0,
+      authLevel: 2,
     },
   ],
 };

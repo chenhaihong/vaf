@@ -6,7 +6,8 @@ export default { getPermittedMainmenu, getPermittedSubmenu };
 // 获取当前角色拥有的主菜单
 export function getPermittedMainmenu(
   menus: Menu[] = [],
-  vafAppId: string
+  vafAppId: string,
+  enableFilter: boolean = true // 启用过滤器，启用时才根据内置规则进行过滤
 ): Menu[] {
   const authStore = getUseAuthStore(vafAppId)();
   const adminUsername = authStore.userinfo?.username;
@@ -26,6 +27,9 @@ export function getPermittedMainmenu(
       };
     })
     .filter((item) => {
+      // 关闭了过滤器，不进行过滤
+      if (!enableFilter) return true;
+
       // 只返回有权限的菜单
       let { authLevel = 1, authRoles = [] } = item;
       if (![0, 1, 2].includes(authLevel)) {
@@ -44,7 +48,8 @@ export function getPermittedMainmenu(
 export function getPermittedSubmenu(
   menus: Menu[] = [], // 用户传递进来的全部菜单
   mainmenu: Menu, // 用户选中的主菜单
-  vafAppId: string
+  vafAppId: string,
+  enableFilter: boolean = true // 启用过滤器，启用时才根据内置规则进行过滤
 ): Menu[] {
   const authStore = getUseAuthStore(vafAppId)();
   const adminUsername = authStore.userinfo?.username;
@@ -52,18 +57,22 @@ export function getPermittedSubmenu(
 
   const hit = menus.find((item) => item.id === mainmenu?.id);
   const tree = hit ? hit.children : [];
-  return filter(tree, adminUsername, roles);
+  return filter(tree, adminUsername, roles, enableFilter);
 }
 
 function filter(
   tree: Menu[] = [],
   adminUsername: string,
-  adminRoles: string[] = []
+  adminRoles: string[] = [],
+  enableFilter: boolean = true // 启用过滤器，启用时才根据内置规则进行过滤
 ): Menu[] {
   return tree.filter((item) => {
+    // 关闭了过滤器，不进行过滤
+    if (!enableFilter) return true;
+
     const { authLevel = 1, authRoles = [], children = [] } = item;
     if (children.length > 0) {
-      item.children = filter(children, adminUsername, adminRoles);
+      item.children = filter(children, adminUsername, adminRoles, enableFilter);
     }
     return (
       authLevel === AuthLevel.Anonymous || // 可匿名访问

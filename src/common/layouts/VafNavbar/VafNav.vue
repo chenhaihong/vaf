@@ -102,7 +102,7 @@ export default {
     getHoverSubnav(mainnav) {
       if (mainnav) {
         const store = getUseNavbarStore(this.$vafAppId)();
-        return getPermittedSubmenu(store.menus, mainnav, this.$vafAppId);
+        return getPermittedSubmenu(store.menus, mainnav, this.$vafAppId, store.enableFilter);
       }
       return [];
     },
