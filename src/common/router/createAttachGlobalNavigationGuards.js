@@ -7,23 +7,23 @@ import createAttachAfterEach from "./createAttachAfterEach";
 // https://router.vuejs.org/zh/guide/advanced/navigation-guards.html#%E5%AE%8C%E6%95%B4%E7%9A%84%E5%AF%BC%E8%88%AA%E8%A7%A3%E6%9E%90%E6%B5%81%E7%A8%8B
 
 const createAttachGlobalNavigationGuards =
-  (vafAppId) => ($router, guards, settingConfig) => {
+  (vafAppId) => ($router, guards, routeConfig, settingConfig) => {
     // beforeeach 文档
     // https://router.vuejs.org/zh/api/#beforeeach
     if (!guards.beforeEach) {
-      createAttachBeforeEach(vafAppId)($router);
+      const { enableLoginFilter = true, enableRoleFilter = true } = routeConfig;
+      createAttachBeforeEach(vafAppId)(
+        $router,
+        enableLoginFilter,
+        enableRoleFilter
+      );
     } else {
       // 如果用户自定义了守卫，则不添加内置的全局导航守卫，
       // 而是使用用户定义的导航守卫函数
-      $router.beforeEach(async (to, from, next) => {
+      $router.beforeEach((to, from, next) => {
         // start progress bar
         NProgress.start();
-
-        if (guards.beforeEach) {
-          guards.beforeEach(to, from, next);
-        } else {
-          next();
-        }
+        guards.beforeEach(to, from, next);
       });
     }
 
@@ -37,10 +37,7 @@ const createAttachGlobalNavigationGuards =
       $router.afterEach((to, from) => {
         // finish progress bar
         NProgress.done();
-
-        if (guards.afterEach) {
-          guards.afterEach(to, from);
-        }
+        guards.afterEach(to, from);
       });
     }
 
@@ -58,9 +55,9 @@ const createAttachGlobalNavigationGuards =
       "onError",
     ];
     rest.forEach((item) => {
-      const func = guards[item];
-      if (func) {
-        $router[item](func);
+      const fn = guards[item];
+      if (fn) {
+        $router[item](fn);
       }
     });
   };

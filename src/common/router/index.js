@@ -54,6 +54,7 @@ export const createMakeRouter =
     createAttachGlobalNavigationGuards(vafAppId)(
       $router,
       globalNavigationGuards,
+      routeConfig,
       settingConfig
     ); // 添加用户定义的全局导航守卫
 
