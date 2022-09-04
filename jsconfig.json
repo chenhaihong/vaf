@@ -7,7 +7,7 @@
         "src/*"
       ],
       "@demo/*": [
-        "demo/*"
+        "fixture/*"
       ]
     }
   },

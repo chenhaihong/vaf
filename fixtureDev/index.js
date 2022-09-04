@@ -1,5 +1,5 @@
 import "element-plus/dist/index.css";
-import "../demo/index.css";
+import "../fixture/index.css";
 
 import ElementPlus from "element-plus";
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
@@ -10,13 +10,13 @@ import vaf, {
   getRequest,
 } from "../src/index.js";
 
-import vafAppId from "../demo/common/config/vafAppId";
-import sidebarConfig from "../demo/common/config/sidebar";
-import navbarConfig from "../demo/common/config/navbar";
-import routeConfig from "../demo/common/routes";
-import makeAuthService from "../demo/common/api/auth";
+import vafAppId from "../fixture/common/config/vafAppId";
+import sidebarConfig from "../fixture/common/config/sidebar";
+import navbarConfig from "../fixture/common/config/navbar";
+import routeConfig from "../fixture/common/routes";
+import makeAuthService from "../fixture/common/api/auth";
 
-import installDirectives from "../demo/common/directives";
+import installDirectives from "../fixture/common/directives";
 
 console.log(JSON.stringify(vaf, null, 2));
 

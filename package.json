@@ -5,14 +5,12 @@
   "author": "erye <erye@tiiit.cn>",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "dev:lib": "vite serve --mode development:lib",
-    "build": "rimraf ./dist/* && vite build && vite build --mode production:minified",
-    "preview": "vite preview",
-    "pub": "npm publish --access public --registry https://registry.npmjs.org/",
-    "predev:lib": "npm run build",
-    "prepreview": "npm run build && vite build --mode preview",
-    "prepub": "npm run build"
+    "dev": "vite --config vite.config.dev.js",
+    "build": "rimraf ./dist/* && vite build --config vite.config.lib.js && vite build --config vite.config.lib-min.js",
+    "preview": "vite preview --config vite.config.preview.js",
+    "publish": "npm publish --access public --registry https://registry.npmjs.org/",
+    "prepreview": "npm run build && vite build --config vite.config.preview.js",
+    "prepublish": "npm run build"
   },
   "files": [
     "dist"
@@ -20,6 +18,12 @@
   "main": "./dist/vaf.umd.js",
   "module": "./dist/vaf.es.js",
   "style": "./dist/index.css",
+  "exports": {
+    ".": {
+      "import": "./dist/vaf.es.js",
+      "require": "./dist/vaf.umd.js"
+    }
+  },
   "license": "MIT",
   "keywords": [
     "vue admin",
@@ -41,6 +45,7 @@
     "@vitejs/plugin-vue-jsx": "^2.0.0",
     "axios": "^0.27.2",
     "element-plus": "^2.2.15",
+    "merge": "^2.1.1",
     "nprogress": "^0.2.0",
     "pinia": "^2.0.21",
     "rimraf": "^3.0.2",
