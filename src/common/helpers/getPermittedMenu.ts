@@ -84,6 +84,7 @@ export interface Menu {
   authLevel?: AuthLevel;
   authRoles?: string[];
   children?: undefined | null | Menu[];
+  hasChildren?: boolean;
 }
 
 export enum MenuType {

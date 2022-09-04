@@ -1,13 +1,16 @@
 <template>
-  <ul ref="nav" class=" vaf-nav">
+  <ul ref="nav" class="vaf-nav">
     <template v-for="item in menus" :key="item.path">
       <a class="vaf-nav__link" :title="item.title" :href="resolveMenuHref(item)" @click.prevent
         @mouseenter.self="enterMainnav(item, $event)" @mouseleave.self="delayHidingHoverSubnav">
         <li class="vaf-nav__item" @click="clickNav(item)">
-          <el-icon v-if="item.icon">
+          <el-icon v-if="item.icon" class="vaf-nav__item__icon">
             <component :is="item.icon" />
           </el-icon>
           <span class="vaf-nav__item__title">{{ item.title }}</span>
+          <el-icon v-if="item.hasChildren" class="vaf-nav__item__arrow">
+            <ArrowDown />
+          </el-icon>
         </li>
       </a>
     </template>
@@ -20,14 +23,15 @@
 </template>
 
 <script>
-import { getPermittedSubmenu } from '@/common/helpers/getPermittedMenu';
+import { ArrowDown } from "@element-plus/icons-vue";
+import { getPermittedSubmenu } from "@/common/helpers/getPermittedMenu";
 import { getUseNavbarStore } from "@/common/stores";
 import confirmLink from "@/common/helpers/confirmLink.vue";
-import VafSubnavTree from '../VafSideBar/VafSubMenuTree.vue';
+import VafSubnavTree from "../VafSideBar/VafSubMenuTree.vue";
 
 export default {
-  name: 'VafNav',
-  components: { VafSubnavTree },
+  name: "VafNav",
+  components: { ArrowDown, VafSubnavTree },
   data() {
     return {
       showHoverSubnav: false,
@@ -45,7 +49,7 @@ export default {
   },
   methods: {
     resolveMenuHref(menu) {
-      if (menu.type === 'http-link') {
+      if (menu.type === "http-link") {
         return menu.path;
       }
       return this.$router.resolve(menu.path)?.href || menu.path;
@@ -82,8 +86,8 @@ export default {
 
       const $el = this.$refs.subnav?.$el;
       if ($el) {
-        $el.style.top = (navTop + navHeight + 10) + 'px'; // 加上10个像素，好看一点
-        $el.style.left = (itemLeft + itemWidth / 2 - 64) + 'px';
+        $el.style.top = navTop + navHeight + 1 + "px"; // 加上1个像素，好看一点
+        $el.style.left = itemLeft + itemWidth / 2 - 64 + "px";
       }
     },
     enterHoverSubnav() {
@@ -93,7 +97,7 @@ export default {
       this.outId && clearTimeout(this.outId);
       this.outId = setTimeout(() => {
         this.showHoverSubnav = false;
-      }, 200);
+      }, 50);
     },
     getHoverSubnav(mainnav) {
       if (mainnav) {
@@ -106,7 +110,7 @@ export default {
   unmounted() {
     this.outId && clearTimeout(this.outId);
   },
-}
+};
 </script>
 
 <style lang="scss">
@@ -129,10 +133,6 @@ export default {
       font-size: $mainMenuTextFontSize;
       color: $mainMenuTextColor;
       border-radius: 4px;
-
-      .el-icon {
-        margin-right: 4px;
-      }
     }
 
     &:hover {
@@ -144,11 +144,18 @@ export default {
     }
   }
 
-  @include e(item__title) {
-    @include utils-ellipsis;
+  // @include e(item__title) {
+  //   @include utils-ellipsis;
+  // }
+
+  @include e(item__icon) {
+    margin-right: 4px;
+  }
+
+  @include e(item__arrow) {
+    margin-left: 4px;
   }
 }
-
 
 @include b(subnav-tree-wrap) {
   @include m(hover) {
@@ -168,27 +175,27 @@ export default {
       border-radius: 8px;
     }
 
-    &::before,
-    &::after {
-      pointer-events: none; // 点击穿透
-      content: '';
-      position: absolute;
-      top: 1px;
-      left: calc($subMenuWidth / 2);
-      display: block;
-      width: 20px;
-      height: 20px;
-      border: 10px solid transparent;
-      border-bottom: 10px solid white;
-      box-sizing: border-box;
-      transform: translateX(-50%) translateY(-100%);
-    }
+    // &::before,
+    // &::after {
+    //   pointer-events: none; // 点击穿透
+    //   content: "";
+    //   position: absolute;
+    //   top: 1px;
+    //   left: calc($subMenuWidth / 2);
+    //   display: block;
+    //   width: 20px;
+    //   height: 20px;
+    //   border: 10px solid transparent;
+    //   border-bottom: 10px solid white;
+    //   box-sizing: border-box;
+    //   transform: translateX(-50%) translateY(-100%);
+    // }
 
-    &::before {
-      z-index: -1;
-      border-bottom: 12px solid rgba(200, 200, 200, 0.6);
-      transform: translateX(-50%) translateY(-100%) scale(1.1);
-    }
+    // &::before {
+    //   z-index: -1;
+    //   border-bottom: 12px solid rgba(200, 200, 200, 0.6);
+    //   transform: translateX(-50%) translateY(-100%) scale(1.1);
+    // }
   }
 }
 

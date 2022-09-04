@@ -59,6 +59,7 @@ export default {
   cursor: pointer;
   padding: 6px 8px;
   border-radius: 4px;
+  user-select: none;
 
   &:hover {
     background: $mainMenuTextColorHover;

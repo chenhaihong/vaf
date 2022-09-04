@@ -1,7 +1,10 @@
 import type { Menu } from "@/common/helpers/getPermittedMenu";
 
 import { defineStore } from "pinia";
-import { getPermittedMainmenu } from "@/common/helpers/getPermittedMenu";
+import {
+  getPermittedMainmenu,
+  getPermittedSubmenu,
+} from "@/common/helpers/getPermittedMenu";
 
 const useStores = {};
 
@@ -23,7 +26,12 @@ export const createUseNavbarStore = (
     },
     getters: {
       mainnav() {
-        return getPermittedMainmenu(this.menus, vafAppId);
+        const list = getPermittedMainmenu(this.menus, vafAppId);
+        list.forEach((item) => {
+          const submenu = getPermittedSubmenu(this.menus, item, vafAppId);
+          item.hasChildren = submenu.length > 0;
+        });
+        return list;
       },
     },
     actions: {

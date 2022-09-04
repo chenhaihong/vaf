@@ -251,6 +251,7 @@ export default {
   background: $mainMenuTextColorHover;
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
+  user-select: none;
   transform: translateX(80%);
   transition: transform 0.3s ease-in-out;
 
