@@ -9,8 +9,13 @@
           @mouseenter="enterHoverSubmenu" @mouseleave="delayhidingHoverSubmenu" />
       </transition>
     </div>
-    <transition name="vaf-toggle-sidemenu">
-      <div class="vaf-sidebar__right" v-show="!hideSubmenu">
+    <!-- 
+      不存在侧标蓝子菜单时，
+      1.不应用过渡效果，通过设置 css=false 取消css过渡效果.
+      2.直接隐藏子菜单.
+    -->
+    <transition name="vaf-toggle-sidemenu" :css="submenu.length > 0">
+      <div class="vaf-sidebar__right" v-show="!hideSubmenu && submenu.length > 0">
         <VafSubMenuTree :submenu="submenu" :selectedMainmenu="selectedMainmenu"
           :selectedSubmenuId="selectedSubmenuId" />
       </div>
