@@ -1,9 +1,9 @@
 import path from "path";
 import { defineConfig } from "vite";
 
-import base from "./vite.config.base";
+import baseFn from "./vite.config.base";
 
-const dev = defineConfig(() => {
+const devFn = defineConfig(() => {
   return {
     server: {
       port: 3000,
@@ -13,4 +13,4 @@ const dev = defineConfig(() => {
   };
 });
 
-export default Object.assign(base(), dev());
+export default Object.assign(baseFn(), devFn());
