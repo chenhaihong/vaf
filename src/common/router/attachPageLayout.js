@@ -4,8 +4,8 @@ import VafPageLayout from "@/common/layouts/VafPageLayout.vue";
 export default function attachVafPageLayout(pageRoutes) {
   return pageRoutes
     .filter((item) => {
-      // item必须是含有component，同时不包含children子项的路由
-      return item.component && !item.children;
+      // item必须是含有component子项的路由
+      return item.component;
     })
     .map((item) => {
       // console.log(JSON.stringify(item, null, 2));
