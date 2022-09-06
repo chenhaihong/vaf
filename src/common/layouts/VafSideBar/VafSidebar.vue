@@ -212,6 +212,7 @@ export default {
     background-color: $subMenuBgColor;
     border-right: 1px solid $borderColor;
     box-sizing: content-box;
+    overflow: hidden;
   }
 }
 

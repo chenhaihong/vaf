@@ -13,7 +13,7 @@
         </el-icon>
       </div>
       <el-scrollbar always>
-        <el-tree ref="subMenuTree" :data="submenu" empty-text="无菜单" node-key="id"
+        <el-tree ref="subMenuTree" :data="submenu" empty-text="无子菜单" node-key="id"
           :props="{ children: 'children', label: 'title' }" default-expand-all highlight-current :indent="8"
           :current-node-key="selectedSubmenuId" @node-click="clickMenu">
           <template #default="scope">
