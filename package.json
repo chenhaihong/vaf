@@ -22,7 +22,8 @@
     ".": {
       "import": "./dist/vaf.es.js",
       "require": "./dist/vaf.umd.js"
-    }
+    },
+    "./*": "./*"
   },
   "license": "MIT",
   "keywords": [
