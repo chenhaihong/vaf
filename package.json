@@ -8,9 +8,9 @@
     "dev": "vite --config vite.config.dev.js",
     "build": "rimraf ./dist/* && vite build --config vite.config.lib.js && vite build --config vite.config.lib-min.js",
     "preview": "vite preview --config vite.config.preview.js",
-    "publish": "npm publish --access public --registry https://registry.npmjs.org/",
+    "pb": "npm publish --access public --registry https://registry.npmjs.org/",
     "prepreview": "npm run build && vite build --config vite.config.preview.js",
-    "prepublish": "npm run build"
+    "prepb": "npm run build"
   },
   "files": [
     "dist"
