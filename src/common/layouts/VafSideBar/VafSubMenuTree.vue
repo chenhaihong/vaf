@@ -86,8 +86,16 @@ export default {
       return this.$router.resolve(menu.path)?.href || menu.path;
     },
     async clickMenu(item) {
-      // (1) 如果item包含children，则直接展开
-      if (item.children) return;
+      // (1) 如果item包含children，则直接展开，同时更新是否已全部展开的标记值
+      if (item.children) {
+        if (this.expandedAll) {
+          // 原本展开了所有菜单，此时关闭了1个，则设置为非全部展开
+          this.expandedAll = false;
+        } else {
+          this.expandedAll = this.hasExpandedAll();
+        }
+        return;
+      }
 
       // (2) 如果item不包含children
       switch (item.type) {
@@ -134,17 +142,36 @@ export default {
         this.collapseAll(node);
       });
     },
+    // 是否已经展开全部节点
+    hasExpandedAll() {
+      const store = this.$refs.subMenuTree?.store;
+      if (!store) return false;
+
+      function isAll(arr) {
+        let L = arr.lehgth;
+        for (let i = 0; i < L; i++) {
+          const node = store.getNode(arr[i].id);
+          if (!node.expanded) {
+            return false;
+          }
+          if (arr[i].children && !isAll(arr[i].children)) {
+            return false;
+          }
+        }
+        return true;
+      }
+
+      return isAll(this.submenu);
+    },
   },
 };
 </script>
 
 <style lang="scss">
 @include b(submenu-tree-wrap) {
-  // width: $subMenuWidth;
+  width: $subMenuWidth;
   height: 100%;
   overflow: hidden;
-
-  // border-right: 1px solid $borderColor;
   box-sizing: border-box;
 }
 

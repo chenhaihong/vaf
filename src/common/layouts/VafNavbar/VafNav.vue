@@ -79,16 +79,25 @@ export default {
       this.hoverMainnav = item;
       this.hoverSubnav = subnav;
 
-      const navTop = this.$refs.nav?.offsetTop || 0;
-      const navHeight = this.$refs.nav?.offsetHeight || 0;
-      const itemLeft = event.target?.offsetLeft || 0;
-      const itemWidth = event.target?.offsetWidth || 0;
+      this.$nextTick(() => {
+        const $el = this.$refs.subnav?.$el;
+        if ($el) {
+          const $nav = this.$refs.nav;
+          const navTop = $nav?.offsetTop || 0;
+          const navLeft = $nav?.offsetLeft || 0;
+          const navWidth = $nav?.offsetWidth || 0;
+          const navHeight = $nav?.offsetHeight || 0;
+          const navRight = ($nav?.offsetParent?.offsetWidth || 0) - navLeft - navWidth;
 
-      const $el = this.$refs.subnav?.$el;
-      if ($el) {
-        $el.style.top = navTop + navHeight + 1 + "px"; // 加上1个像素，好看一点
-        $el.style.left = itemLeft + itemWidth / 2 - 64 + "px";
-      }
+          const itemLeft = event.target?.offsetLeft || 0;
+          const itemWidth = event.target?.offsetWidth || 0;
+          const itemRight = navWidth - itemLeft - itemWidth;
+
+          const elWidth = $el.offsetWidth || 0;
+          $el.style.top = navTop + navHeight + "px";
+          $el.style.right = navRight + itemRight + (itemWidth - elWidth) / 2 + 'px';
+        }
+      });
     },
     enterHoverSubnav() {
       this.outId && clearTimeout(this.outId);
@@ -102,7 +111,12 @@ export default {
     getHoverSubnav(mainnav) {
       if (mainnav) {
         const store = getUseNavbarStore(this.$vafAppId)();
-        return getPermittedSubmenu(store.menus, mainnav, this.$vafAppId, store.enableFilter);
+        return getPermittedSubmenu(
+          store.menus,
+          mainnav,
+          this.$vafAppId,
+          store.enableFilter
+        );
       }
       return [];
     },
@@ -117,6 +131,7 @@ export default {
 @include b(nav) {
   @include flex(row, nowrap, flex-end, center);
   flex: 1;
+  position: relative;
 
   @include e(link) {
     text-decoration: none;
@@ -162,7 +177,7 @@ export default {
     z-index: 1;
     position: absolute;
     top: 0;
-    left: 0;
+    right: 0;
     width: $subMenuWidth;
     height: auto;
     background: $subMenuBgColor;

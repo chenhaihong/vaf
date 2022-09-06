@@ -1,6 +1,5 @@
 <template>
   <div class="vaf-userinfo">
-    <el-divider v-if="ifPrefixDivider" direction="vertical" />
     <el-popover title :width="200" trigger="hover" content="this is content, this is content, this is content">
       <template #reference>
         <el-avatar :size="40" :src="userinfo.avatar"></el-avatar>
@@ -36,10 +35,6 @@ import { getUseAuthStore, getUseHistoryBarStore, getUseNavbarStore } from "@/com
 export default {
   name: "VafUserinfo",
   computed: {
-    ifPrefixDivider() {
-      const store = getUseNavbarStore(this.$vafAppId)();
-      return store.menus.length && store.ifUserinfo;
-    },
     userinfo() {
       const store = getUseAuthStore(this.$vafAppId)();
       return store.userinfo;

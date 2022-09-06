@@ -9,13 +9,8 @@
           @mouseenter="enterHoverSubmenu" @mouseleave="delayhidingHoverSubmenu" />
       </transition>
     </div>
-    <!-- 
-      不存在侧标蓝子菜单时，
-      1.不应用过渡效果，通过设置 css=false 取消css过渡效果.
-      2.直接隐藏子菜单.
-    -->
-    <transition name="vaf-toggle-sidemenu" :css="submenu.length > 0">
-      <div class="vaf-sidebar__right" v-show="!hideSubmenu && submenu.length > 0">
+    <transition name="vaf-toggle-sidemenu">
+      <div class="vaf-sidebar__right" v-show="!hideSubmenu">
         <VafSubMenuTree :submenu="submenu" :selectedMainmenu="selectedMainmenu"
           :selectedSubmenuId="selectedSubmenuId" />
       </div>
@@ -75,7 +70,7 @@ export default {
     },
   },
   methods: {
-    enterMainmenu(item, mainmenuItemTop) {
+    enterMainmenu(item, mainmenuItemOffsetTop) {
       if (this.hideFloatingSubmenu) return;
       const submenu = this.getHoverSubmenu(item);
       if (!submenu.length) {
@@ -87,26 +82,27 @@ export default {
       this.hoverMainmenu = item;
       this.hoverSubmenu = submenu;
 
-      // 设置悬浮子菜单的位置
-      const logoHeight = this.$refs.logo?.$el.offsetHeight || 0;
       const logoWidth = this.$refs.logo?.$el.offsetWidth || 0;
-      const hoverSubmenuTop = (logoHeight + mainmenuItemTop - 6); // 减掉6像素
-
+      const logoHeight = this.$refs.logo?.$el.offsetHeight || 0;
+      const hoverSubmenuTop = logoHeight + mainmenuItemOffsetTop - 6; // 减掉6像素
       const $el = this.$refs.hoverSubmenu?.$el;
       if ($el) {
-        $el.style.top = hoverSubmenuTop + 'px';
-        $el.style.left = (logoWidth - 1) + 'px'; // 减掉1个像素，便于移入浮动子菜单
+        // 需要重置高度为auto值, 才能拿到浮动子菜单自动展开时的高度值.
+        $el.style.height = "auto";
+        // 设置悬浮子菜单的位置
+        $el.style.top = hoverSubmenuTop + "px";
+        $el.style.left = logoWidth + "px";
       }
 
-      // 限制高度，不让超度可视区域
       this.$nextTick(() => {
-        const sidebarHeight = this.$refs.sidebar?.offsetHeight || 0;
-        const hoverSubmenuHeight = this.$refs.hoverSubmenu?.$el.offsetHeight || 0;
-        const $el = this.$refs.hoverSubmenu.$el;
-        if (hoverSubmenuHeight + hoverSubmenuTop > sidebarHeight - 10) { // 超出了可视区域
-          $el && ($el.style.height = sidebarHeight - hoverSubmenuTop - 10 + 'px');
-        } else {
-          $el && ($el.style.height = 'auto');
+        // 限制悬浮子菜单的高度, 不让超出应用自身的区域.
+        if ($el) {
+          const sidebarHeight = this.$refs.sidebar?.offsetHeight || 0;
+          const hoverSubmenuHeight = $el.offsetHeight || 0;
+          if (hoverSubmenuTop + hoverSubmenuHeight > sidebarHeight - 10) {
+            // 超出了应用自身的区域
+            $el.style.height = sidebarHeight - hoverSubmenuTop - 10 + "px"; // 减少10px, 可完整显示阴影.
+          }
         }
       });
     },
@@ -124,7 +120,12 @@ export default {
     getHoverSubmenu(mainmenu) {
       if (mainmenu) {
         const sidebarStore = getUseSidebarStore(this.$vafAppId)();
-        return getPermittedSubmenu(sidebarStore.menus, mainmenu, this.$vafAppId, sidebarStore.enableFilter);
+        return getPermittedSubmenu(
+          sidebarStore.menus,
+          mainmenu,
+          this.$vafAppId,
+          sidebarStore.enableFilter
+        );
       }
       return [];
     },
@@ -182,7 +183,7 @@ export default {
       &::before,
       &::after {
         pointer-events: none; // 点击穿透
-        content: '';
+        content: "";
         position: absolute;
         top: calc($navbarHeight / 2);
         left: 0;
@@ -210,7 +211,7 @@ export default {
     height: 100%;
     background-color: $subMenuBgColor;
     border-right: 1px solid $borderColor;
-    box-sizing: border-box;
+    box-sizing: content-box;
   }
 }
 
@@ -228,7 +229,6 @@ export default {
 .#{$namespace}-slide-leave-active {
   transition: opacity 0.1s ease-in-out, transform 0.1s ease-in-out;
 }
-
 
 .#{$namespace}-slide-enter-to,
 .#{$namespace}-slide-leave-from {

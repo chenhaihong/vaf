@@ -7,6 +7,7 @@
       </el-icon>
     </div>
     <VafNav />
+    <el-divider v-if="ifPrefixDivider" direction="vertical" />
     <VafUserinfo v-if="ifUserinfo" />
   </div>
 </template>
@@ -29,6 +30,10 @@ export default {
       const store = getUseSidebarStore(this.$vafAppId)();
       return store.hideSubmenu;
     },
+    ifPrefixDivider() {
+      const store = getUseNavbarStore(this.$vafAppId)();
+      return store.menus.length && store.ifUserinfo;
+    },
     ifUserinfo() {
       const store = getUseNavbarStore(this.$vafAppId)();
       return store.ifUserinfo;
@@ -39,7 +44,7 @@ export default {
       const store = getUseSidebarStore(this.$vafAppId)();
       store.hideSubmenu = !store.hideSubmenu;
     },
-  }
+  },
 };
 </script>
 
