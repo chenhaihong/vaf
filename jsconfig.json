@@ -2,6 +2,10 @@
   "compilerOptions": {
     "baseUrl": ".",
     "jsx": "preserve",
+    "lib": [
+      "DOM",
+      "ES2017"
+    ],
     "paths": {
       "@/*": [
         "src/*"

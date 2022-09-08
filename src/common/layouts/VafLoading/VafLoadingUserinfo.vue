@@ -1,9 +1,12 @@
 <template>
-  <div v-loading="true" :element-loading-text="text" class="vaf-loading-userinfo" />
+  <div
+    v-loading="true"
+    :element-loading-text="text"
+    class="vaf-loading-userinfo"
+  />
 </template>
 
 <script>
-
 export default {
   name: "VafLoadingUserinfo",
   props: {

@@ -88,9 +88,7 @@ $glay: #ccc;
   position: relative;
   margin: 0 auto;
   padding-top: 80px;
-  padding-bottom: 1px;
-  width: 500px;
-  max-width: 100%;
+  padding-bottom: 80px;
 
   @include e(form) {
     margin: auto;

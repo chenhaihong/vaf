@@ -16,14 +16,15 @@ export const createUseSidebarStore = (
   vafAppId: string,
   sidebarConfig: any = {}
 ) => {
-  const menus: Menu[] | MenusFunc = sidebarConfig?.menus || []; // 左侧菜单数据
+  const menus: Menu[] | MenusFn = sidebarConfig?.menus || []; // 左侧菜单数据
   const isArr = Array.isArray(menus);
 
   const useSidebarStore = defineStore(`VafSidebarStore--${vafAppId}`, {
     state(): State {
       return {
-        shouldLoadMenus: !isArr,
-        loadingMenus: false,
+        loadingMenusStatus: isArr
+          ? LoadingStatus.Success // 如果传入了数组, 直接当做加载成功了侧边栏菜单
+          : LoadingStatus.Waiting, // 如果传入了函数, 需要去执行加载菜单的逻辑
         enableFilter: sidebarConfig.enableFilter || true, // 启用过滤器，启用时才根据内置规则进行过滤
         menus: isArr ? menus : [],
         selectedMainmenuId: "", // 选中的主菜单的id
@@ -66,14 +67,21 @@ export const createUseSidebarStore = (
     },
     actions: {
       async loadMenus() {
-        if (this.loadingMenus) return [null, null];
-        this.loadingMenus = true;
-        const [err, data] = await (menus as MenusFunc)();
-        this.loadingMenus = false;
+        if (
+          [LoadingStatus.Loading, LoadingStatus.Success].includes(
+            this.loadingMenusStatus
+          )
+        ) {
+          return [null, null];
+        }
+        this.loadingMenusStatus = LoadingStatus.Loading;
+        const [err, data] = await (menus as MenusFn)();
         if (!err) {
-          this.shouldLoadMenus = false;
+          this.loadingMenusStatus = LoadingStatus.Success;
           this.menus = data;
           this.updateSelectedId();
+        } else {
+          this.loadingMenusStatus = LoadingStatus.Error;
         }
         return [err, data];
       },
@@ -83,7 +91,7 @@ export const createUseSidebarStore = (
 
         // 孙子路由的meta里的VafId,
         // 即选中的子菜单的id
-        const selectedSubmenuId = matched[matched.length - 1].meta?.VafId;
+        const selectedSubmenuId = matched[matched.length - 1]?.meta?.VafId;
 
         // 从sidebar.menus中回溯出所有的父级菜单
         const mathedNodes = resolveMatchedParentNodes(
@@ -111,8 +119,7 @@ export const getUseSidebarStore = (vafAppId: string) => {
 };
 
 interface State {
-  shouldLoadMenus: boolean;
-  loadingMenus: boolean;
+  loadingMenusStatus: LoadingStatus;
   enableFilter: boolean;
   menus: Menu[];
   selectedMainmenuId: string;
@@ -121,8 +128,15 @@ interface State {
   hideFloatingSubmenu: boolean;
 }
 
-interface MenusFunc {
-  (): MenusFuncResult | Promise<MenusFuncResult>;
+interface MenusFn {
+  (): MenusFnResult | Promise<MenusFnResult>;
 }
 
-type MenusFuncResult = [null | undefined | Error, Menu[]];
+type MenusFnResult = [null | undefined | Error, Menu[]];
+
+export enum LoadingStatus {
+  Waiting = 1,
+  Loading = 100,
+  Success = 200,
+  Error = 500,
+}
