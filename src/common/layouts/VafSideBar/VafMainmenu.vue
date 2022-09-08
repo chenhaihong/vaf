@@ -1,34 +1,41 @@
 <template>
-  <el-scrollbar class="el-scrollbar--vaf-mainmenu" wrap-class="el-scrollbar__wrap--vaf-mainmenu">
-    <div v-if="loadingMenus" class="vaf-mainmenu--loading">
-      <span>加载中...</span>
+  <div class="vaf-mainmenu-wrap">
+    <div v-if="loadingMenus" class="vaf-mainmenu-loading-wrap">
+      <div v-loading="true" class="vaf-mainmenu-loading" element-loading-text="加载菜单" />
     </div>
-    <div v-else-if="shouldLoadMenus" class="vaf-mainmenu--load">
-      <el-button type="primary" size="small" plain @click="loadMenus">
-        {{ hideSubmenu ? '加载' : '加载菜单' }}
-      </el-button>
-    </div>
-    <ul v-else class="vaf-mainmenu">
-      <template v-for="item in mainmenu" :key="item.path">
-        <a class="vaf-mainmenu__link" :title="item.title" :href="resolveMenuHref(item)" @click.prevent
-          @mouseenter.self="enterMenu(item, $event)" @mouseleave.self="$emit('leave', item)">
-          <li class="vaf-mainmenu__item"
-            :class="{ 'is-active': selectedMainmenuId === item.id,'vaf-mainmenu__item--has-children': item.hasChildren }"
-            @click="handleClick(item)">
-            <el-icon v-if="item.icon" class="vaf-mainmenu__item__icon">
-              <component :is="item.icon" />
-            </el-icon>
-            <span v-show="!hideSubmenu || hideSubmenu && !item.icon" class="vaf-mainmenu__item__title">
-              {{ item.title }}
-            </span>
-            <el-icon class="vaf-mainmenu__item__arrow">
-              <ArrowRight />
-            </el-icon>
-          </li>
-        </a>
-      </template>
-    </ul>
-  </el-scrollbar>
+    <el-scrollbar v-else-if="shouldLoadMenus" always>
+      <el-result icon="error" sub-title="加载菜单失败">
+        <template #extra>
+          <el-button type="primary" size="small" plain @click="loadMenus">
+            {{ hideSubmenu ? "加载" : "重新加载" }}
+          </el-button>
+        </template>
+      </el-result>
+    </el-scrollbar>
+    <el-scrollbar v-else wrap-class="el-scrollbar__wrap--vaf-mainmenu" always>
+      <ul class="vaf-mainmenu">
+        <template v-for="item in mainmenu" :key="item.path">
+          <a class="vaf-mainmenu__link" :title="item.title" :href="resolveMenuHref(item)" @click.prevent
+            @mouseenter.self="enterMenu(item, $event)" @mouseleave.self="$emit('leave', item)">
+            <li class="vaf-mainmenu__item" :class="{
+              'is-active': selectedMainmenuId === item.id,
+              'vaf-mainmenu__item--has-children': item.hasChildren,
+            }" @click="handleClick(item)">
+              <el-icon v-if="item.icon" class="vaf-mainmenu__item__icon">
+                <component :is="item.icon" />
+              </el-icon>
+              <span v-show="!hideSubmenu || (hideSubmenu && !item.icon)" class="vaf-mainmenu__item__title">
+                {{ item.title }}
+              </span>
+              <el-icon class="vaf-mainmenu__item__arrow">
+                <ArrowRight />
+              </el-icon>
+            </li>
+          </a>
+        </template>
+      </ul>
+    </el-scrollbar>
+  </div>
 </template>
 
 <script>
@@ -73,13 +80,13 @@ export default {
       }
     },
     resolveMenuHref(menu) {
-      if (menu.type === 'http-link') {
+      if (menu.type === "http-link") {
         return menu.path;
       }
       return this.$router.resolve(menu.path)?.href || menu.path;
     },
     enterMenu(item, event) {
-      this.$emit('enter', item, event.target.offsetTop);
+      this.$emit("enter", item, event.target.offsetTop);
     },
     handleClick(item) {
       switch (item.type) {
@@ -100,7 +107,7 @@ export default {
 </script>
 
 <style lang="scss">
-.el-scrollbar--vaf-mainmenu {
+.vaf-mainmenu-wrap {
   height: calc(100% - $navbarHeight) !important;
   border-top: 1px solid $borderColor;
   box-sizing: border-box;
@@ -115,19 +122,24 @@ export default {
   }
 }
 
+@include b(mainmenu-loading-wrap) {
+  height: 100%;
+}
+
+@include b(mainmenu-loading) {
+  width: 100%;
+  height: 100%;
+
+  .el-loading-mask {
+    background-color: transparent;
+  }
+
+  .el-loading-spinner {
+    transform: translateY(-50%);
+  }
+}
+
 @include b(mainmenu) {
-  @include m(loading) {
-    @include flex(row, nowrap, center, center);
-    padding-top: 12px;
-    color: var(--el-text-color-secondary);
-    font-size: var(--el-font-size-base);
-  }
-
-  @include m(load) {
-    @include flex(row, nowrap, center, center);
-    padding-top: 12px;
-  }
-
   @include e(link) {
     text-decoration: none;
     color: $mainMenuTextColor;

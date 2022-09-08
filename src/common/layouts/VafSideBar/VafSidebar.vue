@@ -9,7 +9,7 @@
           @mouseenter="enterHoverSubmenu" @mouseleave="delayhidingHoverSubmenu" />
       </transition>
     </div>
-    <transition name="vaf-toggle-sidemenu">
+    <transition v-if="submenu.length" name="vaf-toggle-sidemenu" appear>
       <div class="vaf-sidebar__right" v-show="!hideSubmenu">
         <VafSubMenuTree :submenu="submenu" :selectedMainmenu="selectedMainmenu"
           :selectedSubmenuId="selectedSubmenuId" />
