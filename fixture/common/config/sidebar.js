@@ -47,6 +47,7 @@ const menus = [
     authLevel: 0,
     children: [
       {
+        hidden: true,
         type: "router-link",
         id: "/super-admin/admin",
         path: "/super-admin/admin",

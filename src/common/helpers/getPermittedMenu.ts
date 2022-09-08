@@ -22,11 +22,15 @@ export function getPermittedMainmenu(
         path: item.path,
         title: item.title,
         icon: item.icon,
+        hidden: item.hidden,
         authLevel: item.authLevel,
         authRoles: item.authRoles,
       };
     })
     .filter((item) => {
+      // 如果设置了隐藏显示，则过滤掉当前item
+      if (item.hidden) return false;
+
       // 关闭了过滤器，不进行过滤
       if (!enableFilter) return true;
 
@@ -69,6 +73,9 @@ function filter(
   return tree
     .map((item) => ({ ...item })) // 因为源数据可能已经被模板使用, 所欲需要浅拷贝出item, 避免直接修改原数据, 导致意外的重复渲染
     .filter((item) => {
+      // 如果设置了隐藏显示，则过滤掉当前item
+      if (item.hidden) return false;
+
       // 关闭了过滤器，不进行过滤
       if (!enableFilter) return true;
 
@@ -97,6 +104,7 @@ export interface Menu {
   path: string;
   title: string;
   icon?: string;
+  hidden?: boolean; // 是否隐藏显示, 默认为 false
   authLevel?: AuthLevel;
   authRoles?: string[];
   children?: undefined | null | Menu[];
