@@ -1,6 +1,6 @@
 // sidebar_left  => main menu
-$mainMenuPadding: 16px;
-$mainMenuWidth: 96px; // 左侧主菜单宽度
+$mainMenuPadding: 12px;
+$mainMenuWidth: 148px; // 左侧主菜单宽度
 $mainMenuHeight: 40px; // 左侧主菜单高度
 $mainMenuBgColor: #f8f8f8;
 
@@ -10,7 +10,7 @@ $mainMenuTextColor: #666;
 $mainMenuTextColorActive: #fd5149;
 $mainMenuTextColorHover: #f3f3f3;
 
-$mainMenuIconFontSize: 16px;
+$mainMenuIconFontSize: $mainMenuTextFontSize;
 $mainMenuIconColor: #999;
 $mainMenuIconColorActive: #fd5149;
 $mainMenuIconColorHover: #fd5149;
@@ -21,7 +21,7 @@ $firstNavFontSize: 14px;
 $firstNavColorHover: #409eff;
 
 $subMenuPadding: 8px;
-$subMenuWidth: 128px; // 左侧副树菜单宽度
+$subMenuWidth: 138px; // 左侧副树菜单宽度
 $subMenuFontSize: 14px;
 $subMenuBgColor: white;
 

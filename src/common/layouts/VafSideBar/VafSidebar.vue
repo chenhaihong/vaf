@@ -71,7 +71,8 @@ export default {
   },
   methods: {
     enterMainmenu(item, mainmenuItemOffsetTop) {
-      if (this.hideFloatingSubmenu) return;
+      if (this.hideFloatingSubmenu) return; // 禁用了浮动子菜单，不展示浮动子菜单
+      if (this.selectedMainmenu?.id === item?.id) return; // 移入了选中的主菜单，不展示浮动子菜单
       const submenu = this.getHoverSubmenu(item);
       if (!submenu.length) {
         return;
@@ -156,9 +157,13 @@ export default {
       .vaf-mainmenu__item {
         justify-content: center;
 
-        .el-icon {
+        .vaf-mainmenu__item__icon {
           margin-right: 0;
           font-size: 16px;
+        }
+
+        .vaf-mainmenu__item__arrow {
+          display: none;
         }
       }
     }

@@ -12,14 +12,18 @@
       <template v-for="item in mainmenu" :key="item.path">
         <a class="vaf-mainmenu__link" :title="item.title" :href="resolveMenuHref(item)" @click.prevent
           @mouseenter.self="enterMenu(item, $event)" @mouseleave.self="$emit('leave', item)">
-          <li class="vaf-mainmenu__item" :class="{ 'is-active': selectedMainmenuId === item.id }"
+          <li class="vaf-mainmenu__item"
+            :class="{ 'is-active': selectedMainmenuId === item.id,'vaf-mainmenu__item--has-children': item.hasChildren }"
             @click="handleClick(item)">
-            <el-icon v-if="item.icon">
+            <el-icon v-if="item.icon" class="vaf-mainmenu__item__icon">
               <component :is="item.icon" />
             </el-icon>
             <span v-show="!hideSubmenu || hideSubmenu && !item.icon" class="vaf-mainmenu__item__title">
               {{ item.title }}
             </span>
+            <el-icon class="vaf-mainmenu__item__arrow">
+              <ArrowRight />
+            </el-icon>
           </li>
         </a>
       </template>
@@ -28,11 +32,13 @@
 </template>
 
 <script>
+import { ArrowRight } from "@element-plus/icons-vue";
 import { getUseSidebarStore } from "@/common/stores";
 import confirmLink from "@/common/helpers/confirmLink.vue";
 
 export default {
   name: "VafMainmenu",
+  component: { ArrowRight },
   emits: ["enter", "leave"],
   computed: {
     hideSubmenu() {
@@ -137,10 +143,11 @@ export default {
       font-size: $mainMenuTextFontSize;
       font-weight: 700;
       color: $mainMenuTextColor;
+    }
 
-      .el-icon {
-        margin-right: $mainMenuTextMarginLeft;
-      }
+    .el-icon {
+      font-size: $mainMenuIconFontSize + 2;
+      color: $mainMenuIconColor;
     }
 
     &:hover {
@@ -149,11 +156,31 @@ export default {
 
     @include when(active) {
       color: $mainMenuTextColorActive;
+
+      .el-icon {
+        color: $mainMenuTextColorActive;
+      }
     }
+
+    @include m(has-children) {
+      @include e(item__arrow) {
+        opacity: 1;
+      }
+    }
+  }
+
+  @include e(item__icon) {
+    margin-right: $mainMenuTextMarginLeft;
+  }
+
+  @include e(item__arrow) {
+    opacity: 0;
+    margin-left: $mainMenuTextMarginLeft;
   }
 
   @include e(item__title) {
     @include utils-ellipsis;
+    flex: 1;
   }
 }
 

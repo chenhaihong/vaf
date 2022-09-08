@@ -34,14 +34,28 @@ export const createUseSidebarStore = (
     },
     getters: {
       mainmenu(state): Menu[] {
-        return getPermittedMainmenu(state.menus, vafAppId, this.enableFilter);
+        const list = getPermittedMainmenu(
+          state.menus,
+          vafAppId,
+          state.enableFilter
+        );
+        list.forEach((item) => {
+          const submenu = getPermittedSubmenu(
+            state.menus,
+            item,
+            vafAppId,
+            state.enableFilter
+          );
+          item.hasChildren = submenu.length > 0;
+        });
+        return list;
       },
       submenu(state): Menu[] {
         return getPermittedSubmenu(
           state.menus,
           this.selectedMainmenu,
           vafAppId,
-          this.enableFilter
+          state.enableFilter
         );
       },
       selectedMainmenu(state): Menu | undefined {

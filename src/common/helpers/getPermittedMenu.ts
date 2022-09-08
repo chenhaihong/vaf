@@ -66,26 +66,33 @@ function filter(
   adminRoles: string[] = [],
   enableFilter: boolean = true // 启用过滤器，启用时才根据内置规则进行过滤
 ): Menu[] {
-  return tree.filter((item) => {
-    // 关闭了过滤器，不进行过滤
-    if (!enableFilter) return true;
+  return tree
+    .map((item) => ({ ...item })) // 因为源数据可能已经被模板使用, 所欲需要浅拷贝出item, 避免直接修改原数据, 导致意外的重复渲染
+    .filter((item) => {
+      // 关闭了过滤器，不进行过滤
+      if (!enableFilter) return true;
 
-    const { authLevel = 1, authRoles = [], children = [] } = item;
-    if (children.length > 0) {
-      item.children = filter(children, adminUsername, adminRoles, enableFilter);
-    }
-    return (
-      authLevel === AuthLevel.Anonymous || // 可匿名访问
-      (authLevel === AuthLevel.LoggedIn && adminUsername) || // 登录即可访问
-      hasIntersect(authRoles, adminRoles) // 有访问权限
-    );
-  });
+      const { authLevel = 1, authRoles = [], children = [] } = item;
+      if (children.length > 0) {
+        item.children = filter(
+          children,
+          adminUsername,
+          adminRoles,
+          enableFilter
+        );
+      }
+      return (
+        authLevel === AuthLevel.Anonymous || // 可匿名访问
+        (authLevel === AuthLevel.LoggedIn && adminUsername) || // 登录即可访问
+        hasIntersect(authRoles, adminRoles) // 有访问权限
+      );
+    });
 }
 
 export interface Menu {
   type: MenuType;
-  // sidebar菜单必须传入id: 1.依靠这个id来确认选中状态, 2.依靠这个id来获取子菜单
-  // navbar 菜单需要传入id: 1.依靠这个id来获取子菜单
+  // sidebar 菜单必须传入id: 1.依靠这个id来确认选中状态, 2.依靠这个id来获取子菜单
+  // navbar  菜单需要传入id: 1.依靠这个id来获取子菜单
   id: string;
   path: string;
   title: string;

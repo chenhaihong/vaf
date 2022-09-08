@@ -27,18 +27,18 @@ export const createUseNavbarStore = (
       };
     },
     getters: {
-      mainnav() {
+      mainnav(state) {
         const list = getPermittedMainmenu(
-          this.menus,
+          state.menus,
           vafAppId,
-          this.enableFilter
+          state.enableFilter
         );
         list.forEach((item) => {
           const submenu = getPermittedSubmenu(
-            this.menus,
+            state.menus,
             item,
             vafAppId,
-            this.enableFilter
+            state.enableFilter
           );
           item.hasChildren = submenu.length > 0;
         });
