@@ -4,15 +4,26 @@
       <VafLogo ref="logo" />
       <VafMainmenu @enter="enterMainmenu" @leave="delayhidingHoverSubmenu" />
       <transition v-if="!hideFloatingSubmenu" name="vaf-slide">
-        <VafSubMenuTree ref="hoverSubmenu" class="vaf-submenu-tree-wrap--hover" v-show="showHoverSubmenu" hideFirstNav
-          :submenu="hoverSubmenu" :selectedMainmenu="hoverMainmenu" :selectedSubmenuId="selectedSubmenuId"
-          @mouseenter="enterHoverSubmenu" @mouseleave="delayhidingHoverSubmenu" />
+        <VafSubMenuTree
+          ref="hoverSubmenu"
+          class="vaf-submenu-tree-wrap--hover"
+          v-show="showHoverSubmenu"
+          hideFirstNav
+          :submenu="hoverSubmenu"
+          :selectedMainmenu="hoverMainmenu"
+          :selectedSubmenuId="selectedSubmenuId"
+          @mouseenter="enterHoverSubmenu"
+          @mouseleave="delayhidingHoverSubmenu"
+        />
       </transition>
     </div>
     <transition v-if="submenu.length" name="vaf-toggle-sidemenu" appear>
       <div class="vaf-sidebar__right" v-show="!hideSubmenu">
-        <VafSubMenuTree :submenu="submenu" :selectedMainmenu="selectedMainmenu"
-          :selectedSubmenuId="selectedSubmenuId" />
+        <VafSubMenuTree
+          :submenu="submenu"
+          :selectedMainmenu="selectedMainmenu"
+          :selectedSubmenuId="selectedSubmenuId"
+        />
       </div>
     </transition>
   </div>
@@ -72,7 +83,7 @@ export default {
   methods: {
     enterMainmenu(item, mainmenuItemOffsetTop) {
       if (this.hideFloatingSubmenu) return; // 禁用了浮动子菜单，不展示浮动子菜单
-      if (this.selectedMainmenu?.id === item?.id) return; // 移入了选中的主菜单，不展示浮动子菜单
+      if (this.selectedMainmenu?.id === item?.id && !this.hideSubmenu) return; // 移入了选中的主菜单时，如果没有隐藏子菜单，不展示浮动子菜单
       const submenu = this.getHoverSubmenu(item);
       if (!submenu.length) {
         return;
