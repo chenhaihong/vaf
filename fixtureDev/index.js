@@ -25,7 +25,7 @@ const AuthService = makeAuthService(vafAppId, getRequest);
 const { app } = createVafApp({
   vafAppId,
   settingConfig: {
-    name: "Vue Admin Framework",
+    name: "@erye/vaf",
     slogan: "方便、快捷、精准",
     logo: "https://map.tiiit.cn/deer.png",
     copyright: "本网站属于个人技术分享网站",

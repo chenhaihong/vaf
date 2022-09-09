@@ -3,7 +3,7 @@
 [![npm](https://img.shields.io/npm/v/@erye/vaf)](https://www.npmjs.com/package/@erye/vaf)
 [![npm (custom registry)](https://img.shields.io/npm/v/@erye/vaf/latest?label=npmmirror&logo=npmmirror&registry_uri=https%3A%2F%2Fregistry.npmmirror.com)](https://npmmirror.com/package/@erye/vaf)
 
-通用的管理后台框架。
+抽离出通用的 UI 和逻辑单独封装成包，通过传入配置快速搭建成型通用的管理后台应用，帮助你专注于业务代码开发。
 
 ## 快速搭建 vaf 项目
 
@@ -27,17 +27,11 @@ import "element-plus/dist/index.css";
 import "@erye/vaf/dist/index.css";
 
 import ElementPlus from "element-plus";
-import * as ElementPlusIconsVue from "@element-plus/icons-vue";
-import {
-  createVafApp,
-  installVafComponents,
-  installVafProComponents,
-  getRequest,
-} from "@erye/vaf";
+import { createVafApp } from "@erye/vaf";
 
 const { app } = createVafApp({
   settingConfig: {
-    name: "Vue Admin Framework",
+    name: "@erye/vaf",
     slogan: "方便、快捷、精准",
     logo: "/logo.png",
     copyright: "本网站属于个人技术分享网站",
@@ -61,6 +55,8 @@ const { app } = createVafApp({
         path: '/home',
         title: "首页",
         children: [],
+        // 是否隐藏显示，默认为false
+        hidden: false,
         // 依赖这2个字段方式，来完成左侧菜单的角色过滤
         authLevel: 2, // 0=>匿名 | 1=>登录(默认) | 2=>需鉴别角色
         authRoles: ["super-admin"], // 当鉴权等级为2时，该字段才有效，默认为空数组
@@ -134,11 +130,6 @@ const { app } = createVafApp({
   },
 });
 app.use(ElementPlus);
-for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
-  app.component(key, component);
-}
-app.use(installVafProComponents);
-app.use(installVafComponents);
 app.mount("#app");
 ```
 
