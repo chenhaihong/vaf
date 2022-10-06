@@ -1,6 +1,6 @@
 {
   "name": "@erye/vaf",
-  "version": "0.0.21",
+  "version": "0.0.22",
   "description": "Vue Admin Framework.",
   "author": "erye <erye@tiiit.cn>",
   "type": "module",
