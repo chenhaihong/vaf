@@ -63,6 +63,7 @@ export default {
 @include b(submenu-toggle) {
   cursor: pointer;
   padding: 6px 8px;
+  background: lighten($color: $mainMenuTextColorHover, $amount: 2.5);
   border-radius: 4px;
   user-select: none;
 
