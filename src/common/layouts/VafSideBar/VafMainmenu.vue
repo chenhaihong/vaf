@@ -1,31 +1,18 @@
 <template>
   <div class="vaf-mainmenu-wrap">
-    <el-scrollbar wrap-class="el-scrollbar__wrap--vaf-mainmenu" always>
+    <el-scrollbar wrap-class="el-scrollbar__wrap--vaf-mainmenu" always :native="true">
       <ul class="vaf-mainmenu">
         <template v-for="item in mainmenu" :key="item.path">
-          <a
-            class="vaf-mainmenu__link"
-            :title="item.title"
-            :href="resolveMenuHref(item)"
-            @click.prevent
-            @mouseenter.self="enterMenu(item, $event)"
-            @mouseleave.self="$emit('leave', item)"
-          >
-            <li
-              class="vaf-mainmenu__item"
-              :class="{
-                'is-active': selectedMainmenuId === item.id,
-                'vaf-mainmenu__item--has-children': item.hasChildren,
-              }"
-              @click="handleClick(item)"
-            >
+          <a class="vaf-mainmenu__link" :title="item.title" :href="resolveMenuHref(item)" @click.prevent
+            @mouseenter.self="enterMenu(item, $event)" @mouseleave.self="$emit('leave', item)">
+            <li class="vaf-mainmenu__item" :class="{
+              'is-active': selectedMainmenuId === item.id,
+              'vaf-mainmenu__item--has-children': item.hasChildren,
+            }" @click="handleClick(item)">
               <el-icon v-if="item.icon" class="vaf-mainmenu__item__icon">
                 <component :is="item.icon" />
               </el-icon>
-              <span
-                v-show="!hideSubmenu || (hideSubmenu && !item.icon)"
-                class="vaf-mainmenu__item__title"
-              >
+              <span v-show="!hideSubmenu || (hideSubmenu && !item.icon)" class="vaf-mainmenu__item__title">
                 {{ item.title }}
               </span>
               <el-icon class="vaf-mainmenu__item__arrow">
