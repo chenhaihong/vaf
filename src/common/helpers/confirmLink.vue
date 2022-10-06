@@ -45,7 +45,7 @@ const confirmLink = (link) => {
           append-to-body
           show-close={false}
           onClosed={this.unmount}
-          custom-class="vaf-confirm-link-dialog"
+          class="vaf-confirm-link-dialog"
         >
           <el-result icon="warning" title="确定打开新页面吗？" sub-title={link}>
             {{ extra }}
