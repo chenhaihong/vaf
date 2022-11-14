@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
+    "declaration": true,
+    "declarationDir": "dist/",
     "jsx": "preserve",
     "lib": [
       "DOM",

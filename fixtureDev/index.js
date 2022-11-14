@@ -8,7 +8,7 @@ import vaf, {
   installVafComponents,
   installVafProComponents,
   getRequest,
-} from "../src/index.js";
+} from "../src/index.ts";
 
 import vafAppId from "../fixture/common/config/vafAppId";
 import sidebarConfig from "../fixture/common/config/sidebar";
