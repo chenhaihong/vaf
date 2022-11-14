@@ -3,6 +3,7 @@
     "baseUrl": ".",
     "declaration": true,
     "declarationDir": "dist/",
+    "allowJs": true,
     "jsx": "preserve",
     "lib": [
       "DOM",
