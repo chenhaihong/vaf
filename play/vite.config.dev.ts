@@ -7,7 +7,6 @@ import { defineConfig } from "vite";
 import buildConfig from "build-config";
 
 import baseFn from "./vite.config.base";
-import Mock from "./vite-plugin-mock";
 
 const devFn: UserConfigFn = () => {
   return {
@@ -20,7 +19,6 @@ const devFn: UserConfigFn = () => {
       },
       devSourcemap: true,
     },
-    plugins: [Mock()],
     resolve: {
       alias: [
         // vaf目录下的模块指定了@目录别名为vaf/src目录。
