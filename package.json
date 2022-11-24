@@ -1,70 +1,21 @@
 {
-  "name": "@erye/vaf",
-  "version": "0.0.23",
-  "description": "Vue Admin Framework.",
-  "author": "erye <erye@tiiit.cn>",
-  "type": "module",
+  "name": "vaf-monorepo",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "dev": "vite --config vite.config.dev.js",
-    "build": "rimraf ./dist/* && vite build --config vite.config.lib.js && vite build --config vite.config.lib-min.js",
-    "preview": "vite preview --config vite.config.preview.js",
-    "pb": "npm publish --access public --registry https://registry.npmjs.org/",
-    "prepreview": "npm run build && vite build --config vite.config.preview.js",
-    "prepb": "npm run build"
+    "clean": "pnpm run -r --parallel clean",
+    "dev": "pnpm -C play dev",
+    "preview": "pnpm -C vaf build && pnpm -C play preview",
+    "build": "pnpm -C vaf build",
+    "pb": "pnpm -C vaf pb",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "files": [
-    "dist"
-  ],
-  "main": "./dist/vaf.umd.js",
-  "module": "./dist/vaf.es.js",
-  "style": "./dist/index.css",
-  "exports": {
-    ".": {
-      "import": "./dist/vaf.es.js",
-      "require": "./dist/vaf.umd.js"
-    },
-    "./*": "./*"
-  },
+  "type": "module",
   "license": "MIT",
-  "keywords": [
-    "vue admin",
-    "Vue Admin Framework",
-    "Admin Framework",
-    "vaf",
-    "vite"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/chenhaihong/vaf.git"
-  },
-  "bugs": {
-    "url": "https://github.com/chenhaihong/vaf/issues"
-  },
   "devDependencies": {
-    "@element-plus/icons-vue": "^2.0.10",
-    "@vitejs/plugin-vue": "^3.2.0",
-    "@vitejs/plugin-vue-jsx": "^2.1.1",
-    "axios": "^1.1.3",
+    "@types/node": "^18.11.9",
     "cz-git": "^1.3.12",
-    "element-plus": "^2.2.21",
-    "merge": "^2.1.1",
-    "nprogress": "^0.2.0",
-    "pinia": "^2.0.23",
-    "rimraf": "^3.0.2",
-    "sass": "^1.55.0",
-    "typescript": "^4.8.4",
-    "vite": "^3.2.3",
-    "vue": "^3.2.45",
-    "vue-router": "^4.1.6"
-  },
-  "peerDependencies": {
-    "@element-plus/icons-vue": "^2.0.10",
-    "axios": "^1.1.3",
-    "element-plus": "^2.2.21",
-    "nprogress": "^0.2.0",
-    "pinia": "^2.0.23",
-    "vue": "^3.2.45",
-    "vue-router": "^4.1.6"
+    "typescript": "^4.8.4"
   },
   "config": {
     "commitizen": {

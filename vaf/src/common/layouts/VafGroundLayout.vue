@@ -1,12 +1,12 @@
 <template>
   <VafLoadingUserinfo v-if="isLoadingUserinfo" />
   <VafLoadingSidebarMenu v-else-if="showLoadingSidebarMenu" />
-  <router-view v-else v-slot="{ Component, route }">
+  <router-view v-slot="{ Component, route }">
     <transition :name="route.meta.VafTransition || 'vaf-fade'" mode="out-in">
       <component :is="Component" />
     </transition>
   </router-view>
-</template>
+</template> 
 
 <script lang="ts">
 import { defineComponent } from "vue";

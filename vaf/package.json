@@ -1,0 +1,66 @@
+{
+  "name": "@erye/vaf",
+  "version": "0.0.23",
+  "description": "Vue Admin Framework.",
+  "author": "erye <erye@tiiit.cn>",
+  "type": "module",
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "rimraf dist && vite build --config vite.config.lib.js && vite build --config vite.config.lib-min.js",
+    "pb": "npm publish --access public --registry https://registry.npmjs.org/",
+    "prepb": "npm run build"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/vaf.umd.js",
+  "module": "./dist/vaf.es.js",
+  "style": "./dist/index.css",
+  "exports": {
+    ".": {
+      "import": "./dist/vaf.es.js",
+      "require": "./dist/vaf.umd.js"
+    },
+    "./*": "./*"
+  },
+  "license": "MIT",
+  "keywords": [
+    "vue admin",
+    "Vue Admin Framework",
+    "Admin Framework",
+    "vaf",
+    "vite"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chenhaihong/vaf.git"
+  },
+  "bugs": {
+    "url": "https://github.com/chenhaihong/vaf/issues"
+  },
+  "devDependencies": {
+    "@element-plus/icons-vue": "^2.0.10",
+    "@vitejs/plugin-vue": "^3.2.0",
+    "@vitejs/plugin-vue-jsx": "^2.1.1",
+    "axios": "^1.1.3",
+    "build-config": "workspace:^",
+    "deepmerge": "^4.2.2",
+    "element-plus": "^2.2.22",
+    "nprogress": "^0.2.0",
+    "pinia": "^2.0.24",
+    "rimraf": "^3.0.2",
+    "sass": "^1.56.1",
+    "vite": "^3.2.4",
+    "vue": "^3.2.45",
+    "vue-router": "^4.1.6"
+  },
+  "peerDependencies": {
+    "@element-plus/icons-vue": "^2.0.10",
+    "axios": "^1.1.3",
+    "element-plus": "^2.2.21",
+    "nprogress": "^0.2.0",
+    "pinia": "^2.0.23",
+    "vue": "^3.2.45",
+    "vue-router": "^4.1.6"
+  }
+}

@@ -1,13 +1,16 @@
-import path from "path";
+import type { UserConfigFn } from "vite";
+
+import { resolve } from "path";
 import { defineConfig } from "vite";
+import deepmerge from "deepmerge";
 
 import baseFn from "./vite.config.base";
 
-const libFn = defineConfig(() => {
+export const libFn: UserConfigFn = () => {
   return {
     build: {
       lib: {
-        entry: path.resolve(__dirname, "src/index.ts"),
+        entry: resolve(__dirname, "src/index.ts"),
         name: "Vaf",
         formats: ["es", "umd"],
         fileName: (format) => {
@@ -34,14 +37,14 @@ const libFn = defineConfig(() => {
         output: {
           name: "Vaf",
           exports: "named",
-          dir: path.resolve(__dirname, "./dist"),
+          dir: resolve(__dirname, "./dist"),
           // Library Mode: support custom output css file name #8115
           // https://github.com/vitejs/vite/issues/8115#issuecomment-1124815005
           assetFileNames: (assetInfo) => {
             if (assetInfo.name === "style.css") {
               return `index.css`;
             }
-            return assetInfo.name;
+            return assetInfo.name as string;
           },
           // 在 UMD 构建模式下为这些外部化的依赖提供一个全局变量
           globals: {
@@ -59,6 +62,8 @@ const libFn = defineConfig(() => {
       },
     },
   };
-});
+};
 
-export default Object.assign(baseFn(), libFn());
+export default defineConfig((env) => {
+  return deepmerge.all([baseFn(env), libFn(env)]);
+});

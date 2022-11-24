@@ -1,22 +1,32 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
-    "declaration": true,
-    "declarationDir": "dist/",
-    "allowJs": true,
+    "target": "ES5",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "jsx": "preserve",
-    "lib": [
-      "DOM",
-      "ES2017"
-    ],
+    // "module": "esnext",
+    // "moduleResolution": "node",
+    "baseUrl": "./",
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
-    }
+      "@/*": ["vaf/src/*"],
+      "@erye/vaf": ["vaf"],
+      "@erye/vaf/*": ["vaf/*"]
+    },
+    "types": ["node"],
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "sourceMap": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true
   },
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+  "include": [
+    "typings/components.d.ts",
+    "typings/env.d.ts",
+    // @erye/vaf
+    "vaf/**/*",
+    // play
+    "play/index.ts",
+    "play/env.d.ts",
+    "play/**/*"
+  ],
+  "exclude": ["node_modules", "**/dist", "**/*.md"]
 }

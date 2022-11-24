@@ -44,7 +44,7 @@ const createAttachBeforeEach =
       const $authStore = getUseAuthStore(vafAppId)();
       const token = $authStore.token;
       const routeRoles = to.meta?.VafAuthRoles || [];
-      let VafAuthLevel = to.meta?.VafAuthLevel; // 0=>可匿名访问 | 1=>需登录(默认) | 2=>需鉴别角色
+      let VafAuthLevel = to.meta?.VafAuthLevel as number; // 0=>可匿名访问 | 1=>需登录(默认) | 2=>需鉴别角色
       if (![0, 1, 2].includes(VafAuthLevel)) {
         VafAuthLevel = 1; // 修正权限等级
       }

@@ -1,6 +1,5 @@
 import "element-plus/dist/index.css";
-import "../dist/index.css";
-import "../fixture/index.css";
+import "../common/css/index.css";
 
 import ElementPlus from "element-plus";
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
@@ -8,22 +7,20 @@ import vaf, {
   createVafApp,
   installVafComponents,
   installVafProComponents,
-  getRequest,
-} from "../dist/vaf.es.js";
+} from "@erye/vaf";
 
-import vafAppId from "../fixture/common/config/vafAppId";
-import sidebarConfig from "../fixture/common/config/sidebar";
-import navbarConfig from "../fixture/common/config/navbar";
-import routeConfig from "../fixture/common/routes";
-import makeAuthService from "../fixture/common/api/auth";
+import vafAppId from "../common/config/vafAppId";
+import sidebarConfig from "../common/config/sidebar";
+import navbarConfig from "../common/config/navbar";
+import routeConfig from "../common/routes";
+import AuthService from "../common/api/auth";
 
-import installDirectives from "../fixture/common/directives";
+import installDirectives from "../common/directives";
 
 console.log(JSON.stringify(vaf, null, 2));
 
-const AuthService = makeAuthService(vafAppId, getRequest);
-
 const { app } = createVafApp({
+  vafAppId,
   settingConfig: {
     name: "@erye/vaf",
     slogan: "方便、快捷、精准",
