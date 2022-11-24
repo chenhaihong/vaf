@@ -26,6 +26,14 @@ const VitePluginMock = (): PluginOption => {
 
         // 模拟获取用户信息请求
         if (req.url === "/mock/auth/userinfo") {
+          // res.writeHead(500, { "Content-Type": "application/json" });
+          // return res.end(
+          //   JSON.stringify({
+          //     success: false,
+          //     error: { message: "获取用户信息失败" },
+          //     data: {},
+          //   })
+          // );
           res.writeHead(200, { "Content-Type": "application/json" });
           return res.end(
             JSON.stringify({

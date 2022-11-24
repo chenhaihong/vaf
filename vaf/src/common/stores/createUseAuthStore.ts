@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-const useStores = {};
+const useStores: { [key: string]: any } = {};
 
 export const createUseAuthStore = (vafAppId: string, dataFuncConfig: any) => {
   const useAuthStore = defineStore(`VafAuthStore--${vafAppId}`, {
@@ -17,7 +17,7 @@ export const createUseAuthStore = (vafAppId: string, dataFuncConfig: any) => {
       };
     },
     actions: {
-      async login(payload) {
+      async login(payload: any) {
         const { username, password } = payload;
         const [err, data] = await dataFuncConfig.login({ username, password });
         if (!err) {
@@ -33,7 +33,7 @@ export const createUseAuthStore = (vafAppId: string, dataFuncConfig: any) => {
         // 因为使用的es模块加载, 所以首次打开应用执行登录操作, 做完登录操作后,
         // 在跳往目标页面时, 会去import目标页面的es模块.
         // 此时由于目标页面会加载完成, 而直接关闭loading组件, 会导致还在登录页停留.
-
+        //
         // 处理方案:
         // 需要监听路由变化, 如果已经加载并进入目标页面路由, 则关闭loading组件.
         // 因为vue-router为提供解绑afterEach钩子的api,
@@ -43,17 +43,24 @@ export const createUseAuthStore = (vafAppId: string, dataFuncConfig: any) => {
           const { userinfo, roles } = data;
           this.userinfo = userinfo;
           this.roles = roles;
+        } else {
+          // 清除用户信息，避免循环重定向到500页面
+          this.clear();
         }
+
         return [err, data];
       },
       async logout() {
         const [err, data] = await dataFuncConfig.logout();
         if (!err) {
-          this.token = "";
-          this.roles = [];
-          this.userinfo = {};
+          this.clear();
         }
         return [err, data];
+      },
+      clear() {
+        this.token = "";
+        this.userinfo = {};
+        this.roles = [];
       },
     },
   });

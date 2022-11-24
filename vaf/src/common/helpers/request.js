@@ -47,7 +47,7 @@ export const makeRequest = (vafAppId) => {
         case 5020001: // 该管理员账号不存在
         case 5020002: // 该管理员账号已暂停使用
           // 清除用户信息
-          $store.$patch({ token: "", userinfo: {}, roles: [] });
+          $store.clear();
           ElMessageBox.confirm(error.message || "登录失效", "请重新登录", {
             showClose: false,
             closeOnClickModal: false,
@@ -78,7 +78,7 @@ export const makeRequest = (vafAppId) => {
         type: "error",
         duration: 5000,
       });
-      return [error, null];
+      return [new Error(error.message || "Error"), null];
     }
   );
 

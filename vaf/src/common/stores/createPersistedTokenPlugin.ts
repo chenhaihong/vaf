@@ -17,7 +17,7 @@ const createPersistedTokenPlugin =
 
     // 监听与更新token的本地存贮
     store.$onAction(({ name, store, after }) => {
-      const actionNames = ["login", "logout"];
+      const actionNames = ["login", "clear"];
       if (actionNames.includes(name)) {
         after(() => {
           localStorage.setItem(key, store.token);

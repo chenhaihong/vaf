@@ -4,26 +4,16 @@
       <VafLogo ref="logo" />
       <VafMainmenu @enter="enterMainmenu" @leave="delayhidingHoverSubmenu" />
       <transition v-if="!hideFloatingSubmenu" name="vaf-slide">
-        <VafSubMenuTree
-          ref="hoverSubmenu"
-          class="vaf-submenu-tree-wrap--hover"
-          v-show="showHoverSubmenu"
-          hideFirstNav
-          :submenu="hoverSubmenu"
-          :selectedMainmenu="hoverMainmenu"
-          :selectedSubmenuId="selectedSubmenuId"
-          @mouseenter="enterHoverSubmenu"
-          @mouseleave="delayhidingHoverSubmenu"
-        />
+        <VafSubMenuTree ref="hoverSubmenu" class="vaf-submenu-tree-wrap--hover" v-show="showHoverSubmenu" hideFirstNav
+          :submenu="hoverSubmenu" :selectedMainmenu="hoverMainmenu" :selectedSubmenuId="selectedSubmenuId"
+          @mouseenter="enterHoverSubmenu" @mouseleave="delayhidingHoverSubmenu" />
       </transition>
     </div>
-    <transition v-if="submenu.length" name="vaf-toggle-sidemenu" appear>
+    <transition v-if="submenu.length" name="vaf-toggle-sidemenu" :appear="false" @before-enter="onToggle('开始展开')"
+      @after-enter="onToggle('结束展开')" @before-leave="onToggle('开始收起')" @after-leave="onToggle('结束收起')">
       <div class="vaf-sidebar__right" v-show="!hideSubmenu">
-        <VafSubMenuTree
-          :submenu="submenu"
-          :selectedMainmenu="selectedMainmenu"
-          :selectedSubmenuId="selectedSubmenuId"
-        />
+        <VafSubMenuTree :submenu="submenu" :selectedMainmenu="selectedMainmenu"
+          :selectedSubmenuId="selectedSubmenuId" />
       </div>
     </transition>
   </div>
@@ -141,6 +131,16 @@ export default {
       }
       return [];
     },
+    /**
+     * 过渡动画的时间为0.3s。
+     * 我在开发者工具里面设置了0.5倍速动画，也就是应该0.6s完成样式的过渡。
+     * 原生的过渡，可以顺利在0.6s后完成了样式的过渡。
+     * 问题：vue3的transition组件的0.3s前正常，0.3s时强制到了结束状态。跟原生的不一致。
+     */
+    onToggle(type) {
+      // TODO 加入订阅发布逻辑
+      console.log(type);
+    },
   },
   unmounted() {
     this.outId && clearTimeout(this.outId);
@@ -160,7 +160,7 @@ export default {
     background-color: $mainMenuBgColor;
     border-right: 1px solid $borderColor;
     box-sizing: border-box;
-    transition: width 0.3s ease-in-out;
+    // transition: width 0.3s ease-in-out;
 
     @include when(hide-submenu) {
       width: 60px;
@@ -232,7 +232,7 @@ export default {
   }
 }
 
-// transition name="slide"
+// transition name="vaf-slide"
 .#{$namespace}-slide-enter-from,
 .#{$namespace}-slide-leave-to {
   opacity: 0;
