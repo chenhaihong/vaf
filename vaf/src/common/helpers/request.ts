@@ -1,3 +1,5 @@
+import type { AxiosInstance } from "axios";
+
 import axios from "axios";
 
 import { ElMessage, ElMessageBox } from "element-plus";
@@ -6,15 +8,15 @@ import { getUseAuthStore } from "@/common/stores";
 import { getRouter } from "@/common/router";
 
 //请求实例池
-const instances = {};
+const instances: { [key: string]: AxiosInstance } = {};
 
-export const makeRequest = (vafAppId) => {
+export const makeRequest = (vafAppId: string) => {
   const $store = getUseAuthStore(vafAppId)();
   const $router = getRouter(vafAppId);
 
   // create an axios instance
   const instance = axios.create({
-    // baseURL: '/', // 不设置，外部传递完成的请求地址
+    // baseURL: '/', // 不设置，外部传递完整的请求地址
     withCredentials: true, // send cookies when cross-domain requests
     headers: {
       "Content-Type": "application/json; charset=UTF-8",
@@ -27,7 +29,7 @@ export const makeRequest = (vafAppId) => {
   instance.interceptors.request.use((config) => {
     const token = $store.token;
     if (token) {
-      config.headers.Authorization = token;
+      config.headers!.Authorization = token;
     }
     return config;
   });
@@ -86,6 +88,6 @@ export const makeRequest = (vafAppId) => {
   return instance;
 };
 
-export const getRequest = (vafAppId) => {
+export const getRequest = (vafAppId: string) => {
   return instances[vafAppId];
 };

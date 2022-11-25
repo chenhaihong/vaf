@@ -9,7 +9,7 @@ import { makeRequest } from "@/common/helpers/request";
 import VafApp from "./VafApp.vue";
 
 // vafApp实例池
-const vafApps = {};
+const vafApps: { [key: string]: any } = {};
 
 export const createVafApp = (vafAppConfig = {}) => {
   const {
@@ -19,7 +19,7 @@ export const createVafApp = (vafAppConfig = {}) => {
     sidebarConfig = {},
     navbarConfig = {},
     routeConfig = {},
-  } = vafAppConfig;
+  } = vafAppConfig as any;
 
   const app = createApp(VafApp);
   vafApps[vafAppId] = app;
@@ -41,6 +41,6 @@ export const createVafApp = (vafAppConfig = {}) => {
   return { app, router, request };
 };
 
-export const getVafApp = (vafAppId) => {
+export const getVafApp = (vafAppId: string) => {
   return vafApps[vafAppId];
 };
