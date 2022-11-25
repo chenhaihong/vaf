@@ -4,14 +4,13 @@ import { resolve } from "path";
 
 import deepmerge from "deepmerge";
 import { defineConfig } from "vite";
-import buildConfig from "build-config";
 
 import baseFn from "./vite.config.base";
 
 const devFn: UserConfigFn = () => {
   return {
     server: { port: 3000 },
-    root: resolve(__dirname, "./root_dev"),
+    root: resolve(__dirname, "root_dev"),
     base: "/",
     css: {
       preprocessorOptions: {
@@ -24,12 +23,12 @@ const devFn: UserConfigFn = () => {
         // vaf目录下的模块指定了@目录别名为vaf/src目录。
         {
           find: "@",
-          replacement: `${buildConfig.vafRoot}/src`,
+          replacement: resolve(__dirname, "..", "vaf/src"),
         },
-        // index.ts里引入了@erye/vaf，这里需要设置好别名。
+        // root_dev/index.ts里引入了@erye/vaf，这里需要设置好别名。
         {
-          find: /^@erye\/vaf$/,
-          replacement: resolve(buildConfig.vafRoot, "src/index.ts"),
+          find: "@erye/vaf",
+          replacement: resolve(__dirname, "..", "vaf/src/index.ts"),
         },
       ],
     },

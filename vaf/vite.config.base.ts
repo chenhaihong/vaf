@@ -1,7 +1,6 @@
 import type { UserConfigFn } from "vite";
 
-import buildConfig from "build-config";
-
+import { resolve } from "path";
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 
@@ -19,7 +18,7 @@ const baseFn: UserConfigFn = () => {
         // vaf目录下的模块指定了@目录别名为vaf/src目录。
         {
           find: "@",
-          replacement: `${buildConfig.vafRoot}/src`,
+          replacement: resolve(__dirname, "src"),
         },
       ],
     },

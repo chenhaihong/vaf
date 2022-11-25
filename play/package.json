@@ -16,7 +16,6 @@
     "@vitejs/plugin-legacy": "^2.3.1",
     "@vitejs/plugin-vue": "^3.2.0",
     "@vitejs/plugin-vue-jsx": "^2.1.1",
-    "build-config": "workspace:^",
     "deepmerge": "^4.2.2",
     "http-server": "^14.1.1",
     "rimraf": "^3.0.2",
